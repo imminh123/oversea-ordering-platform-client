@@ -1,0 +1,68 @@
+{
+  "alert": {
+    "something_went_wrong": "alert.something_went_wrong",
+    "fetch_data": {
+      "success": "alert.fetch_data.success",
+      "fail": "alert.fetch_data.fail"
+    },
+    "add_data": {
+      "success": "alert.add_data.success",
+      "fail": "alert.add_data.fail"
+    },
+    "create_data": {
+      "success": "alert.create_data.success",
+      "fail": "alert.create_data.fail"
+    },
+    "edit_data": {
+      "success": "alert.edit_data.success",
+      "fail": "alert.edit_data.fail"
+    },
+    "update_data": {
+      "success": "alert.update_data.success",
+      "fail": "alert.update_data.fail"
+    },
+    "delete_data": {
+      "success": "alert.delete_data.success",
+      "fail": "alert.delete_data.fail"
+    },
+    "export_data": {
+      "success": "alert.export_data.success",
+      "fail": "alert.export_data.fail"
+    },
+    "login": {
+      "success": "alert.login.success",
+      "please_login_with_new_password": "alert.login.please_login_with_new_password"
+    }
+  },
+
+  "modal": {
+    "confirm_title": "modal.confirm_title",
+    "confirm_action_cannot_undone": "modal.confirm_action_cannot_undone"
+  },
+
+  "form": {
+    "login": {
+      "title": "form.login.title",
+      "label_username": "form.login.label_username",
+      "label_password": "form.login.label_password"
+    }
+  },
+
+  "validate": {
+    "require_exists": "validate.require_exists"
+  },
+
+  "common": {
+    "text_search": "common.search",
+    "text_apply": "common.apply",
+    "text_clear": "common.clear",
+    "text_cancel": "common.cancel",
+    "text_confirm": "common.confirm",
+    "text_actions": "common.actions",
+    "text_add": "common.add",
+    "text_edit": "common.edit",
+    "text_create": "common.create",
+    "text_update": "common.update",
+    "text_delete": "common.delete"
+  }
+}

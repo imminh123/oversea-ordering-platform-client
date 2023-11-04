@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  frontend:
+    container_name: frontend
+    restart: unless-stopped
+    # build: . # USE FOR DEVELOPMENT #
+    image: viethung512/basic-frontend:$FRONTEND_IMAGE_TAG # USE FOR DEPLOY CI/CD #
+    ports:
+      - $VITE_PORT:$VITE_PORT
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env

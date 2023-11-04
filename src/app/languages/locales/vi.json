@@ -1,0 +1,68 @@
+{
+  "alert": {
+    "something_went_wrong": "Vui lòng thử lại sau",
+    "fetch_data": {
+      "success": "Lấy dữ liệu thành công",
+      "fail": "Không thể lấy dữ liệu"
+    },
+    "add_data": {
+      "success": "Thêm thành công",
+      "fail": "Thêm thất bại"
+    },
+    "create_data": {
+      "success": "Tạo mới thành công",
+      "fail": "Tạo mới thất bại"
+    },
+    "edit_data": {
+      "success": "Chỉnh sửa thành công",
+      "fail": "Chỉnh sửa thất bại"
+    },
+    "update_data": {
+      "success": "Cập nhật thành công",
+      "fail": "Cập nhật thất bại"
+    },
+    "delete_data": {
+      "success": "Xoá thành công",
+      "fail": "Xoá thất bại"
+    },
+    "export_data": {
+      "success": "Export thành công",
+      "fail": "Export thất bại"
+    },
+    "login": {
+      "success": "Đăng nhập thành công",
+      "please_login_with_new_password": "Vui lòng đăng nhập với mật khẩu mới"
+    }
+  },
+
+  "modal": {
+    "confirm_title": "Bạn chắc chứ?",
+    "confirm_action_cannot_undone": "Hành động này không thể hoàn tác"
+  },
+
+  "form": {
+    "login": {
+      "title": "Đăng nhập",
+      "label_username": "Tên đăng nhập",
+      "label_password": "Mật khẩu"
+    }
+  },
+
+  "validate": {
+    "require_exists": "Trường này là bắt buộc"
+  },
+
+  "common": {
+    "text_search": "Tìm kiếm",
+    "text_apply": "Áp dụng",
+    "text_clear": "Làm mới",
+    "text_cancel": "Huỷ bỏ",
+    "text_confirm": "Xác nhận",
+    "text_actions": "Hành động",
+    "text_add": "Thêm",
+    "text_edit": "Chỉnh sửa",
+    "text_create": "Tạo mới",
+    "text_update": "Cập nhật",
+    "text_delete": "Xoá"
+  }
+}

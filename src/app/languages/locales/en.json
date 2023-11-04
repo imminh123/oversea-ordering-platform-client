@@ -1,0 +1,68 @@
+{
+  "alert": {
+    "something_went_wrong": "Something went wrong, please try again",
+    "fetch_data": {
+      "success": "Fetch data success",
+      "fail": "Failed to fetch data"
+    },
+    "add_data": {
+      "success": "Add success",
+      "fail": "Add failed"
+    },
+    "create_data": {
+      "success": "Create success",
+      "fail": "Create failed"
+    },
+    "edit_data": {
+      "success": "Edit success",
+      "fail": "Edit failed"
+    },
+    "update_data": {
+      "success": "Update success",
+      "fail": "Update failed"
+    },
+    "delete_data": {
+      "success": "Delete success",
+      "fail": "Delete failed"
+    },
+    "export_data": {
+      "success": "Export success",
+      "fail": "Export failed"
+    },
+    "login": {
+      "success": "Login success",
+      "please_login_with_new_password": "Please login with new password"
+    }
+  },
+
+  "modal": {
+    "confirm_title": "Are you sure?",
+    "confirm_action_cannot_undone": "This action can not be undone!"
+  },
+
+  "form": {
+    "login": {
+      "title": "Login",
+      "label_username": "Username",
+      "label_password": "Password"
+    }
+  },
+
+  "validate": {
+    "require_exists": "Must not be empty"
+  },
+
+  "common": {
+    "text_search": "Search",
+    "text_apply": "Apply",
+    "text_clear": "Clear",
+    "text_cancel": "Cancel",
+    "text_confirm": "Confirm",
+    "text_actions": "Actions",
+    "text_add": "Add",
+    "text_edit": "Edit",
+    "text_create": "Create",
+    "text_update": "Update",
+    "text_delete": "Delete"
+  }
+}
