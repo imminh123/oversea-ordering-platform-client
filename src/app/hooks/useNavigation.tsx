@@ -13,13 +13,14 @@ import { LoginPage } from 'features/auth/login';
 import { HomePage } from 'features/home';
 
 import { useUI } from './index';
+import { lazyImport } from 'app/utils/lazyImport';
 
-const Feature1 = React.lazy(() => import('features/feature-1'));
-const Feature2 = React.lazy(() => import('features/feature-2'));
-const Feature3 = React.lazy(() => import('features/feature-3'));
-const Feature2_1 = React.lazy(() => import('features/feature-2/feature-2.1'));
-const Feature2_2 = React.lazy(() => import('features/feature-2/feature-2.2'));
-const Feature3_1 = React.lazy(() => import('features/feature-3/feature-3.1'));
+const { Feature1 } = lazyImport(() => import('features/feature-1'), 'Feature1');
+const { Feature2 } = lazyImport(() => import('features/feature-2'), 'Feature2');
+const { Feature3 } = lazyImport(() => import('features/feature-3'), 'Feature3');
+const { Feature2_1 } = lazyImport(() => import('features/feature-2/feature-2-1'), 'Feature2_1');
+const { Feature2_2 } = lazyImport(() => import('features/feature-2/feature-2-2'), 'Feature2_2');
+const { Feature3_1 } = lazyImport(() => import('features/feature-3/feature-3-1'), 'Feature3_1');
 
 function useNavigation() {
   const history = useHistory();

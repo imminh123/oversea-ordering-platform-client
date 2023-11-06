@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 
-const Feature3_1 = () => {
+export const Feature3_1 = () => {
   const { confirm } = useConfirmAlert();
 
   const deleteUser = () => {
@@ -30,4 +30,3 @@ const Feature3_1 = () => {
   );
 };
 
-export default Feature3_1;

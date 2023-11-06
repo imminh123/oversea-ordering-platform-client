@@ -1,10 +1,10 @@
 export enum RouteKeysEnum {
   Feature1 = 'feature-1',
   Feature2 = 'feature-2',
-  Feature2_1 = 'feature-2.1',
-  Feature2_2 = 'feature-2.2',
+  Feature2_1 = 'feature-2-1',
+  Feature2_2 = 'feature-2-2',
   Feature3 = 'feature-3',
-  Feature3_1 = 'feature-3.1',
+  Feature3_1 = 'feature-3-1',
 
   // auth
   LoginPage = 'login-page',
@@ -17,10 +17,10 @@ export enum RouteKeysEnum {
 export enum RoutePathsEnum {
   Feature1 = '/feature-1',
   Feature2 = '/feature-2',
-  Feature2_1 = '/feature-2.1',
-  Feature2_2 = '/feature-2.2',
+  Feature2_1 = '/feature-2-1',
+  Feature2_2 = '/feature-2-2',
   Feature3 = '/feature-3',
-  Feature3_1 = '/feature-3.1',
+  Feature3_1 = '/feature-3-1',
 
   // auth
   LoginPage = '/login',

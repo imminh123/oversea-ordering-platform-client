@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 import { EModalType } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
 
-const Feature1 = () => {
+export const Feature1 = () => {
   const { openModal } = useUI();
   const handleOpenModal = () => {
     openModal(EModalType.SAMPLE_MODAL);
@@ -16,5 +16,3 @@ const Feature1 = () => {
     </Box>
   );
 };
-
-export default Feature1;
