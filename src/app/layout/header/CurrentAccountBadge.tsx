@@ -4,6 +4,7 @@ import { Logout, Settings } from '@mui/icons-material';
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Skeleton } from '@mui/material';
 
 import useAuth from 'app/hooks/useAuth';
+import AuthContext from 'app/context/auth';
 
 interface Props {
   loading: boolean;
@@ -19,6 +20,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const context = React.useContext(AuthContext);
 
   return (
     <Box
@@ -32,7 +34,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         <Skeleton variant='text' width={100} />
       ) : (
         <IconButton onClick={handleClick} size='small' sx={{ ml: 2 }}>
-          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+          <Avatar sx={{ width: 32, height: 32 }}>{context.user?.fullname.charAt(0)}</Avatar>
         </IconButton>
       )}
 

@@ -33,12 +33,10 @@ function useAuth() {
 
   const handleGetMe = async () => {
     try {
-      const user = await getMe();
-
-      context.setUser(user);
-      context.setAuthenticated(true);
-      if (pathname.includes(RoutePathsEnum.LoginPage)) {
-        history.push(RoutePathsEnum.HomePage);
+      if (!pathname.includes(RoutePathsEnum.LoginPage)) {
+        const user = await getMe();
+        context.setUser(user);
+        context.setAuthenticated(true);
       }
     } catch (err) {
       handleErrorResponse(err);
@@ -53,10 +51,10 @@ function useAuth() {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      const { user, token } = await login({ username, password });
+      const { accessToken } = await login({ username, password });
 
-      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, token);
-
+      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, accessToken);
+      const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
       alertSuccess(LanguageTranslate.alert.login.success);

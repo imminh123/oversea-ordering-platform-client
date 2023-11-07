@@ -17,4 +17,3 @@ export const Feature2_1 = () => {
     </Box>
   );
 };
-

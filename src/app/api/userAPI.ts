@@ -144,9 +144,9 @@ const deleteUser = async (params: TDeleteUserArgs): Promise<TDeleteUserRes> => {
 const mappingServerDataUnderUserView = (serverData: IUserServerResponse): IUser => {
   const userData: IUser = {
     id: serverData.id,
-    username: serverData.username,
+    fullname: serverData.fullname,
     email: serverData.email,
-    phoneNumber: serverData.phoneNumber,
+    phone: serverData.phone,
     role: serverData.role,
   };
 

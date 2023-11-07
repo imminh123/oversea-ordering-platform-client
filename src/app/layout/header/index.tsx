@@ -90,7 +90,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
 
           <Stack direction={'row'} alignItems={'center'} spacing={2} sx={{ ml: 'auto' }}>
             <CurrentAccountBadge loading={false} />
-            <LanguageSwitcher />
+            {/* <LanguageSwitcher /> */}
           </Stack>
         </Toolbar>
       </AppBar>

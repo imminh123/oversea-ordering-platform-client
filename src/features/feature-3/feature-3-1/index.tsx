@@ -29,4 +29,3 @@ export const Feature3_1 = () => {
     </Box>
   );
 };
-
