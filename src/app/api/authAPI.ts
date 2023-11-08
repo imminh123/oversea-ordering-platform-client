@@ -1,7 +1,7 @@
-import { IUser, IUserServerResponse, UserRole } from 'app/types/user';
+import { IUser, IUserServerResponse } from 'app/types/user';
 import { apiWrapper } from './axiosClient';
 import userAPI from './userAPI';
-
+import { envConfig } from 'configs/env.config';
 /* Types export for outside */
 /* ==================== START ==================== */
 export type TLoginArgs = {
@@ -9,6 +9,10 @@ export type TLoginArgs = {
   password: string;
 };
 export type TLoginRes = {
+  accessToken: string;
+  refreshToken: string;
+};
+export type TLoginGGRes = {
   accessToken: string;
   refreshToken: string;
 };
@@ -32,6 +36,9 @@ type ApiLoginRes = {
   expiresIn: number;
   refreshExpiresIn: number;
 };
+type ApiLoginGGArgs = {
+  token: string;
+};
 
 // type ApiGetMeArgs = {}
 type ApiGetMeRes = IUserServerResponse;
@@ -50,13 +57,20 @@ const login = async (params: TLoginArgs): Promise<TLoginRes> => {
   };
 };
 
+export const loginGoogleAPI = (inputs: ApiLoginGGArgs): Promise<TLoginGGRes> => {
+  return apiWrapper.post('/session/createSessionWithOAuth2', {
+    ...inputs,
+    base: 'google',
+    redirect_uri: envConfig.VITE_APP_HOST,
+  });
+};
+
 const getMe = async (): Promise<TGetMeRes> => {
-  
   const result = await apiWrapper.get<ApiGetMeRes>(`authentication/client`);
 
   return userAPI.mappingServerDataUnderUserView(result);
 };
 
-const authAPI = { login, getMe };
+const authAPI = { login, loginGoogleAPI, getMe };
 
 export default authAPI;

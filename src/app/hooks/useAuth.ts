@@ -7,6 +7,8 @@ import { useContext, useMemo } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
+import { MutationConfig } from 'app/api/react-query';
+type QueryFnType = typeof authAPI.loginGoogleAPI;
 
 function useAuth() {
   const history = useHistory();
@@ -67,6 +69,34 @@ function useAuth() {
     }
   };
 
+  const useLoginWithOAuth2 = (config?: MutationConfig<QueryFnType>) => {
+    return useMutation({
+      mutationKey: 'useLoginWithOAuth2',
+      ...config,
+      mutationFn: authAPI.loginGoogleAPI,
+    });
+  };
+
+  const { mutateAsync: loginGg } = useLoginWithOAuth2()
+
+  const handleLoginGG = async ({token}:{token: string}) => {
+    try {
+      const { accessToken } = await loginGg({ token });
+
+      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, accessToken);
+      const user = await getMe();
+      context.setUser(user);
+      context.setAuthenticated(true);
+      alertSuccess(LanguageTranslate.alert.login.success);
+      history.push(RoutePathsEnum.HomePage);
+    } catch (err) {
+      handleErrorResponse(err);
+      context.setAuthenticated(false);
+    } finally {
+      context.setInitialized(true);
+    }
+  };
+
   const handleErrorResponse = (err: any) => {
     console.log({ err });
     localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
@@ -83,6 +113,7 @@ function useAuth() {
     ...context,
     login: handleLogin,
     getMe: handleGetMe,
+    loginGg: handleLoginGG,
     logout,
   };
 }

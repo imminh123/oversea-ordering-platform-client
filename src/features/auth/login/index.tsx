@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Box, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -11,7 +10,8 @@ import { LanguageTranslate } from 'app/languages';
 import { loginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
-
+import Google from '../../../assets/images/google.svg'
+import { useGoogleLogin } from '@react-oauth/google';
 interface Props {}
 
 export const LoginPage: React.FC<Props> = () => {
@@ -23,7 +23,13 @@ export const LoginPage: React.FC<Props> = () => {
     defaultValues: { username: '', password: '' },
     resolver: yupResolver(loginValidator),
   });
-  const { login } = useAuth();
+  const { login, loginGg } = useAuth();
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      loginGg({ token: tokenResponse.code })
+    },
+    flow: 'auth-code',
+  })
 
   const onSubmit = async (data: TLoginArgs) => {
     setLoading(true);
@@ -75,6 +81,18 @@ export const LoginPage: React.FC<Props> = () => {
                 loading={loading}
               >
                 {t(LanguageTranslate.form.login.title)}
+              </LoadingButton>
+              <LoadingButton
+                variant='contained'
+                startIcon={<img src={Google} alt="Google" />}
+                loadingIndicator='Loading...'
+                fullWidth
+                color='primary'
+                size='large'
+                onClick={loginWithGoogle}
+                // loading={loading}
+              >
+                {'LOGIN WITH GOOGLE'}
               </LoadingButton>
             </Stack>
           </form>
