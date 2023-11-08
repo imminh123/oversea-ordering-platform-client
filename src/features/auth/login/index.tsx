@@ -10,7 +10,7 @@ import { LanguageTranslate } from 'app/languages';
 import { loginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
-import Google from '../../../assets/images/google.svg'
+import Google from '../../../assets/images/google.svg';
 import { useGoogleLogin } from '@react-oauth/google';
 interface Props {}
 
@@ -25,11 +25,11 @@ export const LoginPage: React.FC<Props> = () => {
   });
   const { login, loginGg } = useAuth();
   const loginWithGoogle = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      loginGg({ token: tokenResponse.code })
+    onSuccess: (tokenResponse) => {
+      loginGg({ token: tokenResponse.code });
     },
     flow: 'auth-code',
-  })
+  });
 
   const onSubmit = async (data: TLoginArgs) => {
     setLoading(true);
@@ -84,7 +84,7 @@ export const LoginPage: React.FC<Props> = () => {
               </LoadingButton>
               <LoadingButton
                 variant='contained'
-                startIcon={<img src={Google} alt="Google" />}
+                startIcon={<img src={Google} alt='Google' />}
                 loadingIndicator='Loading...'
                 fullWidth
                 color='primary'

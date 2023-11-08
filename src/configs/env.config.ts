@@ -14,7 +14,7 @@ const envConfig = {
   defaultPage,
   defaultLimit,
   GG_CLIENT_ID,
-  VITE_APP_HOST
+  VITE_APP_HOST,
 };
 
 export { envConfig };

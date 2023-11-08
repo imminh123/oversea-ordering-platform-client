@@ -77,9 +77,9 @@ function useAuth() {
     });
   };
 
-  const { mutateAsync: loginGg } = useLoginWithOAuth2()
+  const { mutateAsync: loginGg } = useLoginWithOAuth2();
 
-  const handleLoginGG = async ({token}:{token: string}) => {
+  const handleLoginGG = async ({ token }: { token: string }) => {
     try {
       const { accessToken } = await loginGg({ token });
 
