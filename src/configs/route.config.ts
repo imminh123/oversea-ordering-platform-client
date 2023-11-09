@@ -5,6 +5,7 @@ export enum RouteKeysEnum {
   Feature2_2 = 'feature-2-2',
   Feature3 = 'feature-3',
   Feature3_1 = 'feature-3-1',
+  PersonalInfo = 'info',
 
   // auth
   LoginPage = 'login-page',
@@ -21,6 +22,7 @@ export enum RoutePathsEnum {
   Feature2_2 = '/feature-2-2',
   Feature3 = '/feature-3',
   Feature3_1 = '/feature-3-1',
+  PersonalInfo = '/info',
 
   // auth
   LoginPage = '/login',

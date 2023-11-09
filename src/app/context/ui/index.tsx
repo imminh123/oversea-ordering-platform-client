@@ -7,8 +7,9 @@ import queryString from 'query-string';
 import { useHistory } from 'react-router';
 import { EDrawerType, EModalType, ESidebarExpandVariant } from './enum';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
+import { useModalType } from 'app/hooks/useModalType';
 
-interface IFeedbackComponent<T> {
+interface IModalComponent<T> {
   open: boolean;
   type: T | null;
   props: any | null;
@@ -25,8 +26,8 @@ type TAlertActions = 'success' | 'info' | 'warning' | 'error';
 type LanguageUnion = 'en' | 'vi';
 
 interface UIState {
-  modal: IFeedbackComponent<EModalType>;
-  drawer: IFeedbackComponent<EDrawerType> & {
+  modal: IModalComponent<EModalType>;
+  drawer: IModalComponent<EDrawerType> & {
     position: SwipeableDrawerProps['anchor'] | null;
   };
   alert: IAlertState;
@@ -105,28 +106,24 @@ function isSidebarExpandVariant(variant: any): variant is ESidebarExpandVariant 
 
 export const UIProvider: React.FC = ({ children }) => {
   const history = useHistory();
-  const { sidebarExpandVariant } = useToggleSidebar();
+  const { variant } = useToggleSidebar();
+  const { modalObject, changeType } = useModalType();
   const [sidebarActive, setSidebarActive] = React.useState<ISidebarItem | null>(null);
   const [sidebarExpandKey, setSidebarExpandKey] = React.useState<string | null>(null);
   const [listDense, setListDense] = React.useState(true);
-  const [sidebarExpandVariants, setSidebarExpandVariant] = React.useState<ESidebarExpandVariant | null>(() => {
-    return isSidebarExpandVariant(sidebarExpandVariant) ? sidebarExpandVariant : ESidebarExpandVariant.EXPAND_MORE;
+  const [sidebarExpandVariant, setSidebarExpandVariant] = React.useState<ESidebarExpandVariant | null>(() => {
+    return isSidebarExpandVariant(variant) ? variant : ESidebarExpandVariant.EXPAND_MORE;
   });
-  const [modal, setModal] = React.useState<IFeedbackComponent<EModalType>>(() => {
-    const locationSearch = history.location.search;
-    const queryObject = queryString.parse(locationSearch);
+  const [modal, setModal] = React.useState<IModalComponent<EModalType>>(() => {
 
-    const open = !!(queryObject && queryObject.modalType);
-    const type: EModalType | null = isModalType(queryObject.modalType) ? queryObject.modalType : null;
-    const props =
-      queryObject && queryObject.modalProps && typeof queryObject.modalProps === 'object'
-        ? queryObject.modalProps
-        : null;
+    const open = !!modalObject.openModal;
+    const type: EModalType | null = isModalType(modalObject.type) ? modalObject.type : null;
+    const props = modalObject && modalObject.props && typeof modalObject.props === 'object' ? modalObject.props : null;
 
     return { open, type, props };
   });
   const [drawer, setDrawer] = React.useState<
-    IFeedbackComponent<EDrawerType> & {
+    IModalComponent<EDrawerType> & {
       position: SwipeableDrawerProps['anchor'] | null;
     }
   >(() => {
@@ -155,11 +152,7 @@ export const UIProvider: React.FC = ({ children }) => {
       type: modalType,
       props: modalProps ? modalProps : null,
     });
-    const search = queryString.stringify({
-      modalType: modalType,
-      modalProps,
-    });
-    history.push({ search });
+    changeType({ openModal: true, type: modalType, props: modalProps });
   };
   const closeModal = () => {
     setModal({
@@ -167,12 +160,6 @@ export const UIProvider: React.FC = ({ children }) => {
       type: null,
       props: null,
     });
-    const locationSearch = history.location.search;
-    const queryObject = queryString.parse(locationSearch);
-    delete queryObject.modalType;
-    delete queryObject.modalProps;
-
-    history.push({ search: queryString.stringify(queryObject) });
   };
 
   const openDrawer = (
@@ -212,7 +199,7 @@ export const UIProvider: React.FC = ({ children }) => {
 
   const checkOpen = (variant: 'modal' | 'drawer', type: EModalType | EDrawerType): boolean => {
     if (variant === 'modal' && (type as EModalType)) {
-      return modal.type === type;
+      return modal.type === type && modal.open;
     }
     if (variant === 'drawer' && (type as EDrawerType)) {
       return drawer.type === type;
@@ -246,7 +233,7 @@ export const UIProvider: React.FC = ({ children }) => {
         sidebarActive,
         sidebarExpandKey,
         listDense,
-        sidebarExpandVariant: sidebarExpandVariants,
+        sidebarExpandVariant: sidebarExpandVariant,
         setSidebarActive,
         setSidebarExpandKey,
         setListDense,

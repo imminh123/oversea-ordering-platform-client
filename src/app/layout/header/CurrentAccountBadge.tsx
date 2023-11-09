@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Logout, Settings } from '@mui/icons-material';
+import { Logout, Person } from '@mui/icons-material';
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Skeleton } from '@mui/material';
 
 import useAuth from 'app/hooks/useAuth';
@@ -76,9 +76,9 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
       >
         <MenuItem onClick={() => history.push('/info')}>
           <ListItemIcon>
-            <Settings fontSize='small' />
+            <Person fontSize='small' />
           </ListItemIcon>
-          Settings
+          Personal Info
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>

@@ -18,6 +18,7 @@ const { Feature3 } = lazyImport(() => import('features/feature-3'), 'Feature3');
 const { Feature2_1 } = lazyImport(() => import('features/feature-2/feature-2-1'), 'Feature2_1');
 const { Feature2_2 } = lazyImport(() => import('features/feature-2/feature-2-2'), 'Feature2_2');
 const { Feature3_1 } = lazyImport(() => import('features/feature-3/feature-3-1'), 'Feature3_1');
+const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 
 function useNavigation() {
   const history = useHistory();
@@ -71,6 +72,11 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.LoginPage,
         component: <LoginPage />,
+      },{
+        key: RouteKeysEnum.PersonalInfo,
+        exact: true,
+        path: RoutePathsEnum.PersonalInfo,
+        component: <PersonalInfo />,
       },
     ];
 

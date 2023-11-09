@@ -12,14 +12,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import queryString from 'query-string';
-import { useHistory } from 'react-router-dom';
-
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { sidebarWidth } from 'configs/sidebar.config';
 import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
-// import { LanguageSwitcher } from 'app/layout/header/LanguageSwitcher';
 import { ShoppingCart, Notifications } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 interface Props {
@@ -50,7 +46,6 @@ const AppBar = styled(MUIAppBar, {
 
 export const Header: React.FC<Props> = ({ open, setOpen }) => {
   const theme = useTheme();
-  const history = useHistory();
   const matchSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openDrawer, setSidebarExpandVariant } = useUI();
   const { updateToggle } = useToggleSidebar();

@@ -31,9 +31,8 @@ const AlertManager: React.FC = () => {
       <Snackbar
         open={alert.open}
         autoHideDuration={3000}
-        // onClose={handleClear}
         TransitionComponent={TransitionLeft}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Alert elevation={6} variant='filled' onClose={handleClear} severity={alert.status}>
           {t(alert.message)}

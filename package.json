@@ -1,5 +1,5 @@
 {
-  "name": "basic-frontend",
+  "name": "oversea-platform",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -9,7 +9,8 @@
     "@hookform/resolvers": "2.8.1",
     "@mui/icons-material": "5.0.1",
     "@mui/lab": "5.0.0-alpha.48",
-    "@mui/material": "5.0.1",
+    "@mui/material": "5.8.6",
+    "@mui/x-date-pickers": "^6.18.1",
     "@react-oauth/google": "^0.11.1",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",

@@ -2,11 +2,11 @@ import { ESidebarExpandVariant } from 'app/context/ui/enum';
 import create from 'zustand';
 
 interface ToggleSidebar {
-  sidebarExpandVariant: ESidebarExpandVariant;
+  variant: ESidebarExpandVariant;
   updateToggle: (data: ESidebarExpandVariant) => void;
 }
 
 export const useToggleSidebar = create<ToggleSidebar>((set) => ({
-  sidebarExpandVariant: ESidebarExpandVariant.EXPAND_MORE,
-  updateToggle: (payload: ESidebarExpandVariant) => set(() => ({ sidebarExpandVariant: payload })),
+  variant: ESidebarExpandVariant.EXPAND_MORE,
+  updateToggle: (payload: ESidebarExpandVariant) => set(() => ({ variant: payload })),
 }));
