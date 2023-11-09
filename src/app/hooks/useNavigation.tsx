@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Adb } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-
-import { IBreadcrumbItem } from 'app/types/breadcrumb';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
 import { initSidebarActive, initSidebarExpandKey } from 'app/utils/helper';
@@ -11,7 +9,6 @@ import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { SidebarKeysEnum, SidebarLinksEnum } from 'configs/sidebar.config';
 import { LoginPage } from 'features/auth/login';
 import { HomePage } from 'features/home';
-
 import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
 
@@ -31,49 +28,49 @@ function useNavigation() {
         key: RouteKeysEnum.HomePage,
         exact: true,
         path: RoutePathsEnum.HomePage,
-        component: HomePage,
+        component: <HomePage />,
       },
       {
         key: RouteKeysEnum.Feature1,
         exact: true,
         path: RoutePathsEnum.Feature1,
-        component: Feature1,
+        component: <Feature1 />,
       },
       {
         key: RouteKeysEnum.Feature2,
         exact: true,
         path: RoutePathsEnum.Feature2,
-        component: Feature2,
+        component: <Feature2 />,
       },
       {
         key: RouteKeysEnum.Feature2_1,
         exact: true,
         path: RoutePathsEnum.Feature2_1,
-        component: Feature2_1,
+        component: <Feature2_1 />,
       },
       {
         key: RouteKeysEnum.Feature2_2,
         exact: true,
         path: RoutePathsEnum.Feature2_2,
-        component: Feature2_2,
+        component: <Feature2_2 />,
       },
       {
         key: RouteKeysEnum.Feature3,
         exact: true,
         path: RoutePathsEnum.Feature3,
-        component: Feature3,
+        component: <Feature3 />,
       },
       {
         key: RouteKeysEnum.Feature3_1,
         exact: true,
         path: RoutePathsEnum.Feature3_1,
-        component: Feature3_1,
+        component: <Feature3_1 />,
       },
       {
         key: RouteKeysEnum.LoginPage,
         exact: true,
         path: RoutePathsEnum.LoginPage,
-        component: LoginPage,
+        component: <LoginPage />,
       },
     ];
 

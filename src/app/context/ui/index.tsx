@@ -6,6 +6,7 @@ import { ISidebarItem } from 'app/types/sidebar';
 import queryString from 'query-string';
 import { useHistory } from 'react-router';
 import { EDrawerType, EModalType, ESidebarExpandVariant } from './enum';
+import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 
 interface IFeedbackComponent<T> {
   open: boolean;
@@ -104,15 +105,14 @@ function isSidebarExpandVariant(variant: any): variant is ESidebarExpandVariant 
 
 export const UIProvider: React.FC = ({ children }) => {
   const history = useHistory();
+  const {sidebarExpandVariant} = useToggleSidebar()
   const [sidebarActive, setSidebarActive] = React.useState<ISidebarItem | null>(null);
   const [sidebarExpandKey, setSidebarExpandKey] = React.useState<string | null>(null);
   const [listDense, setListDense] = React.useState(true);
-  const [sidebarExpandVariant, setSidebarExpandVariant] = React.useState<ESidebarExpandVariant | null>(() => {
-    const locationSearch = history.location.search;
-    const queryObject = queryString.parse(locationSearch);
+  const [sidebarExpandVariants, setSidebarExpandVariant] = React.useState<ESidebarExpandVariant | null>(() => {
 
-    return isSidebarExpandVariant(queryObject.sidebarExpandVariant)
-      ? queryObject.sidebarExpandVariant
+    return isSidebarExpandVariant(sidebarExpandVariant)
+      ? sidebarExpandVariant
       : ESidebarExpandVariant.EXPAND_MORE;
   });
   const [modal, setModal] = React.useState<IFeedbackComponent<EModalType>>(() => {
@@ -249,7 +249,7 @@ export const UIProvider: React.FC = ({ children }) => {
         sidebarActive,
         sidebarExpandKey,
         listDense,
-        sidebarExpandVariant,
+        sidebarExpandVariant: sidebarExpandVariants,
         setSidebarActive,
         setSidebarExpandKey,
         setListDense,

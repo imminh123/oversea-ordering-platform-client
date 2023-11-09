@@ -5,5 +5,5 @@ export interface IRoute {
   key: RouteKeysEnum;
   exact: boolean;
   path: RoutePathsEnum;
-  component: RouteProps['component'];
+  component: React.ReactNode;
 }

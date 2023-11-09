@@ -5,6 +5,7 @@ import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Skeleton } from 
 
 import useAuth from 'app/hooks/useAuth';
 import AuthContext from 'app/context/auth';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
@@ -12,6 +13,7 @@ interface Props {
 
 export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
   const { logout } = useAuth();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -72,7 +74,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
+        <MenuItem onClick={() => history.push('/info')}>
           <ListItemIcon>
             <Settings fontSize='small' />
           </ListItemIcon>
