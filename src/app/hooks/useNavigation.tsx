@@ -72,7 +72,8 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.LoginPage,
         component: <LoginPage />,
-      },{
+      },
+      {
         key: RouteKeysEnum.PersonalInfo,
         exact: true,
         path: RoutePathsEnum.PersonalInfo,

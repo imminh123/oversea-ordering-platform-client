@@ -115,7 +115,6 @@ export const UIProvider: React.FC = ({ children }) => {
     return isSidebarExpandVariant(variant) ? variant : ESidebarExpandVariant.EXPAND_MORE;
   });
   const [modal, setModal] = React.useState<IModalComponent<EModalType>>(() => {
-
     const open = !!modalObject.openModal;
     const type: EModalType | null = isModalType(modalObject.type) ? modalObject.type : null;
     const props = modalObject && modalObject.props && typeof modalObject.props === 'object' ? modalObject.props : null;

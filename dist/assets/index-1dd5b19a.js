@@ -1,1 +1,0 @@
-import{u as n,j as e,B as t,a as s,b as o}from"./index-450372a5.js";const p=()=>{const{openDrawer:r}=n(),a=()=>{r(o.SAMPLE_DRAWER,"right")};return e.jsx(t,{sx:{width:"100%",p:2},children:e.jsx(s,{variant:"contained",onClick:a,children:"Open Sample Drawer"})})};export{p as Feature2_1};
