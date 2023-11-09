@@ -53,7 +53,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
   const history = useHistory();
   const matchSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openDrawer, setSidebarExpandVariant } = useUI();
-  const {updateToggle} = useToggleSidebar()
+  const { updateToggle } = useToggleSidebar();
   const handleDrawerToggle = () => {
     if (!matchSM) {
       setOpen(!open);
@@ -68,7 +68,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
       expandVariant = ESidebarExpandVariant.EXPAND_MORE;
     }
     setSidebarExpandVariant(expandVariant);
-    updateToggle(expandVariant)
+    updateToggle(expandVariant);
   };
 
   return (
@@ -88,8 +88,8 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
           </IconButton>
 
           <Stack direction={'row'} alignItems={'center'} spacing={2} sx={{ ml: 'auto' }}>
-            <ShoppingCart/>
-            <Notifications/>
+            <ShoppingCart />
+            <Notifications />
             <CurrentAccountBadge loading={false} />
             {/* <LanguageSwitcher /> */}
           </Stack>

@@ -105,15 +105,12 @@ function isSidebarExpandVariant(variant: any): variant is ESidebarExpandVariant 
 
 export const UIProvider: React.FC = ({ children }) => {
   const history = useHistory();
-  const {sidebarExpandVariant} = useToggleSidebar()
+  const { sidebarExpandVariant } = useToggleSidebar();
   const [sidebarActive, setSidebarActive] = React.useState<ISidebarItem | null>(null);
   const [sidebarExpandKey, setSidebarExpandKey] = React.useState<string | null>(null);
   const [listDense, setListDense] = React.useState(true);
   const [sidebarExpandVariants, setSidebarExpandVariant] = React.useState<ESidebarExpandVariant | null>(() => {
-
-    return isSidebarExpandVariant(sidebarExpandVariant)
-      ? sidebarExpandVariant
-      : ESidebarExpandVariant.EXPAND_MORE;
+    return isSidebarExpandVariant(sidebarExpandVariant) ? sidebarExpandVariant : ESidebarExpandVariant.EXPAND_MORE;
   });
   const [modal, setModal] = React.useState<IFeedbackComponent<EModalType>>(() => {
     const locationSearch = history.location.search;
