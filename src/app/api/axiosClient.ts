@@ -1,7 +1,7 @@
-import { LocalStorageKeys } from 'app/utils/constants';
 import axios, { AxiosInstance } from 'axios';
 import { envConfig } from 'configs/env.config';
 import queryString from 'query-string';
+import storage from 'app/utils/storage';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
 
@@ -14,7 +14,7 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem(LocalStorageKeys.AUTH_TOKEN);
+  const token = storage.getToken();
 
   if (token) {
     config.headers['access-token'] = `${token}`;

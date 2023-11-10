@@ -1,13 +1,13 @@
 import authAPI, { TGetMeRes, TLoginArgs, TLoginError, TLoginRes } from 'app/api/authAPI';
 import AuthContext from 'app/context/auth';
 import { LanguageTranslate } from 'app/languages';
-import { LocalStorageKeys } from 'app/utils/constants';
 import { RoutePathsEnum } from 'configs/route.config';
 import { useContext, useMemo } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
 import { MutationConfig } from 'app/api/react-query';
+import storage from 'app/utils/storage'
 type QueryFnType = typeof authAPI.loginGoogleAPI;
 
 function useAuth() {
@@ -25,7 +25,7 @@ function useAuth() {
   });
 
   const logout = (): Promise<void> => {
-    localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
+    storage.clearToken()
     context.setAuthenticated(false);
     context.setInitialized(true);
     context.setUser(null);
@@ -54,8 +54,7 @@ function useAuth() {
   const handleLogin = async (username: string, password: string) => {
     try {
       const { accessToken } = await login({ username, password });
-
-      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, accessToken);
+      storage.setToken(accessToken)
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -82,8 +81,7 @@ function useAuth() {
   const handleLoginGG = async ({ token }: { token: string }) => {
     try {
       const { accessToken } = await loginGg({ token });
-
-      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, accessToken);
+      storage.setToken(accessToken)
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -99,7 +97,7 @@ function useAuth() {
 
   const handleErrorResponse = (err: any) => {
     console.log({ err });
-    localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
+    storage.clearToken()
     if (typeof err === 'string') {
       alertError(err);
     } else if (err && err.message && typeof err.message === 'string') {
