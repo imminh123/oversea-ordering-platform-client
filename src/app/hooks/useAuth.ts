@@ -7,7 +7,7 @@ import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
 import { MutationConfig } from 'app/api/react-query';
-import storage from 'app/utils/storage'
+import storage from 'app/utils/storage';
 type QueryFnType = typeof authAPI.loginGoogleAPI;
 
 function useAuth() {
@@ -25,7 +25,7 @@ function useAuth() {
   });
 
   const logout = (): Promise<void> => {
-    storage.clearToken()
+    storage.clearToken();
     context.setAuthenticated(false);
     context.setInitialized(true);
     context.setUser(null);
@@ -54,7 +54,7 @@ function useAuth() {
   const handleLogin = async (username: string, password: string) => {
     try {
       const { accessToken } = await login({ username, password });
-      storage.setToken(accessToken)
+      storage.setToken(accessToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -81,7 +81,7 @@ function useAuth() {
   const handleLoginGG = async ({ token }: { token: string }) => {
     try {
       const { accessToken } = await loginGg({ token });
-      storage.setToken(accessToken)
+      storage.setToken(accessToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -97,7 +97,7 @@ function useAuth() {
 
   const handleErrorResponse = (err: any) => {
     console.log({ err });
-    storage.clearToken()
+    storage.clearToken();
     if (typeof err === 'string') {
       alertError(err);
     } else if (err && err.message && typeof err.message === 'string') {

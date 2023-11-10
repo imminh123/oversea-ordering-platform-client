@@ -18,7 +18,7 @@ interface IFormInput {
 const defaultValues = {
   fullname: '',
   phone: '',
-  gender: ''
+  gender: '',
 };
 
 const genderOptions = [
@@ -44,7 +44,7 @@ export const PersonalInfo = () => {
   });
 
   const onSubmit = (data: IFormInput) => {
-    console.log("🚀🚀🚀 ~ file: index.tsx:46 ~ onSubmit ~ data:", data);
+    console.log('🚀🚀🚀 ~ file: index.tsx:46 ~ onSubmit ~ data:', data);
     const { province, district, ward } = location;
   };
 
