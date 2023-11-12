@@ -9,4 +9,8 @@ export const loginValidator = yup.object({
 export const updateProfileValidator = yup.object({
   fullname: yup.string().required('Fullname is required'),
   phone: yup.string().required('Phone is required'),
+  address: yup.string().required('Phone is required'),
+  province: yup.string().required('Phone is required'),
+  city: yup.string().required('Phone is required'),
+  ward: yup.string().required('Phone is required'),
 });

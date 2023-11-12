@@ -18,6 +18,7 @@ import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
 import { ShoppingCart, Notifications } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
+import { useHistory } from 'react-router-dom';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -46,6 +47,7 @@ const AppBar = styled(MUIAppBar, {
 
 export const Header: React.FC<Props> = ({ open, setOpen }) => {
   const theme = useTheme();
+  const history = useHistory();
   const matchSM = useMediaQuery(theme.breakpoints.down('sm'));
   const { openDrawer, setSidebarExpandVariant } = useUI();
   const { updateToggle } = useToggleSidebar();
@@ -83,7 +85,19 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
           </IconButton>
 
           <Stack direction={'row'} alignItems={'center'} spacing={2} sx={{ ml: 'auto' }}>
-            <ShoppingCart />
+            <IconButton
+              size='large'
+              color='inherit'
+              aria-label='open drawer'
+              onClick={() => {
+                history.push('cart');
+              }}
+              edge='start'
+              sx={{ mr: 2 }}
+            >
+              <ShoppingCart />
+            </IconButton>
+
             <Notifications />
             <CurrentAccountBadge loading={false} />
             {/* <LanguageSwitcher /> */}

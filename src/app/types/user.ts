@@ -18,6 +18,7 @@ export interface IUserServerResponse {
   email: string;
   phone: string;
   password: string;
+  gender: string;
   role: UserRole;
   wareHouseAddress: string;
   isActive: boolean;

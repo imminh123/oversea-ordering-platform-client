@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Adb } from '@mui/icons-material';
+import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, ShoppingCart } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -12,7 +12,7 @@ import { HomePage } from 'features/home';
 import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
 
-const { Feature1 } = lazyImport(() => import('features/feature-1'), 'Feature1');
+const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
 const { Feature2 } = lazyImport(() => import('features/feature-2'), 'Feature2');
 const { Feature3 } = lazyImport(() => import('features/feature-3'), 'Feature3');
 const { Feature2_1 } = lazyImport(() => import('features/feature-2/feature-2-1'), 'Feature2_1');
@@ -32,10 +32,16 @@ function useNavigation() {
         component: <HomePage />,
       },
       {
-        key: RouteKeysEnum.Feature1,
+        key: RouteKeysEnum.Cart,
         exact: true,
-        path: RoutePathsEnum.Feature1,
-        component: <Feature1 />,
+        path: RoutePathsEnum.Cart,
+        component: <Cart />,
+      },
+      {
+        key: RouteKeysEnum.Cart,
+        exact: true,
+        path: RoutePathsEnum.CartStep,
+        component: <Cart />,
       },
       {
         key: RouteKeysEnum.Feature2,
@@ -87,14 +93,14 @@ function useNavigation() {
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
-        name: 'Menu 1',
+        name: 'Menu',
         sidebars: [
           {
-            key: SidebarKeysEnum.Feature1,
+            key: SidebarKeysEnum.Cart,
             parentKey: null,
-            link: SidebarLinksEnum.Feature1,
-            icon: <Adb />,
-            label: 'Feature 1',
+            link: SidebarLinksEnum.Cart,
+            icon: <ShoppingCart />,
+            label: 'Cart',
             child: [],
           },
           {

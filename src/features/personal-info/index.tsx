@@ -7,19 +7,19 @@ import { FormInputText } from 'app/components/libs/react-hooks-form/FormInputTex
 import { updateProfileValidator } from 'app/utils/validators';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useGetInfo } from './api/useGetInfo';
+import { UpdateInfoDTO, useUpdateInfo } from './api/useUpdateInfo';
 
 interface IFormInput {
   fullname: string;
   gender?: string;
-  birthday?: string;
+  birthday?: any;
   phone: string;
+  address: string;
+  province: string;
+  city: string;
+  ward: string;
 }
-
-const defaultValues = {
-  fullname: '',
-  phone: '',
-  gender: '',
-};
 
 const genderOptions = [
   {
@@ -37,61 +37,83 @@ const genderOptions = [
 ];
 
 export const PersonalInfo = () => {
+  const { data, isLoading } = useGetInfo({});
+  const defaultValues = {
+    fullname: data?.fullname,
+    phone: data?.phone,
+    gender: data?.gender,
+    birthday: data?.birthday ? new Date(data?.birthday) : undefined,
+    address: data?.address,
+    province: data?.province,
+    city: data?.city,
+    ward: data?.ward,
+  };
   const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({});
-  const { handleSubmit, reset, control, setValue } = useForm<IFormInput>({
+  const { handleSubmit, reset, control } = useForm<IFormInput>({
     defaultValues: defaultValues,
     resolver: yupResolver(updateProfileValidator),
   });
-
+  const { mutateAsync: updateStateStep, isLoading: isUpdating } = useUpdateInfo();
   const onSubmit = (data: IFormInput) => {
-    console.log('🚀🚀🚀 ~ file: index.tsx:46 ~ onSubmit ~ data:', data);
     const { province, district, ward } = location;
+    const body: UpdateInfoDTO = {
+      ...data,
+      province: province || data?.province,
+      city: district || data?.city,
+      ward: ward || data?.ward,
+    };
+    updateStateStep({ body });
   };
 
   return (
     <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth='md'>
-        <Card sx={{ minWidth: 275 }} className=' mt-10'>
-          <CardContent>
-            <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-              <Typography variant='h4'>Update Personal Information</Typography>
-              <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                <Box flex={1}>
-                  <FormInputText name='fullname' control={control} label='Full Name' />
+      {!!data && !isLoading && (
+        <React.Fragment>
+          <CssBaseline />
+          <Container maxWidth='md'>
+            <Card sx={{ minWidth: 275 }} className=' mt-10'>
+              <CardContent>
+                <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
+                  <Typography variant='h4'>Update Personal Information</Typography>
+                  <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                    <Box flex={1}>
+                      <FormInputText name='fullname' control={control} label='Full Name' />
+                    </Box>
+                    <Box flex={1}>
+                      <FormInputDate name='birthday' control={control} label='Birthday' />
+                    </Box>
+                  </Box>
+                  <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                    <Box flex={1}>
+                      <FormInputText name='phone' control={control} label='Phone' />
+                    </Box>
+                    <Box flex={1}>
+                      <FormInputDropdown name='gender' control={control} label='Gender' options={genderOptions} />
+                    </Box>
+                  </Box>
+                  <FormInputText name='address' control={control} label='Address' />
+                  <FormAddressInput
+                    defaultVal={{ province: data?.province, district: data?.city, ward: data?.ward }}
+                    onChangeAdress={(data: any) => {
+                      setLocation(data);
+                    }}
+                  />
                 </Box>
-                <Box flex={1}>
-                  <FormInputDate name='birthday' control={control} label='Birthday' />
+              </CardContent>
+              <CardActions>
+                <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                  <Button onClick={handleSubmit(onSubmit)} variant={'contained'} disabled={isUpdating}>
+                    Save
+                  </Button>
+                  <Button onClick={() => reset()} variant={'outlined'}>
+                    Cancel
+                  </Button>
                 </Box>
-              </Box>
-              <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                <Box flex={1}>
-                  <FormInputText name='phone' control={control} label='Phone' />
-                </Box>
-                <Box flex={1}>
-                  <FormInputDropdown name='gender' control={control} label='Gender' options={genderOptions} />
-                </Box>
-              </Box>
-
-              <FormAddressInput
-                onChangeAdress={(data: any) => {
-                  setLocation(data);
-                }}
-              />
-            </Box>
-          </CardContent>
-          <CardActions>
-            <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-              <Button onClick={handleSubmit(onSubmit)} variant={'contained'}>
-                Save
-              </Button>
-              <Button onClick={() => reset()} variant={'outlined'}>
-                Cancel
-              </Button>
-            </Box>
-          </CardActions>
-        </Card>
-      </Container>
+              </CardActions>
+            </Card>
+          </Container>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

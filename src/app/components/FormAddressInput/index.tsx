@@ -19,7 +19,13 @@ const MenuProps = {
     },
   },
 };
-export const FormAddressInput = ({ onChangeAdress }: { onChangeAdress: any }) => {
+export const FormAddressInput = ({
+  onChangeAdress,
+  defaultVal,
+}: {
+  onChangeAdress: any;
+  defaultVal: { province?: string; district?: string; ward?: string };
+}) => {
   const [province, setProvince] = React.useState<Province | null>(null);
   const [district, setDistrict] = React.useState<District | null>(null);
   const [ward, setWard] = React.useState<Ward | null>(null);
@@ -108,15 +114,16 @@ export const FormAddressInput = ({ onChangeAdress }: { onChangeAdress: any }) =>
           labelId='select-province'
           id='select-province-input'
           label='Province'
-          value={province?.code || ''}
+          value={province?.name || defaultVal?.province || ''}
           onFocus={startSearchingProvince}
           MenuProps={MenuProps}
           sx={{ '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } }}
         >
+          {!filteredProvinces.length && <MenuItem value={defaultVal?.province}>{defaultVal?.province}</MenuItem>}
           {filteredProvinces.length &&
             filteredProvinces.map((item) => {
               return (
-                <MenuItem key={item.code} value={item.code} onClick={() => handleChangeprovince(item)}>
+                <MenuItem key={item.code} value={item.name} onClick={() => handleChangeprovince(item)}>
                   {item.name}
                 </MenuItem>
               );
@@ -129,17 +136,18 @@ export const FormAddressInput = ({ onChangeAdress }: { onChangeAdress: any }) =>
         </InputLabel>
         <Select
           labelId='select-district'
-          id='select-province-province'
+          id='select-district-input'
           label='District'
-          value={district?.code || ''}
+          value={district?.name || defaultVal?.district || ''}
           onFocus={startSearchingDistrict}
           MenuProps={MenuProps}
           sx={{ '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } }}
         >
+          {!filteredDistricts.length && <MenuItem value={defaultVal?.district}>{defaultVal?.district}</MenuItem>}
           {filteredDistricts.length > 0 ? (
             filteredDistricts.map((item) => {
               return (
-                <MenuItem key={item.code} value={item.code} onClick={() => handleChangeDistrict(item)}>
+                <MenuItem key={item.code} value={item.name} onClick={() => handleChangeDistrict(item)}>
                   {item.name}
                 </MenuItem>
               );
@@ -155,17 +163,19 @@ export const FormAddressInput = ({ onChangeAdress }: { onChangeAdress: any }) =>
         </InputLabel>
         <Select
           labelId='select-ward'
-          id='select-province-ward'
+          id='select-ward-input'
           label='Ward'
-          value={ward?.code || ''}
+          value={ward?.name || defaultVal?.ward || ''}
           onFocus={startSearchingWard}
           MenuProps={MenuProps}
           sx={{ '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } }}
         >
+          {!filteredWards.length && <MenuItem value={defaultVal?.ward}>{defaultVal?.ward}</MenuItem>}
+
           {filteredWards.length > 0 ? (
             filteredWards.map((item) => {
               return (
-                <MenuItem key={item.code} value={item.code} onClick={() => handleChangeWard(item)}>
+                <MenuItem key={item.code} value={item.name} onClick={() => handleChangeWard(item)}>
                   {item.name}
                 </MenuItem>
               );

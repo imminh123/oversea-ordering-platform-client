@@ -41,7 +41,7 @@ type ApiLoginGGArgs = {
 };
 
 // type ApiGetMeArgs = {}
-type ApiGetMeRes = IUserServerResponse;
+export type ApiGetMeRes = IUserServerResponse;
 /* ==================== END ==================== */
 
 const login = async (params: TLoginArgs): Promise<TLoginRes> => {
@@ -66,7 +66,7 @@ export const loginGoogleAPI = (inputs: ApiLoginGGArgs): Promise<TLoginGGRes> => 
 };
 
 const getMe = async (): Promise<TGetMeRes> => {
-  const result = await apiWrapper.get<ApiGetMeRes>(`authentication/client`);
+  const result = await apiWrapper.get<ApiGetMeRes>(`authentication/client`,{});
 
   return userAPI.mappingServerDataUnderUserView(result);
 };
