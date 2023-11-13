@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from '@mui/material';
 import useAlert from 'app/hooks/useAlert';
 
-const Feature2_2 = () => {
+export const Feature2_2 = () => {
   const { alertSuccess, alertError, alertInfo, alertWarning } = useAlert();
 
   const testAlertSuccess = () => {
@@ -39,5 +39,3 @@ const Feature2_2 = () => {
     </Box>
   );
 };
-
-export default Feature2_2;

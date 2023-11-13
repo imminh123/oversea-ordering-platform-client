@@ -1,11 +1,6 @@
-import { LocalStorageKeys } from 'app/utils/constants';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { envConfig } from 'configs/env.config';
-import queryString from 'query-string';
-
-console.log({
-  baseURL: envConfig.baseURL,
-});
+import storage from 'app/utils/storage';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
 
@@ -14,14 +9,13 @@ const axiosClient: AxiosInstance = axios.create({
   headers: {
     'content-type': 'application/json',
   },
-  paramsSerializer: (params) => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem(LocalStorageKeys.AUTH_TOKEN);
+  const token = storage.getToken();
 
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers['access-token'] = `${token}`;
   }
 
   return config;
@@ -29,10 +23,6 @@ axiosClient.interceptors.request.use(async (config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
-
     return response;
   },
   (error) => {
@@ -46,10 +36,11 @@ axiosClient.interceptors.response.use(
   },
 );
 
-async function get<T>(url: string): Promise<T> {
-  const data: any = await axiosClient({
+async function get(url: string, params: any): Promise<any> {
+  const data: AxiosResponse = await axiosClient({
     method: 'GET',
     url,
+    params,
     timeout: REQUEST_TIMEOUT,
   });
 

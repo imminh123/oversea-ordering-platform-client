@@ -1,12 +1,14 @@
 import authAPI, { TGetMeRes, TLoginArgs, TLoginError, TLoginRes } from 'app/api/authAPI';
 import AuthContext from 'app/context/auth';
 import { LanguageTranslate } from 'app/languages';
-import { LocalStorageKeys } from 'app/utils/constants';
 import { RoutePathsEnum } from 'configs/route.config';
 import { useContext, useMemo } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
+import { MutationConfig } from 'app/api/react-query';
+import storage from 'app/utils/storage';
+type QueryFnType = typeof authAPI.loginGoogleAPI;
 
 function useAuth() {
   const history = useHistory();
@@ -23,7 +25,7 @@ function useAuth() {
   });
 
   const logout = (): Promise<void> => {
-    localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
+    storage.clearToken();
     context.setAuthenticated(false);
     context.setInitialized(true);
     context.setUser(null);
@@ -33,12 +35,10 @@ function useAuth() {
 
   const handleGetMe = async () => {
     try {
-      const user = await getMe();
-
-      context.setUser(user);
-      context.setAuthenticated(true);
-      if (pathname.includes(RoutePathsEnum.LoginPage)) {
-        history.push(RoutePathsEnum.HomePage);
+      if (!pathname.includes(RoutePathsEnum.LoginPage)) {
+        const user = await getMe();
+        context.setUser(user);
+        context.setAuthenticated(true);
       }
     } catch (err) {
       handleErrorResponse(err);
@@ -53,10 +53,36 @@ function useAuth() {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      const { user, token } = await login({ username, password });
+      const { accessToken } = await login({ username, password });
+      storage.setToken(accessToken);
+      const user = await getMe();
+      context.setUser(user);
+      context.setAuthenticated(true);
+      alertSuccess(LanguageTranslate.alert.login.success);
+      history.push(RoutePathsEnum.HomePage);
+    } catch (err) {
+      handleErrorResponse(err);
+      context.setAuthenticated(false);
+    } finally {
+      context.setInitialized(true);
+    }
+  };
 
-      localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, token);
+  const useLoginWithOAuth2 = (config?: MutationConfig<QueryFnType>) => {
+    return useMutation({
+      mutationKey: 'useLoginWithOAuth2',
+      ...config,
+      mutationFn: authAPI.loginGoogleAPI,
+    });
+  };
 
+  const { mutateAsync: loginGg } = useLoginWithOAuth2();
+
+  const handleLoginGG = async ({ token }: { token: string }) => {
+    try {
+      const { accessToken } = await loginGg({ token });
+      storage.setToken(accessToken);
+      const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
       alertSuccess(LanguageTranslate.alert.login.success);
@@ -71,7 +97,7 @@ function useAuth() {
 
   const handleErrorResponse = (err: any) => {
     console.log({ err });
-    localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
+    storage.clearToken();
     if (typeof err === 'string') {
       alertError(err);
     } else if (err && err.message && typeof err.message === 'string') {
@@ -85,6 +111,7 @@ function useAuth() {
     ...context,
     login: handleLogin,
     getMe: handleGetMe,
+    loginGg: handleLoginGG,
     logout,
   };
 }

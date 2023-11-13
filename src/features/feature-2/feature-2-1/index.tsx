@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/material';
 import { EDrawerType } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
 
-const Feature2_1 = () => {
+export const Feature2_1 = () => {
   const { openDrawer } = useUI();
   const handleOpenDrawer = () => {
     openDrawer(EDrawerType.SAMPLE_DRAWER, 'right');
@@ -17,5 +17,3 @@ const Feature2_1 = () => {
     </Box>
   );
 };
-
-export default Feature2_1;

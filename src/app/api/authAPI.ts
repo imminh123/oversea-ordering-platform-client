@@ -1,10 +1,7 @@
-import { IUser, IUserServerResponse, UserRole } from 'app/types/user';
-import { LocalStorageKeys } from 'app/utils/constants';
-// import { apiWrapper } from './axiosClient';
-// import userAPI from './userAPI';
-
-const authAPIBaseUrl = '/auth';
-
+import { IUser, IUserServerResponse } from 'app/types/user';
+import { apiWrapper } from './axiosClient';
+import userAPI from './userAPI';
+import { envConfig } from 'configs/env.config';
 /* Types export for outside */
 /* ==================== START ==================== */
 export type TLoginArgs = {
@@ -12,8 +9,12 @@ export type TLoginArgs = {
   password: string;
 };
 export type TLoginRes = {
-  user: IUser;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
+};
+export type TLoginGGRes = {
+  accessToken: string;
+  refreshToken: string;
 };
 export type TLoginError = {
   message: string;
@@ -26,72 +27,50 @@ export type TGetMeRes = IUser;
 /* API Types */
 /* ==================== START ==================== */
 type ApiLoginArgs = {
-  username: string;
+  mail: string;
   password: string;
 };
 type ApiLoginRes = {
-  user: IUserServerResponse;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+  refreshExpiresIn: number;
+};
+type ApiLoginGGArgs = {
   token: string;
 };
 
 // type ApiGetMeArgs = {}
-type ApiGetMeRes = IUserServerResponse;
+export type ApiGetMeRes = IUserServerResponse;
 /* ==================== END ==================== */
 
 const login = async (params: TLoginArgs): Promise<TLoginRes> => {
-  // NOTE: Should remove this mock logic & implement API logic here
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (params.username === 'admin' && params.password === 'admin123') {
-        return resolve({
-          user: {
-            id: 'id-1',
-            username: 'Richard',
-            email: 'richard.hungngo@setel.com',
-            phoneNumber: '0966382596',
-            role: UserRole.SuperAdmin,
-          },
-          token: 'mock-token',
-        });
-      }
+  const body: ApiLoginArgs = {
+    mail: params.username,
+    password: params.password,
+  };
+  const result = await apiWrapper.post<ApiLoginArgs, ApiLoginRes>(`/session/createClientSession`, body);
 
-      return reject({ message: 'Unauthorized!' });
-    }, 500);
+  return {
+    accessToken: result.accessToken,
+    refreshToken: result.refreshToken,
+  };
+};
+
+export const loginGoogleAPI = (inputs: ApiLoginGGArgs): Promise<TLoginGGRes> => {
+  return apiWrapper.post('/session/createSessionWithOAuth2', {
+    ...inputs,
+    base: 'google',
+    redirect_uri: envConfig.VITE_APP_HOST,
   });
-
-  // const body: ApiLoginArgs = {
-  //   username: params.username,
-  //   password: params.password,
-  // };
-  // const result = await apiWrapper.post<ApiLoginArgs, ApiLoginRes>(`${authAPIBaseUrl}/login`, body);
-  //
-  // return {
-  //   user: userAPI.mappingServerDataUnderUserView(result.user),
-  //   token: result.token,
-  // };
 };
 
 const getMe = async (): Promise<TGetMeRes> => {
-  // NOTE: Should remove this mock logic & implement API logic here
-  return new Promise((resolve, reject) => {
-    const authToken = localStorage.getItem(LocalStorageKeys.AUTH_TOKEN);
-    if (authToken && authToken === 'mock-token') {
-      return resolve({
-        id: 'id-1',
-        username: 'Richard',
-        email: 'richard.hungngo@setel.com',
-        phoneNumber: '0966382596',
-        role: UserRole.SuperAdmin,
-      });
-    }
+  const result = await apiWrapper.get(`authentication/client`, {});
 
-    return reject({ message: 'Unauthorized!' });
-  });
-  // const result = await apiWrapper.get<ApiGetMeRes>(`${authAPIBaseUrl}/me`);
-  //
-  // return userAPI.mappingServerDataUnderUserView(result);
+  return userAPI.mappingServerDataUnderUserView(result.data);
 };
 
-const authAPI = { login, getMe };
+const authAPI = { login, loginGoogleAPI, getMe };
 
 export default authAPI;

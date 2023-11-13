@@ -1,15 +1,16 @@
 import { LanguageTranslate } from 'app/languages';
 import * as yup from 'yup';
 
-export const sampleValidator = yup.object().shape({});
-
 export const loginValidator = yup.object({
   username: yup.string().required(LanguageTranslate.validate.require_exists),
   password: yup.string().required(LanguageTranslate.validate.require_exists),
-  // username: yup.string().required(),
-  // password: yup.string().required(),
 });
-// .shape({
-//   username: yup.string().required(LanguageTranslate.validate.require_exists),
-//   password: yup.string().required(LanguageTranslate.validate.require_exists),
-// });
+
+export const updateProfileValidator = yup.object({
+  fullname: yup.string().required('Fullname is required'),
+  phone: yup.string().required('Phone is required'),
+  address: yup.string().required('Phone is required'),
+  province: yup.string().required('Phone is required'),
+  city: yup.string().required('Phone is required'),
+  ward: yup.string().required('Phone is required'),
+});

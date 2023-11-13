@@ -1,5 +1,3 @@
-const Feature2 = () => {
+export const Feature2 = () => {
   return <div>Feature 2</div>;
 };
-
-export default Feature2;

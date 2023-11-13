@@ -1,9 +1,11 @@
 import * as React from 'react';
 
-import { Logout, Settings } from '@mui/icons-material';
+import { Logout, Person } from '@mui/icons-material';
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Skeleton } from '@mui/material';
 
 import useAuth from 'app/hooks/useAuth';
+import AuthContext from 'app/context/auth';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
@@ -11,6 +13,7 @@ interface Props {
 
 export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
   const { logout } = useAuth();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -19,6 +22,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const context = React.useContext(AuthContext);
 
   return (
     <Box
@@ -32,7 +36,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         <Skeleton variant='text' width={100} />
       ) : (
         <IconButton onClick={handleClick} size='small' sx={{ ml: 2 }}>
-          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+          <Avatar sx={{ width: 32, height: 32 }}>{context.user?.fullname.charAt(0)}</Avatar>
         </IconButton>
       )}
 
@@ -70,11 +74,11 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
+        <MenuItem onClick={() => history.push('/info')}>
           <ListItemIcon>
-            <Settings fontSize='small' />
+            <Person fontSize='small' />
           </ListItemIcon>
-          Settings
+          Personal Info
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>

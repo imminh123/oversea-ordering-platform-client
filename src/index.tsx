@@ -10,12 +10,14 @@ import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './app/context/auth';
 import './app/languages';
 import App from './app/layout/App';
 import theme from './app/utils/theme';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { envConfig } from 'configs/env.config';
 
 const queryClient = new QueryClient();
 
@@ -27,13 +29,15 @@ ReactDOM.render(
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <UIProvider>
               <AuthProvider>
-                <Suspense fallback={<div>Loading...</div>}>
-                  <App />
-                </Suspense>
+                <GoogleOAuthProvider clientId={envConfig.GG_CLIENT_ID}>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <App />
+                  </Suspense>
 
-                <ModalManager />
-                <DrawerManager />
-                <AlertManager />
+                  <ModalManager />
+                  <DrawerManager />
+                  <AlertManager />
+                </GoogleOAuthProvider>
               </AuthProvider>
             </UIProvider>
           </LocalizationProvider>

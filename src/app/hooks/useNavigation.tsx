@@ -1,9 +1,7 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Adb } from '@mui/icons-material';
+import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-
-import { IBreadcrumbItem } from 'app/types/breadcrumb';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
 import { initSidebarActive, initSidebarExpandKey } from 'app/utils/helper';
@@ -11,15 +9,16 @@ import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { SidebarKeysEnum, SidebarLinksEnum } from 'configs/sidebar.config';
 import { LoginPage } from 'features/auth/login';
 import { HomePage } from 'features/home';
-
 import { useUI } from './index';
+import { lazyImport } from 'app/utils/lazyImport';
 
-const Feature1 = React.lazy(() => import('features/feature-1'));
-const Feature2 = React.lazy(() => import('features/feature-2'));
-const Feature3 = React.lazy(() => import('features/feature-3'));
-const Feature2_1 = React.lazy(() => import('features/feature-2/feature-2.1'));
-const Feature2_2 = React.lazy(() => import('features/feature-2/feature-2.2'));
-const Feature3_1 = React.lazy(() => import('features/feature-3/feature-3.1'));
+const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
+const { Feature2 } = lazyImport(() => import('features/feature-2'), 'Feature2');
+const { Feature3 } = lazyImport(() => import('features/feature-3'), 'Feature3');
+const { Feature2_1 } = lazyImport(() => import('features/feature-2/feature-2-1'), 'Feature2_1');
+const { Feature2_2 } = lazyImport(() => import('features/feature-2/feature-2-2'), 'Feature2_2');
+const { Feature3_1 } = lazyImport(() => import('features/feature-3/feature-3-1'), 'Feature3_1');
+const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 
 function useNavigation() {
   const history = useHistory();
@@ -30,49 +29,61 @@ function useNavigation() {
         key: RouteKeysEnum.HomePage,
         exact: true,
         path: RoutePathsEnum.HomePage,
-        component: HomePage,
+        component: <HomePage />,
       },
       {
-        key: RouteKeysEnum.Feature1,
+        key: RouteKeysEnum.Cart,
         exact: true,
-        path: RoutePathsEnum.Feature1,
-        component: Feature1,
+        path: RoutePathsEnum.Cart,
+        component: <Cart />,
+      },
+      {
+        key: RouteKeysEnum.Cart,
+        exact: true,
+        path: RoutePathsEnum.CartStep,
+        component: <Cart />,
       },
       {
         key: RouteKeysEnum.Feature2,
         exact: true,
         path: RoutePathsEnum.Feature2,
-        component: Feature2,
+        component: <Feature2 />,
       },
       {
         key: RouteKeysEnum.Feature2_1,
         exact: true,
         path: RoutePathsEnum.Feature2_1,
-        component: Feature2_1,
+        component: <Feature2_1 />,
       },
       {
         key: RouteKeysEnum.Feature2_2,
         exact: true,
         path: RoutePathsEnum.Feature2_2,
-        component: Feature2_2,
+        component: <Feature2_2 />,
       },
       {
         key: RouteKeysEnum.Feature3,
         exact: true,
         path: RoutePathsEnum.Feature3,
-        component: Feature3,
+        component: <Feature3 />,
       },
       {
         key: RouteKeysEnum.Feature3_1,
         exact: true,
         path: RoutePathsEnum.Feature3_1,
-        component: Feature3_1,
+        component: <Feature3_1 />,
       },
       {
         key: RouteKeysEnum.LoginPage,
         exact: true,
         path: RoutePathsEnum.LoginPage,
-        component: LoginPage,
+        component: <LoginPage />,
+      },
+      {
+        key: RouteKeysEnum.PersonalInfo,
+        exact: true,
+        path: RoutePathsEnum.PersonalInfo,
+        component: <PersonalInfo />,
       },
     ];
 
@@ -82,16 +93,8 @@ function useNavigation() {
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
-        name: 'Menu 1',
+        name: 'Menu',
         sidebars: [
-          {
-            key: SidebarKeysEnum.Feature1,
-            parentKey: null,
-            link: SidebarLinksEnum.Feature1,
-            icon: <Adb />,
-            label: 'Feature 1',
-            child: [],
-          },
           {
             key: SidebarKeysEnum.Feature2,
             parentKey: null,
