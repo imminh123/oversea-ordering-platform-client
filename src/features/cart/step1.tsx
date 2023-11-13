@@ -80,9 +80,9 @@ export const Step1 = () => {
   const { data: cartItems } = useListCartCategories(page);
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
   const totalPrice = useMemo(() => calculateTatalPrice(cartItems?.data), [cartItems?.data]);
-  const onSubmit = () =>{
-    history.push('cart/pickup')
-  }
+  const onSubmit = () => {
+    history.push('cart/pickup');
+  };
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
@@ -141,7 +141,9 @@ export const Step1 = () => {
             </Typography>
           </Box>
           <Box display={'flex'} className='justify-end'>
-            <Button variant='contained' onClick={onSubmit}>CONFIRM</Button>
+            <Button variant='contained' onClick={onSubmit}>
+              CONFIRM
+            </Button>
           </Box>
         </SumaryInfo>
       </Grid>
