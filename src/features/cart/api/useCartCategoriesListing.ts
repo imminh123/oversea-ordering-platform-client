@@ -26,9 +26,7 @@ export interface CartResponse {
 export const listCartCategories = async (
   page: number,
 ): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
-  return apiWrapper.get(`/cart`, {
-    params: { page, perPage: 10 },
-  });
+  return apiWrapper.get(`/cart`, { page, perPage: 10 });
 };
 
 type QueryFnType = typeof listCartCategories;

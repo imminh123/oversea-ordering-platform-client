@@ -6,7 +6,6 @@ import {
   AccountBalance,
   AccountBox,
   AccountTree,
-  ShoppingCart,
 } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
@@ -102,14 +101,6 @@ function useNavigation() {
       {
         name: 'Menu',
         sidebars: [
-          {
-            key: SidebarKeysEnum.Cart,
-            parentKey: null,
-            link: SidebarLinksEnum.Cart,
-            icon: <ShoppingCart />,
-            label: 'Cart',
-            child: [],
-          },
           {
             key: SidebarKeysEnum.Feature2,
             parentKey: null,
