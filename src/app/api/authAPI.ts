@@ -66,9 +66,9 @@ export const loginGoogleAPI = (inputs: ApiLoginGGArgs): Promise<TLoginGGRes> => 
 };
 
 const getMe = async (): Promise<TGetMeRes> => {
-  const result = await apiWrapper.get<ApiGetMeRes>(`authentication/client`, {});
+  const result = await apiWrapper.get(`authentication/client`, {});
 
-  return userAPI.mappingServerDataUnderUserView(result);
+  return userAPI.mappingServerDataUnderUserView(result.data);
 };
 
 const authAPI = { login, loginGoogleAPI, getMe };

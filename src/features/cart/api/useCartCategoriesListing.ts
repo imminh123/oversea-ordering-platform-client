@@ -3,7 +3,7 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
 
-interface ProjectResponse {
+export interface CartResponse {
   id: string;
   itemId: string;
   itemName: string;
@@ -25,10 +25,7 @@ interface ProjectResponse {
 
 export const listCartCategories = async (
   page: number,
-): Promise<{
-  items: ProjectResponse[];
-  headers: IPaginationHeader;
-}> => {
+): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/cart`, {
     params: { page, perPage: 10 },
   });

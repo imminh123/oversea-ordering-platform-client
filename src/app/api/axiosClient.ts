@@ -25,10 +25,6 @@ axiosClient.interceptors.request.use(async (config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
-
     return response;
   },
   (error) => {
@@ -42,7 +38,7 @@ axiosClient.interceptors.response.use(
   },
 );
 
-async function get<T>(url: string, params: any): Promise<any> {
+async function get(url: string, params: any): Promise<any> {
   const data: AxiosResponse = await axiosClient({
     method: 'GET',
     url,

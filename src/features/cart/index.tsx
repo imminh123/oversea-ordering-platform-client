@@ -49,7 +49,7 @@ export const Cart = () => {
           </Stepper>
         </Box>
       </Container>
-      <Box>{SlugMapping(param.slug)}</Box>
+      <Box padding={'30px'}>{SlugMapping(param.slug)}</Box>
     </React.Fragment>
   );
 };

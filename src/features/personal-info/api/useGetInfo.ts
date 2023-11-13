@@ -6,7 +6,7 @@ import { ApiGetMeRes } from 'app/api/authAPI';
 export const getProfile = (): Promise<ApiGetMeRes> => {
   const url = `/authentication/client`;
 
-  return apiWrapper.get(url);
+  return apiWrapper.get(url, {});
 };
 
 type QueryFnType = typeof getProfile;
