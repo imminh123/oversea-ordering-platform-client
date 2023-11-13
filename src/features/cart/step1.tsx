@@ -45,7 +45,7 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   ...theme.typography.body2,
   textAlign: 'center',
-  backgroundColor: '#f2f2f2'
+  backgroundColor: '#f2f2f2',
 }));
 
 export const Step1 = () => {
