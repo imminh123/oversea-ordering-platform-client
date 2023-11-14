@@ -8,11 +8,11 @@ import {
   DialogTitle,
   IconButton as MUIIconButton,
   Slide,
+  SlideProps,
   styled,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
 import { useUI } from 'app/hooks';
 
 import { EModalType } from '../enum';
@@ -33,7 +33,7 @@ const IconButton = styled(MUIIconButton)(({ theme }) => ({
 }));
 
 const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  props: SlideProps,
   ref: React.Ref<unknown>,
 ) {
   return <Slide direction='down' ref={ref} {...props} />;

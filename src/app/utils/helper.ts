@@ -1,4 +1,3 @@
-import { IPaginationResponse, IPaginationServerResponse } from 'app/types/pagination';
 import { ISidebarItem, ISidebarMenu } from 'app/types/sidebar';
 import { SidebarKeysEnum } from 'configs/sidebar.config';
 
@@ -28,20 +27,6 @@ export const mappingNumberToString = (number: number | null): number | null => {
   }
 
   return null;
-};
-
-export const mappingPaginationServerToClient = <T extends unknown, U extends unknown>(params: {
-  paginationData: IPaginationServerResponse<T>;
-  mappingFunc: (input: T) => U;
-}): IPaginationResponse<U> => {
-  const { paginationData, mappingFunc } = params;
-  return {
-    totalDocs: parseInt(paginationData.totalDocs.toString()),
-    totalPages: parseInt(paginationData.totalPages.toString()),
-    page: parseInt(paginationData.page.toString()),
-    limit: parseInt(paginationData.limit.toString()),
-    docs: paginationData.docs.map((doc) => mappingFunc(doc)),
-  };
 };
 
 export const mappingBoolean = (

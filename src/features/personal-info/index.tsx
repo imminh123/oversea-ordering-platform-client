@@ -5,7 +5,7 @@ import { FormInputDate } from 'app/components/libs/react-hooks-form/FormInputDat
 import { FormInputDropdown } from 'app/components/libs/react-hooks-form/FormInputDropdown';
 import { FormInputText } from 'app/components/libs/react-hooks-form/FormInputText';
 import { updateProfileValidator } from 'app/utils/validators';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGetInfo } from './api/useGetInfo';
 import { UpdateInfoDTO, useUpdateInfo } from './api/useUpdateInfo';
@@ -38,22 +38,31 @@ const genderOptions = [
 
 export const PersonalInfo = () => {
   const { data, isLoading } = useGetInfo({});
-  const defaultValues = {
-    fullname: data?.fullname,
-    phone: data?.phone,
-    gender: data?.gender,
-    birthday: data?.birthday ? new Date(data?.birthday) : undefined,
-    address: data?.address,
-    province: data?.province,
-    city: data?.city,
-    ward: data?.ward,
-  };
+  const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
   const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({});
+
+  const defaultValues = useMemo(() => {
+    return {
+      fullname: data?.fullname,
+      phone: data?.phone,
+      gender: data?.gender,
+      birthday: data?.birthday ? new Date(data?.birthday) : new Date(),
+      address: data?.address,
+      province: data?.province,
+      city: data?.city,
+      ward: data?.ward,
+    };
+  }, [data]);
+
   const { handleSubmit, reset, control } = useForm<IFormInput>({
-    defaultValues: defaultValues,
+    defaultValues,
     resolver: yupResolver(updateProfileValidator),
   });
-  const { mutateAsync: updateStateStep, isLoading: isUpdating } = useUpdateInfo();
+
+  useEffect(() => {
+    reset(data);
+  }, [data]);
+
   const onSubmit = (data: IFormInput) => {
     const { province, district, ward } = location;
     const body: UpdateInfoDTO = {
@@ -62,7 +71,7 @@ export const PersonalInfo = () => {
       city: district || data?.city,
       ward: ward || data?.ward,
     };
-    updateStateStep({ body });
+    updateUserInfo({ body });
   };
 
   return (
