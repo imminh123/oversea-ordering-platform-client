@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { Alert, Slide, Snackbar } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
+import { Alert, Slide, SlideProps, Snackbar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { ALERT_CLOSE_TIMEOUT } from 'app/utils/constants';
 import { useUI } from 'app/hooks';
 
-function TransitionLeft(props: TransitionProps) {
+function TransitionLeft(props: SlideProps) {
   return <Slide {...props} direction='left' />;
 }
 

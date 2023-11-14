@@ -10,15 +10,17 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <DatePicker
-            value={value}
-            onChange={onChange}
-            format='dd/MM/yyyy'
-            className='w-full'
-            sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}
-          />
-        )}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <DatePicker
+              value={new Date(value)}
+              onChange={onChange}
+              format='dd/MM/yyyy'
+              className='w-full'
+              sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}
+            />
+          );
+        }}
       />
     </LocalizationProvider>
   );

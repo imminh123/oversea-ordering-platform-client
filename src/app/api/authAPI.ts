@@ -13,8 +13,10 @@ export type TLoginRes = {
   refreshToken: string;
 };
 export type TLoginGGRes = {
-  accessToken: string;
-  refreshToken: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+  };
 };
 export type TLoginError = {
   message: string;
@@ -31,10 +33,12 @@ type ApiLoginArgs = {
   password: string;
 };
 type ApiLoginRes = {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-  refreshExpiresIn: number;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    expiresIn: number;
+    refreshExpiresIn: number;
+  };
 };
 type ApiLoginGGArgs = {
   token: string;
@@ -52,17 +56,18 @@ const login = async (params: TLoginArgs): Promise<TLoginRes> => {
   const result = await apiWrapper.post<ApiLoginArgs, ApiLoginRes>(`/session/createClientSession`, body);
 
   return {
-    accessToken: result.accessToken,
-    refreshToken: result.refreshToken,
+    accessToken: result.data.accessToken,
+    refreshToken: result.data.refreshToken,
   };
 };
 
-export const loginGoogleAPI = (inputs: ApiLoginGGArgs): Promise<TLoginGGRes> => {
-  return apiWrapper.post('/session/createSessionWithOAuth2', {
+export const loginGoogleAPI = async (inputs: ApiLoginGGArgs) => {
+  const res = await apiWrapper.post<any, TLoginGGRes>('/session/createSessionWithOAuth2', {
     ...inputs,
     base: 'google',
     redirect_uri: envConfig.VITE_APP_HOST,
   });
+  return res.data;
 };
 
 const getMe = async (): Promise<TGetMeRes> => {
