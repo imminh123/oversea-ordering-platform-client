@@ -34,19 +34,15 @@ function App() {
   return (
     <Switch>
       <Route exact={true} path={RoutePathsEnum.LoginPage} component={LoginPage} />
-      {routes
-        .filter((route) => route.key !== RouteKeysEnum.LoginPage)
-        .map((route) => {
-          return (
-            <Route
-              key={route.path}
-              exact={route.exact}
-              path={route.path}
-              render={() => <LayoutPage>{route.component}</LayoutPage>}
-            />
-          );
-        })}
-
+      <LayoutPage>
+        {routes
+          .filter((route) => route.key !== RouteKeysEnum.LoginPage)
+          .map((route) => {
+            return (
+              <Route key={route.path} exact={route.exact} path={route.path} render={() => <>{route.component}</>} />
+            );
+          })}
+      </LayoutPage>
       <Route path='*' component={NotFoundPage} />
     </Switch>
   );
