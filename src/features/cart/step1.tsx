@@ -94,7 +94,7 @@ export const Step1 = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
-        {(!!cartItems && !!cartItems?.data.length) && (
+        {!!cartItems && !!cartItems?.data.length && (
           <TableContainer component={Paper} elevation={3}>
             <Table sx={{ minWidth: 650 }} aria-label='simple table'>
               <TableHead>

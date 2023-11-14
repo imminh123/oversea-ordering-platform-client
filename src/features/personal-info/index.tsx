@@ -64,7 +64,7 @@ export const PersonalInfo = () => {
   }, [data]);
 
   const onSubmit = (data: IFormInput) => {
-    console.log("🚀🚀🚀 ~ file: index.tsx:67 ~ onSubmit ~ data:", data);
+    console.log('🚀🚀🚀 ~ file: index.tsx:67 ~ onSubmit ~ data:', data);
     const { province, district, ward } = location;
     const body: UpdateInfoDTO = {
       ...data,
