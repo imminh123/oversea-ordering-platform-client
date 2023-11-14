@@ -19,7 +19,7 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
               className='w-full'
               sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}
             />
-          );
+          )
         }}
       />
     </LocalizationProvider>

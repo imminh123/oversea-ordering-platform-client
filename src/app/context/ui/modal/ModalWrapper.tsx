@@ -32,7 +32,10 @@ const IconButton = styled(MUIIconButton)(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-const Transition = React.forwardRef(function Transition(props: SlideProps, ref: React.Ref<unknown>) {
+const Transition = React.forwardRef(function Transition(
+  props: SlideProps,
+  ref: React.Ref<unknown>,
+) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
