@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
+import { ExtractFnReturnType } from 'app/api/react-query';
 import { apiWrapper } from 'app/api/axiosClient';
 import { ApiGetMeRes } from 'app/api/authAPI';
 
@@ -11,10 +11,9 @@ export const getProfile = (): Promise<ApiGetMeRes> => {
 
 type QueryFnType = typeof getProfile;
 
-export const useGetInfo = ({ config }: { config?: QueryConfig<QueryFnType> }) => {
+export const useGetInfo = () => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     queryKey: ['useGetInfo'],
     queryFn: () => getProfile(),
-    ...config,
   });
 };

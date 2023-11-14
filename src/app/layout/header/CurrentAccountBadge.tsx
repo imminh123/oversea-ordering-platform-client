@@ -36,7 +36,9 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         <Skeleton variant='text' width={100} />
       ) : (
         <IconButton onClick={handleClick} size='small' sx={{ ml: 2 }}>
-          <Avatar sx={{ width: 32, height: 32 }}>{context.user?.fullname.charAt(0)}</Avatar>
+          <Avatar sx={{ width: 32, height: 32 }}>
+            {context.user?.fullname ? context.user?.fullname.charAt(0) : 'A'}
+          </Avatar>
         </IconButton>
       )}
 

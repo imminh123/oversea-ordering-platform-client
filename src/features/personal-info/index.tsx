@@ -37,20 +37,20 @@ const genderOptions = [
 ];
 
 export const PersonalInfo = () => {
-  const { data, isLoading } = useGetInfo({});
+  const { data, isLoading } = useGetInfo();
   const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
   const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({});
 
   const defaultValues = useMemo(() => {
     return {
-      fullname: data?.fullname,
-      phone: data?.phone,
-      gender: data?.gender,
-      birthday: data?.birthday ? new Date(data?.birthday) : new Date(),
-      address: data?.address,
-      province: data?.province,
-      city: data?.city,
-      ward: data?.ward,
+      fullname: data?.fullname || '',
+      phone: data?.phone || '',
+      gender: data?.gender || '',
+      birthday: data?.birthday ? new Date(data?.birthday) : undefined,
+      address: data?.address || '',
+      province: data?.province || '',
+      city: data?.city || '',
+      ward: data?.ward || '',
     };
   }, [data]);
 
@@ -60,10 +60,11 @@ export const PersonalInfo = () => {
   });
 
   useEffect(() => {
-    reset(data);
+    reset();
   }, [data]);
 
   const onSubmit = (data: IFormInput) => {
+    console.log("🚀🚀🚀 ~ file: index.tsx:67 ~ onSubmit ~ data:", data);
     const { province, district, ward } = location;
     const body: UpdateInfoDTO = {
       ...data,
