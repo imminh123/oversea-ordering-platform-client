@@ -8,25 +8,24 @@ interface FormInputDropsownProps extends FormInputProps {
 }
 
 export const FormInputDropdown: React.FC<FormInputDropsownProps> = ({ name, control, label, options }) => {
-  const generateSingleOptions = () => {
-    return options.map((option: any) => {
-      return (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      );
-    });
-  };
 
   return (
     <FormControl fullWidth size={'small'}>
       <InputLabel>{label}</InputLabel>
       <Controller
-        render={({ field: { onChange, value } }) => (
-          <Select onChange={onChange} value={value} label={label}>
-            {generateSingleOptions()}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <Select onChange={onChange} value={value} label={label}>
+            {options.map((option: any) => {
+              return (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              );
+            })}
           </Select>
-        )}
+          )
+        }}
         control={control}
         name={name}
       />

@@ -26,5 +26,8 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "globals": {
+    "chrome": true
+  },
 }

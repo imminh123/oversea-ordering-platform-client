@@ -39,7 +39,11 @@ const genderOptions = [
 export const PersonalInfo = () => {
   const { data, isLoading } = useGetInfo();
   const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
-  const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({});
+  const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({
+    province: '',
+    district: '',
+    ward: '',
+  });
 
   const defaultValues = useMemo(() => {
     return {
@@ -48,9 +52,9 @@ export const PersonalInfo = () => {
       gender: data?.gender || '',
       birthday: data?.birthday ? new Date(data?.birthday) : undefined,
       address: data?.address || '',
-      province: data?.province || '',
-      city: data?.city || '',
-      ward: data?.ward || '',
+      province: data?.province || location.province,
+      city: data?.city || location.district,
+      ward: data?.ward || location.ward,
     };
   }, [data]);
 
@@ -60,11 +64,16 @@ export const PersonalInfo = () => {
   });
 
   useEffect(() => {
-    reset();
-  }, [data]);
+    !!data &&
+      reset({
+        ...data,
+        province: location.province,
+        city: location.district,
+        ward: location.ward,
+      });
+  }, [data, location]);
 
   const onSubmit = (data: IFormInput) => {
-    console.log('🚀🚀🚀 ~ file: index.tsx:67 ~ onSubmit ~ data:', data);
     const { province, district, ward } = location;
     const body: UpdateInfoDTO = {
       ...data,
@@ -112,7 +121,13 @@ export const PersonalInfo = () => {
               </CardContent>
               <CardActions>
                 <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                  <Button onClick={handleSubmit(onSubmit)} variant={'contained'} disabled={isUpdating}>
+                  <Button
+                    onClick={handleSubmit(onSubmit, (err) => {
+                      console.log(err);
+                    })}
+                    variant={'contained'}
+                    disabled={isUpdating}
+                  >
                     Save
                   </Button>
                   <Button onClick={() => reset()} variant={'outlined'}>

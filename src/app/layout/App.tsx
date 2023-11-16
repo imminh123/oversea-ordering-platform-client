@@ -1,3 +1,4 @@
+/*global chrome*/
 import useAuth from 'app/hooks/useAuth';
 import useNavigation from 'app/hooks/useNavigation';
 import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
@@ -7,6 +8,18 @@ import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { GlobalLoading } from './global-loading';
 import { LayoutPage } from './LayoutPage';
+import storage from 'app/utils/storage';
+import { envConfig } from 'configs/env.config';
+
+const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: string; jwt: string }) => {
+  chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
+    if (!response.success) {
+      console.log('error sending message', response);
+      return response;
+    }
+    console.log('Sucesss ::: ', response.message);
+  });
+};
 
 function App() {
   const { routes } = useNavigation();
@@ -25,6 +38,11 @@ function App() {
 
     initApp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const token = storage.getToken();
+    sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
   }, []);
 
   if (!initialized) {
