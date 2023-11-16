@@ -8,7 +8,6 @@ interface FormInputDropsownProps extends FormInputProps {
 }
 
 export const FormInputDropdown: React.FC<FormInputDropsownProps> = ({ name, control, label, options }) => {
-
   return (
     <FormControl fullWidth size={'small'}>
       <InputLabel>{label}</InputLabel>
@@ -16,15 +15,15 @@ export const FormInputDropdown: React.FC<FormInputDropsownProps> = ({ name, cont
         render={({ field: { onChange, value } }) => {
           return (
             <Select onChange={onChange} value={value} label={label}>
-            {options.map((option: any) => {
-              return (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          )
+              {options.map((option: any) => {
+                return (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          );
         }}
         control={control}
         name={name}
