@@ -3,42 +3,29 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
-import { TLoginArgs } from 'app/api/authAPI';
-import { loginValidator } from 'app/utils/validators';
-import useAuth from 'app/hooks/useAuth';
+import { signupValidator } from 'app/utils/validators';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
-import Google from '../../../assets/images/google.svg';
-import { useGoogleLogin } from '@react-oauth/google';
+import { SignUpDto, TSignUpDto, useSignUp } from './api/useSignUp';
 import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
+
 interface Props {}
-
-export const LoginPage: React.FC<Props> = () => {
-  const [loading, setLoading] = React.useState<boolean>(false);
+export const SignupPage: React.FC<Props> = () => {
+  const { mutateAsync: signup, isLoading } = useSignUp();
   const history = useHistory();
-  const formMethods = useForm<TLoginArgs>({
+
+  const formMethods = useForm<TSignUpDto>({
     mode: 'onChange',
-    defaultValues: { username: '', password: '' },
-    resolver: yupResolver(loginValidator),
-  });
-  const { login, loginGg } = useAuth();
-  const loginWithGoogle = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      loginGg({ token: tokenResponse.code });
-    },
-    flow: 'auth-code',
-    scope: 'https://www.googleapis.com/auth/cloud-platform',
+    defaultValues: { mail: '', password: '', confirmPassword: '', wareHouseAddress: '' },
+    resolver: yupResolver(signupValidator),
   });
 
-  const onSubmit = async (data: TLoginArgs) => {
-    setLoading(true);
-
+  const onSubmit = async (data: TSignUpDto) => {
     try {
-      await login(data.username, data.password);
+      const body: SignUpDto = { ...data };
+      signup({ body });
     } catch (err) {
       console.log({ err });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -59,13 +46,16 @@ export const LoginPage: React.FC<Props> = () => {
         }}
       >
         <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-          ĐĂNG NHẬP
+          ĐĂNG KÝ TÀI KHOẢN
         </Typography>
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <HooksFormInputTextField fieldName={'username'} label={'Email'} />
+              <HooksFormInputTextField fieldName={'mail'} label={'Email'} />
+              <HooksFormInputTextField fieldName={'phone'} label={'Số điện thoại'} />
               <HooksFormInputTextField fieldName={'password'} label={'Mật khẩu'} type={'password'} />
+              <HooksFormInputTextField fieldName={'confirmPassword'} label={'Nhập lại mật khẩu'} type={'password'} />
+              <HooksFormInputTextField fieldName={'wareHouseAddress'} label={'Kho nhận hàng'} />
               <LoadingButton
                 variant='contained'
                 loadingIndicator='Loading...'
@@ -73,20 +63,9 @@ export const LoginPage: React.FC<Props> = () => {
                 color='primary'
                 size='large'
                 type='submit'
-                loading={loading}
+                loading={isLoading}
               >
-                ĐĂNG NHẬP
-              </LoadingButton>
-              <LoadingButton
-                variant='contained'
-                startIcon={<img src={Google} alt='Google' />}
-                loadingIndicator='Loading...'
-                fullWidth
-                color='primary'
-                size='large'
-                onClick={loginWithGoogle}
-              >
-                {'GOOGLE'}
+                ĐĂNG KÝ
               </LoadingButton>
             </Stack>
           </form>
@@ -95,10 +74,10 @@ export const LoginPage: React.FC<Props> = () => {
           <Button
             variant='text'
             onClick={() => {
-              history.push(RoutePathsEnum.SignupPage);
+              history.push(RoutePathsEnum.LoginPage);
             }}
           >
-            Đăng ký
+            Đăng nhập
           </Button>
         </Box>
       </Box>

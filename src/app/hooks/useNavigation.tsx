@@ -8,6 +8,7 @@ import { initSidebarActive, initSidebarExpandKey } from 'app/utils/helper';
 import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { SidebarKeysEnum, SidebarLinksEnum } from 'configs/sidebar.config';
 import { LoginPage } from 'features/auth/login';
+import { SignupPage } from 'features/auth/signup';
 import { HomePage } from 'features/home';
 import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
@@ -25,6 +26,18 @@ function useNavigation() {
   const { setSidebarActive, setSidebarExpandKey, sidebarExpandKey } = useUI();
   const routes: IRoute[] = React.useMemo(() => {
     const result: IRoute[] = [
+      {
+        key: RouteKeysEnum.LoginPage,
+        exact: true,
+        path: RoutePathsEnum.LoginPage,
+        component: <LoginPage />,
+      },
+      {
+        key: RouteKeysEnum.SignupPage,
+        exact: true,
+        path: RoutePathsEnum.SignupPage,
+        component: <SignupPage />,
+      },
       {
         key: RouteKeysEnum.HomePage,
         exact: true,
@@ -73,12 +86,7 @@ function useNavigation() {
         path: RoutePathsEnum.Feature3_1,
         component: <Feature3_1 />,
       },
-      {
-        key: RouteKeysEnum.LoginPage,
-        exact: true,
-        path: RoutePathsEnum.LoginPage,
-        component: <LoginPage />,
-      },
+
       {
         key: RouteKeysEnum.PersonalInfo,
         exact: true,

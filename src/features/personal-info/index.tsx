@@ -55,7 +55,6 @@ export const PersonalInfo = () => {
       province: data?.province || location.province,
       city: data?.city || location.district,
       ward: data?.ward || location.ward,
-
     };
   }, [data]);
 

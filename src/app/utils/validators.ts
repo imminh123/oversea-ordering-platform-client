@@ -6,6 +6,17 @@ export const loginValidator = yup.object({
   password: yup.string().required(LanguageTranslate.validate.require_exists),
 });
 
+export const signupValidator = yup.object({
+  mail: yup.string().required('Vui lòng nhập email'),
+  phone: yup.string().required('Vui lòng nhập số điện thoại'),
+  password: yup.string().required('Mật khẩu là bắt buộc'),
+  confirmPassword: yup
+    .string()
+    .required('Vui lòng nhập lại mật khẩu')
+    .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
+  wareHouseAddress: yup.string().required('Địa chỉ nhận hàng là bắt buộc'),
+});
+
 export const updateProfileValidator = yup.object({
   fullname: yup.string().required('Fullname is required'),
   phone: yup.string().required('Phone is required'),

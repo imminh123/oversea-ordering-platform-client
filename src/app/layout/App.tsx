@@ -3,6 +3,7 @@ import useAuth from 'app/hooks/useAuth';
 import useNavigation from 'app/hooks/useNavigation';
 import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { LoginPage } from 'features/auth/login';
+import { SignupPage } from 'features/auth/signup';
 import { NotFoundPage } from 'features/not-found';
 import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -50,6 +51,7 @@ function App() {
   return (
     <Switch>
       <Route exact={true} path={RoutePathsEnum.LoginPage} component={LoginPage} />
+      <Route exact={true} path={RoutePathsEnum.SignupPage} component={SignupPage} />
       <LayoutPage>
         {routes
           .filter((route) => route.key !== RouteKeysEnum.LoginPage)
