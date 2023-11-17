@@ -36,13 +36,11 @@ function App() {
       }
     };
 
-    initApp();
+    initApp().then(() => {
+      const token = storage.getToken();
+      sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const token = storage.getToken();
-    sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
   }, []);
 
   if (!initialized) {
