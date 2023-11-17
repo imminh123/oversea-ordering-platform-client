@@ -37,20 +37,25 @@ const genderOptions = [
 ];
 
 export const PersonalInfo = () => {
-  const { data, isLoading } = useGetInfo({});
+  const { data, isLoading } = useGetInfo();
   const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
-  const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({});
+  const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({
+    province: '',
+    district: '',
+    ward: '',
+  });
 
   const defaultValues = useMemo(() => {
     return {
-      fullname: data?.fullname,
-      phone: data?.phone,
-      gender: data?.gender,
-      birthday: data?.birthday ? new Date(data?.birthday) : new Date(),
-      address: data?.address,
-      province: data?.province,
-      city: data?.city,
-      ward: data?.ward,
+      fullname: data?.fullname || '',
+      phone: data?.phone || '',
+      gender: data?.gender || '',
+      birthday: data?.birthday ? new Date(data?.birthday) : undefined,
+      address: data?.address || '',
+      province: data?.province || location.province,
+      city: data?.city || location.district,
+      ward: data?.ward || location.ward,
+
     };
   }, [data]);
 
@@ -60,8 +65,14 @@ export const PersonalInfo = () => {
   });
 
   useEffect(() => {
-    reset(data);
-  }, [data]);
+    !!data &&
+      reset({
+        ...data,
+        province: location.province,
+        city: location.district,
+        ward: location.ward,
+      });
+  }, [data, location]);
 
   const onSubmit = (data: IFormInput) => {
     const { province, district, ward } = location;
@@ -111,7 +122,13 @@ export const PersonalInfo = () => {
               </CardContent>
               <CardActions>
                 <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                  <Button onClick={handleSubmit(onSubmit)} variant={'contained'} disabled={isUpdating}>
+                  <Button
+                    onClick={handleSubmit(onSubmit, (err) => {
+                      console.log(err);
+                    })}
+                    variant={'contained'}
+                    disabled={isUpdating}
+                  >
                     Save
                   </Button>
                   <Button onClick={() => reset()} variant={'outlined'}>

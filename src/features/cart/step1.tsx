@@ -70,6 +70,14 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f2f2f2',
 }));
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  height: 60,
+  lineHeight: '60px',
+}));
+
 export const Step1 = () => {
   const history = useHistory();
 
@@ -86,24 +94,27 @@ export const Step1 = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={8}>
-        <TableContainer component={Paper} elevation={3}>
-          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Categories</TableCell>
-                <TableCell align='right'>Quantity</TableCell>
-                <TableCell align='right'>Price</TableCell>
-                <TableCell align='center'>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {cartItems?.data.map((row: CartResponse) => (
-                <CartRow key={row.id} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-          <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-        </TableContainer>
+        {!!cartItems && !!cartItems?.data.length && (
+          <TableContainer component={Paper} elevation={3}>
+            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Categories</TableCell>
+                  <TableCell align='right'>Quantity</TableCell>
+                  <TableCell align='right'>Price</TableCell>
+                  <TableCell align='center'>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {cartItems?.data.map((row: CartResponse) => (
+                  <CartRow key={row.id} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
+          </TableContainer>
+        )}
+        {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
       </Grid>
       <Grid item xs={12} md={4}>
         <SumaryInfo variant='elevation'>

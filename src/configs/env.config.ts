@@ -6,6 +6,7 @@ const defaultPage = import.meta.env.VITE_DEFAULT_PAGE ? parseInt(import.meta.env
 const defaultLimit = import.meta.env.VITE_DEFAULT_LIMIT ? parseInt(import.meta.env.VITE_DEFAULT_LIMIT) : 10;
 const GG_CLIENT_ID = import.meta.env.VITE_APP_GG_CLIENT_ID;
 const VITE_APP_HOST = import.meta.env.VITE_APP_HOST;
+const VITE_EXTENSION_KEY = import.meta.env.VITE_EXTENSION_KEY;
 const envConfig = {
   nodeEnv,
   baseURL,
@@ -15,6 +16,7 @@ const envConfig = {
   defaultLimit,
   GG_CLIENT_ID,
   VITE_APP_HOST,
+  VITE_EXTENSION_KEY,
 };
 
 export { envConfig };

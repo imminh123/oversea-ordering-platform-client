@@ -11,6 +11,7 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
+  Typography,
 } from '@mui/material';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { sidebarWidth } from 'configs/sidebar.config';
@@ -19,6 +20,8 @@ import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
 import { ShoppingCart, Notifications } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 import { useHistory } from 'react-router-dom';
+import { useListVariables } from 'app/api/useGetVariables';
+import { EXCHANGE_KEY, REFETCH_INTERVAL } from 'app/utils/constants';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -68,23 +71,35 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
     updateToggle(expandVariant);
   };
 
+  const { data: cartItems } = useListVariables({ page: 1, name: EXCHANGE_KEY }, { refetchInterval: REFETCH_INTERVAL });
+  const exchange = cartItems?.data[0].value;
   return (
     <>
       <CssBaseline />
       <AppBar position='fixed' color='default' open={open}>
         <Toolbar>
-          <IconButton
-            size='large'
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerToggle}
-            edge='start'
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+            <IconButton
+              size='large'
+              color='inherit'
+              aria-label='open drawer'
+              onClick={handleDrawerToggle}
+              edge='start'
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant='subtitle2'
+              color='primary'
+              sx={{ mb: 4, '&::after': { content: '" đ"' } }}
+              align='center'
+            >
+              Exchange: {exchange}
+            </Typography>
+          </Stack>
 
-          <Stack direction={'row'} alignItems={'center'} spacing={2} sx={{ ml: 'auto' }}>
+          <Stack direction={'row'} alignItems={'center'} spacing={1} sx={{ ml: 'auto' }}>
             <IconButton
               size='large'
               color='inherit'
@@ -93,7 +108,6 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
                 history.push('cart');
               }}
               edge='start'
-              sx={{ mr: 2 }}
             >
               <ShoppingCart />
             </IconButton>
