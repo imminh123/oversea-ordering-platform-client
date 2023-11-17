@@ -9,6 +9,7 @@ export enum RouteKeysEnum {
 
   // auth
   LoginPage = 'login-page',
+  SignupPage = 'signup-page',
 
   // common
   HomePage = 'home-page',
@@ -27,6 +28,7 @@ export enum RoutePathsEnum {
 
   // auth
   LoginPage = '/login',
+  SignupPage = '/signup',
 
   // common
   HomePage = '/',
