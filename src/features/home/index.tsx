@@ -1,21 +1,11 @@
-import {
-  CssBaseline,
-  Container,
-  Grid,
-  Card,
-  Button,
-  CardActions,
-  CardContent,
-  Typography,
-} from '@mui/material';
+import { CssBaseline, Container, Grid, Card, Button, CardActions, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 interface Props {}
 
-
 export const HomePage: React.FC<Props> = () => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <React.Fragment>
       <CssBaseline />
@@ -32,7 +22,15 @@ export const HomePage: React.FC<Props> = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button sx={{color: '#fff'}} size='small' onClick={()=>{history.push('/cart')}}>Chi tiết</Button>
+                <Button
+                  sx={{ color: '#fff' }}
+                  size='small'
+                  onClick={() => {
+                    history.push('/cart');
+                  }}
+                >
+                  Chi tiết
+                </Button>
               </CardActions>
             </Card>
           </Grid>
@@ -47,7 +45,9 @@ export const HomePage: React.FC<Props> = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button sx={{color: '#fff'}}  size='small'>Chi tiết</Button>
+                <Button sx={{ color: '#fff' }} size='small'>
+                  Chi tiết
+                </Button>
               </CardActions>
             </Card>
           </Grid>
