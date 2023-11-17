@@ -9,7 +9,7 @@ import { Step1 } from './step1';
 import { Step2 } from './step2';
 import { Step3 } from './step3';
 
-const steps = ['Your Cart', 'Select Delivery Address', 'Create an order'];
+const steps = ['Giỏ hàng', 'Chọn địa chỉ nhận hàng', 'Đặt hàng'];
 
 const SlugMapping = (slug: string) => {
   switch (slug) {

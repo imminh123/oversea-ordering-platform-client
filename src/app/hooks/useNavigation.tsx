@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree } from '@mui/icons-material';
+import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Home } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -103,6 +103,13 @@ function useNavigation() {
       {
         name: 'Menu',
         sidebars: [
+          {
+            key: SidebarKeysEnum.HomePage,
+            parentKey: null,
+            link: SidebarLinksEnum.HomePage,
+            icon: <Home />,
+            label: 'Trang chủ',
+          },
           {
             key: SidebarKeysEnum.Feature2,
             parentKey: null,
