@@ -3,19 +3,19 @@ import { MutationConfig } from 'app/api/react-query';
 import useAlert from 'app/hooks/useAlert';
 import { useMutation, useQueryClient } from 'react-query';
 
-export const deleteCartItem = async (ids: string) => {
-  return apiWrapper._delete(`/cart`, { ids });
+export const updateQuantity = async ({ id, quantity }: { id: string; quantity: number }) => {
+  return apiWrapper.put(`/cart/${id}`, { quantity });
 };
 
-type QueryFnType = typeof deleteCartItem;
+type QueryFnType = typeof updateQuantity;
 
-export const useDeleteCartItem = (config?: MutationConfig<QueryFnType>) => {
+export const useUpdateQuantity = (config?: MutationConfig<QueryFnType>) => {
   const queryClient = useQueryClient();
   const { alertSuccess, alertError } = useAlert();
   return useMutation({
-    mutationFn: deleteCartItem,
+    mutationFn: updateQuantity,
     onSuccess() {
-      alertSuccess('Xóa thành công');
+      alertSuccess('Cập nhật thành công');
       queryClient.invalidateQueries('useListCartCategories');
     },
     onError(error) {

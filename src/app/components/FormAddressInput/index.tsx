@@ -105,15 +105,16 @@ export const FormAddressInput = ({
   }
 
   return (
+    // TODO: handle validate show help text
     <Box display={'flex'} flexDirection={'column'} gap={'12px'} sx={{ minWidth: 120 }}>
       <FormControl fullWidth className='relative'>
         <InputLabel id='select-province' sx={{ '&[data-shrink=false]': { marginTop: '-8.5px' } }}>
-          Province
+          Tỉnh/TP
         </InputLabel>
         <Select
           labelId='select-province'
           id='select-province-input'
-          label='Province'
+          label='Tỉnh/TP'
           value={province?.name || defaultVal?.province || ''}
           onFocus={startSearchingProvince}
           MenuProps={MenuProps}
@@ -132,12 +133,12 @@ export const FormAddressInput = ({
       </FormControl>
       <FormControl fullWidth>
         <InputLabel id='select-district' sx={{ '&[data-shrink=false]': { marginTop: '-8.5px' } }}>
-          District
+          Quận/Huyện
         </InputLabel>
         <Select
           labelId='select-district'
           id='select-district-input'
-          label='District'
+          label='Quận/Huyện'
           value={district?.name || defaultVal?.district || ''}
           onFocus={startSearchingDistrict}
           MenuProps={MenuProps}
@@ -159,12 +160,12 @@ export const FormAddressInput = ({
       </FormControl>
       <FormControl fullWidth>
         <InputLabel id='select-ward' sx={{ '&[data-shrink=false]': { marginTop: '-8.5px' } }}>
-          Ward
+          Xã/Phường
         </InputLabel>
         <Select
           labelId='select-ward'
           id='select-ward-input'
-          label='Ward'
+          label='Xã/Phường'
           value={ward?.name || defaultVal?.ward || ''}
           onFocus={startSearchingWard}
           MenuProps={MenuProps}

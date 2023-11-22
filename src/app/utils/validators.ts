@@ -25,3 +25,13 @@ export const updateProfileValidator = yup.object({
   city: yup.string().required('City is required'),
   ward: yup.string().required('Ward is required'),
 });
+
+export const chooseAddessValidator = yup.object({
+  name: yup.string().required('Vui lòng nhập họ tên'),
+  phone: yup.string().required('Vui lòng nhập sđt'),
+  mail: yup.string().required('Vui lòng nhập email'),
+  address: yup.string().required('Address is required'),
+  // province: yup.string().required('Province is required'),
+  // city: yup.string().required('City is required'),
+  // ward: yup.string().required('Ward is required'),
+});

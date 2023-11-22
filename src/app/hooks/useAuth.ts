@@ -47,7 +47,7 @@ function useAuth() {
     } finally {
       setTimeout(() => {
         context.setInitialized(true);
-      }, 1000);
+      }, 500);
     }
   };
 

@@ -11,7 +11,7 @@ export interface CartResponse {
   shopId: string;
   shopName: string;
   shopUrl: string;
-  quantity: string;
+  quantity: number;
   price: string;
   image: string[];
   currency: string;
@@ -21,6 +21,7 @@ export interface CartResponse {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  vnPrice: string;
 }
 
 export const listCartCategories = async (

@@ -17,25 +17,20 @@ import {
   Typography,
 } from '@mui/material';
 import { CartResponse, useListCartCategories } from './api/useCartCategoriesListing';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Delete, Save } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { useHistory } from 'react-router-dom';
 import { useDeleteCartItem } from './api/useDeleteCategory';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
-
-const calculateTatalPrice = (data?: CartResponse[]) => {
-  if (!data || !data?.length) {
-    return '0.00';
-  } else {
-    const totalPrice = data?.reduce((acc, item) => acc + parseFloat(item.price) * parseFloat(item.quantity), 0);
-    return totalPrice;
-  }
-};
+import { useCalculatePrice } from './api/useCalculatePrice';
+import { useRefreshCart } from './api/useRefreshCart';
+import { useUpdateQuantity } from './api/useUpdateQuantity';
 
 const CartRow = ({ row }: { row: CartResponse }) => {
   const [quantity, setQuantity] = useState<number>(parseInt(row.quantity));
   const { mutateAsync: deleteItem } = useDeleteCartItem();
+  const { mutateAsync: updateQuantity } = useUpdateQuantity();
   const { confirm } = useConfirmAlert();
   const handleDelete = () => {
     confirm({
@@ -50,13 +45,16 @@ const CartRow = ({ row }: { row: CartResponse }) => {
       },
     });
   };
+  const handleSave = () => {
+    updateQuantity({ id: row.id, quantity });
+  };
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component='th' scope='row'>
         <Box display={'flex'} gap={'10px'}>
           <img className='max-w-16 max-h-16 overflow-clip' src={row.image[0]} alt='cart-item-image' />
           <a
-            className='text-cyan-700 max-w-xs break-words hover:text-cyan-500'
+            className='text-cyan-700 max-w-xs break-words hover:text-cyan-500 text-ellipsis truncate'
             href={row.itemUrl}
             target='_blank'
             rel='noopener noreferrer'
@@ -65,7 +63,7 @@ const CartRow = ({ row }: { row: CartResponse }) => {
           </a>
         </Box>
       </TableCell>
-      <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+      <TableCell width={'100px'} size='small' align='right'>
         <Input
           disableUnderline
           sx={{ border: 'solid .5px #d2d6de', borderRadius: '5px', '& input': { textAlign: 'center' } }}
@@ -78,9 +76,15 @@ const CartRow = ({ row }: { row: CartResponse }) => {
           }}
         />
       </TableCell>
-      <TableCell align='right'>{row.price}</TableCell>
-      <TableCell align='center'>
-        <IconButton title='Lưu thay đổi' color='primary' aria-label='delete'>
+      <TableCell className='break-words text-ellipsis'>{row.propName}</TableCell>
+      <TableCell align='right' sx={{ '&::before': { content: '"¥"' } }}>
+        {row.price}
+      </TableCell>
+      <TableCell align='right' sx={{ '&::after': { content: '"đ"' } }}>
+        {parseFloat(row.vnPrice) * Number(row.quantity)}
+      </TableCell>
+      <TableCell align='center' width={'120px'}>
+        <IconButton title='Lưu thay đổi' color='primary' aria-label='save' onClick={handleSave}>
           <Save color='primary' />
         </IconButton>
         <IconButton title='Xóa sản phẩm' color='error' aria-label='delete' onClick={handleDelete}>
@@ -117,9 +121,12 @@ export const Step1 = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const { mutateAsync: refreshCart, isLoading: refreshing } = useRefreshCart();
   const { data: cartItems, isLoading } = useListCartCategories(page);
+  const calculatePriceParam = cartItems?.data.map((e) => e.id).join(',') || '';
+  const { data: totalPrice } = useCalculatePrice(calculatePriceParam, { enabled: !!cartItems?.data });
+
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
-  const totalPrice = useMemo(() => calculateTatalPrice(cartItems?.data), [cartItems?.data]);
   const onSubmit = () => {
     history.push('cart/pickup');
   };
@@ -135,6 +142,8 @@ export const Step1 = () => {
                   <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
                     Số lượng
                   </TableCell>
+                  <TableCell className=' min-w-[150px]'>Thuộc tính</TableCell>
+                  <TableCell align='right'>Đơn giá</TableCell>
                   <TableCell align='right'>Tiền hàng</TableCell>
                   <TableCell align='center'>Thao tác</TableCell>
                 </TableRow>
@@ -159,7 +168,7 @@ export const Step1 = () => {
         <SumaryInfo variant='elevation'>
           <Box display={'flex'} className=' justify-between'>
             <span>Tiền hàng:</span>
-            <span>{totalPrice}</span>
+            <span>{totalPrice?.data.totalInVND}</span>
           </Box>
           <Box display={'flex'} className=' justify-between'>
             <span>Phí mua hàng:</span>
@@ -187,10 +196,19 @@ export const Step1 = () => {
               Tổng tiền:
             </Typography>
             <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-              {totalPrice}
+              {totalPrice?.data.totalInVND}
             </Typography>
           </Box>
-          <Box display={'flex'} className='justify-end'>
+          <Box display={'flex'} gap={'10px'} className='justify-end'>
+            <Button
+              variant='contained'
+              disabled={refreshing}
+              onClick={() => {
+                refreshCart();
+              }}
+            >
+              REFRESH GIỎ HÀNG
+            </Button>
             <Button variant='contained' disabled={isLoading} onClick={onSubmit}>
               ĐẶT HÀNG
             </Button>

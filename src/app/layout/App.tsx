@@ -56,9 +56,7 @@ function App() {
         {routes
           .filter((route) => route.key !== RouteKeysEnum.LoginPage)
           .map((route) => {
-            return (
-              <Route key={route.path} exact={route.exact} path={route.path} render={() => <>{route.component}</>} />
-            );
+            return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
           })}
       </LayoutPage>
       <Route path='*' component={NotFoundPage} />
