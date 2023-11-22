@@ -105,7 +105,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
               color='inherit'
               aria-label='open drawer'
               onClick={() => {
-                history.push('cart');
+                history.push('/cart');
               }}
               edge='start'
             >

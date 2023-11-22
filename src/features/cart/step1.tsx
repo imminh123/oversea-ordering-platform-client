@@ -28,7 +28,7 @@ import { useRefreshCart } from './api/useRefreshCart';
 import { useUpdateQuantity } from './api/useUpdateQuantity';
 
 const CartRow = ({ row }: { row: CartResponse }) => {
-  const [quantity, setQuantity] = useState<number>(parseInt(row.quantity));
+  const [quantity, setQuantity] = useState<number>(row.quantity);
   const { mutateAsync: deleteItem } = useDeleteCartItem();
   const { mutateAsync: updateQuantity } = useUpdateQuantity();
   const { confirm } = useConfirmAlert();
