@@ -1,6 +1,7 @@
 import { TableCell, Checkbox, Box, TableRow } from '@mui/material';
 import { CartResponse } from '../api/useCartCategoriesListing';
 import { useEffect, useState } from 'react';
+import { formatMoneyToVND } from 'app/utils/helper';
 
 export const CartRow = ({
   row,
@@ -41,7 +42,7 @@ export const CartRow = ({
         {row.quantity}
       </TableCell>
       <TableCell align='right' sx={{ '&::after': { content: '"đ"' } }}>
-        {parseFloat(row.vnPrice) * row.quantity}
+        {formatMoneyToVND(parseFloat(row.vnPrice) * row.quantity)}
       </TableCell>
     </TableRow>
   );

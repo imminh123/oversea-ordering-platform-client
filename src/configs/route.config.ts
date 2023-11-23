@@ -1,6 +1,7 @@
 export enum RouteKeysEnum {
   Cart = 'cart',
   PersonalInfo = 'info',
+  Orders = 'orders',
 
   // auth
   LoginPage = 'login-page',
@@ -15,6 +16,8 @@ export enum RoutePathsEnum {
   Cart = '/cart',
   CartStep = '/cart/:slug',
   PersonalInfo = '/info',
+  Orders = '/orders',
+
 
   // auth
   LoginPage = '/login',

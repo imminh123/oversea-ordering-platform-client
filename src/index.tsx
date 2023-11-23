@@ -33,7 +33,6 @@ ReactDOM.render(
                   <Suspense fallback={<div>Loading...</div>}>
                     <App />
                   </Suspense>
-
                   <ModalManager />
                   <DrawerManager />
                   <AlertManager />

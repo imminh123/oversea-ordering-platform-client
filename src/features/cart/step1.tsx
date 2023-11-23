@@ -26,6 +26,7 @@ import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { useCalculatePrice } from './api/useCalculatePrice';
 import { useRefreshCart } from './api/useRefreshCart';
 import { useUpdateQuantity } from './api/useUpdateQuantity';
+import { formatMoneyToVND } from 'app/utils/helper';
 
 const CartRow = ({ row }: { row: CartResponse }) => {
   const [quantity, setQuantity] = useState<number>(row.quantity);
@@ -80,9 +81,7 @@ const CartRow = ({ row }: { row: CartResponse }) => {
       <TableCell align='right' sx={{ '&::before': { content: '"¥"' } }}>
         {row.price}
       </TableCell>
-      <TableCell align='right' sx={{ '&::after': { content: '"đ"' } }}>
-        {parseFloat(row.vnPrice) * Number(row.quantity)}
-      </TableCell>
+      <TableCell align='right'>{formatMoneyToVND(parseFloat(row.vnPrice) * Number(row.quantity))}</TableCell>
       <TableCell align='center' width={'120px'}>
         <IconButton title='Lưu thay đổi' color='primary' aria-label='save' onClick={handleSave}>
           <Save color='primary' />
@@ -128,7 +127,7 @@ export const Step1 = () => {
 
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
   const onSubmit = () => {
-    history.push('cart/pickup');
+    history.push('cart/order');
   };
   return (
     <Grid container spacing={2}>
@@ -168,7 +167,7 @@ export const Step1 = () => {
         <SumaryInfo variant='elevation'>
           <Box display={'flex'} className=' justify-between'>
             <span>Tiền hàng:</span>
-            <span>{totalPrice?.data.totalInVND}</span>
+            <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
           </Box>
           <Box display={'flex'} className=' justify-between'>
             <span>Phí mua hàng:</span>
@@ -196,7 +195,7 @@ export const Step1 = () => {
               Tổng tiền:
             </Typography>
             <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-              {totalPrice?.data.totalInVND}
+              {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
             </Typography>
           </Box>
           <Box display={'flex'} gap={'10px'} className='justify-end'>

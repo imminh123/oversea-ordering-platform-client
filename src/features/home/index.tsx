@@ -38,14 +38,20 @@ export const HomePage: React.FC<Props> = () => {
             <Card sx={{ color: '#ffffff', backgroundColor: '#f39c12' }}>
               <CardContent>
                 <Typography gutterBottom variant='h5' component='div'>
-                  Tìm sản phẩm
+                  Đơn hàng
                 </Typography>
                 <Typography variant='body2' color='#fff'>
-                  Tìm sản phẩm Taobao
+                  Xem các đơn hàng của bạn
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button sx={{ color: '#fff' }} size='small'>
+                <Button
+                  sx={{ color: '#fff' }}
+                  size='small'
+                  onClick={() => {
+                    history.push('/orders');
+                  }}
+                >
                   Chi tiết
                 </Button>
               </CardActions>

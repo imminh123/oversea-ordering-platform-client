@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Home } from '@mui/icons-material';
+import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Home, TextSnippet } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -14,6 +14,7 @@ import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
 
 const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
+const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListing');
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 
 function useNavigation() {
@@ -38,6 +39,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.HomePage,
         component: <HomePage />,
+      },
+      {
+        key: RouteKeysEnum.Orders,
+        exact: true,
+        path: RoutePathsEnum.Orders,
+        component: <OrderListing />,
       },
       {
         key: RouteKeysEnum.Cart,
@@ -73,6 +80,13 @@ function useNavigation() {
             link: SidebarLinksEnum.HomePage,
             icon: <Home />,
             label: 'Trang chủ',
+          },
+          {
+            key: SidebarKeysEnum.Orders,
+            parentKey: null,
+            link: SidebarLinksEnum.Orders,
+            icon: <TextSnippet />,
+            label: 'Đơn hàng',
           },
         ],
       },

@@ -16,6 +16,7 @@ import {
 import { CartResponse, useListCartCategories } from '../api/useCartCategoriesListing';
 import { CartRow } from './CartRow';
 import { useEffect, useMemo, useState } from 'react';
+import { formatMoneyToVND } from 'app/utils/helper';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -114,7 +115,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
           >
             <Box display={'flex'} className='justify-between gap-1'>
               <span>Tổng tiền hàng:</span>
-              <span>{calculateToTalMoney}đ</span>
+              <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
             <Button color='warning' variant='contained' onClick={() => order(listSelected)}>
               ĐẶT HÀNG

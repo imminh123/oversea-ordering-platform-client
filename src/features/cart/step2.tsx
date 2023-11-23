@@ -11,6 +11,7 @@ import {
   Paper,
   Radio,
   RadioGroup,
+  TextField,
   Typography,
   styled,
 } from '@mui/material';
@@ -25,6 +26,7 @@ import { Edit, Delete } from '@mui/icons-material';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { useDeleteAddress } from './api/useDeleteAddress';
 import { IAddAddressParams, useAddAddress } from './api/useAddAddress';
+import { ICreateOrderParams, useCreateOrder } from './api/useCreateOrderAndPay';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -52,8 +54,10 @@ export const Step2 = () => {
   const { data: listAddress, isLoading: loadingAddress } = useListAddress();
   const { confirm } = useConfirmAlert();
   const [addressId, setAddressId] = useState('');
+  const [wareHouseAddress, setWareHouseAddress] = useState('');
   const { mutateAsync: deleteAddress } = useDeleteAddress();
   const { mutateAsync: addAddress } = useAddAddress();
+  const { mutateAsync: createOrder } = useCreateOrder();
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddressId((event.target as HTMLInputElement).value);
@@ -104,7 +108,12 @@ export const Step2 = () => {
   });
 
   const handleOrder = (ids: string[]) => {
-    console.log('🚀🚀🚀 ~ file: step2.tsx:107 ~ handleOrder ~ ids:', ids);
+    const body: ICreateOrderParams = {
+      listItemId: ids,
+      addressId,
+      wareHouseAddress,
+    };
+    createOrder(body);
   };
 
   useEffect(() => {
@@ -205,6 +214,16 @@ export const Step2 = () => {
             </Card>
           </RadioGroup>
         )}
+        <Box className='w-full mt-4'>
+          <TextField
+            label={'Chọn kho hàng'}
+            className='w-full'
+            value={wareHouseAddress}
+            onChange={(e) => {
+              setWareHouseAddress(e.target.value);
+            }}
+          />
+        </Box>
       </Grid>
       <Grid item md={12} lg={6}>
         <TotalCart order={handleOrder} />

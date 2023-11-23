@@ -13,9 +13,9 @@ const steps = ['Giỏ hàng', 'Chọn địa chỉ nhận hàng', 'Đặt hàng'
 
 const SlugMapping = (slug: string) => {
   switch (slug) {
-    case 'pickup':
-      return <Step2 />;
     case 'order':
+      return <Step2 />;
+    case 'result':
       return <Step3 />;
     default:
       return <Step1 />;
@@ -24,9 +24,9 @@ const SlugMapping = (slug: string) => {
 
 const ActiveTabMapping = (slug: string) => {
   switch (slug) {
-    case 'pickup':
-      return 1;
     case 'order':
+      return 1;
+    case 'result':
       return 2;
     default:
       return 0;

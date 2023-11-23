@@ -89,3 +89,12 @@ export function initSidebarExpandKey(matchLink: string, sidebars: ISidebarItem[]
 
   return result;
 }
+
+export const formatMoneyToVND = (number: number) => {
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
+  return formatter.format(number);
+};
