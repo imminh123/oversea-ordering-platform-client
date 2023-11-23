@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree, Home, TextSnippet } from '@mui/icons-material';
+import {
+  AccessibilityNew,
+  Accessible,
+  AccountBalance,
+  AccountBox,
+  AccountTree,
+  Home,
+  TextSnippet,
+} from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';

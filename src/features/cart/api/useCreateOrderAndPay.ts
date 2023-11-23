@@ -34,16 +34,16 @@ type QueryFnType = typeof createOrder;
 
 export const useCreateOrder = (config?: MutationConfig<QueryFnType>) => {
   const { alertSuccess, alertError } = useAlert();
-  const history = useHistory()
+  const history = useHistory();
   return useMutation({
     mutationFn: createOrder,
     onSuccess(data) {
       if (data.paymentGatewayUrl) {
         window.open(data.paymentGatewayUrl, '_blank');
         history.push({
-            pathname: '/cart/result',
-            search: `?id=${data.order.id}`
-        })
+          pathname: '/cart/result',
+          search: `?id=${data.order.id}`,
+        });
       }
       alertSuccess('Tạo đơn hàng thành công');
     },

@@ -4,10 +4,7 @@ import { IPaginationHeader } from 'app/types/pagination';
 import { IOrderStatusRes } from 'features/cart/api/useGetOrderDetail';
 import { useQuery } from 'react-query';
 
-
-export const indexOrder = async (
-  page: number,
-): Promise<{ data: IOrderStatusRes[]; headers: IPaginationHeader }> => {
+export const indexOrder = async (page: number): Promise<{ data: IOrderStatusRes[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/order`, { page, perPage: 10 });
 };
 

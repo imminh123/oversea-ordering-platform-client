@@ -18,7 +18,6 @@ export enum RoutePathsEnum {
   PersonalInfo = '/info',
   Orders = '/orders',
 
-
   // auth
   LoginPage = '/login',
   SignupPage = '/signup',
