@@ -47,6 +47,7 @@ function App() {
   if (!initialized) {
     return <GlobalLoading loading={!initialized} />;
   }
+  const publicRoutes = [RouteKeysEnum.LoginPage, RouteKeysEnum.SignupPage];
 
   return (
     <Switch>
@@ -54,7 +55,7 @@ function App() {
       <Route exact={true} path={RoutePathsEnum.SignupPage} component={SignupPage} />
       <LayoutPage>
         {routes
-          .filter((route) => route.key !== RouteKeysEnum.LoginPage)
+          .filter((route) => !publicRoutes.includes(route.key))
           .map((route) => {
             return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
           })}
