@@ -15,7 +15,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState>({
   authenticated: false,
   errorMessage: null,
-  initialized: false,
+  initialized: true,
   user: null,
   setAuthenticated: () => {},
   setInitialized: () => {},

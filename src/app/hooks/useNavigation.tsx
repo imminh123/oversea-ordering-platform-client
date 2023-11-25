@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-import { AccessibilityNew, Accessible, AccountBalance, AccountBox, AccountTree } from '@mui/icons-material';
+import {
+  AccessibilityNew,
+  Accessible,
+  AccountBalance,
+  AccountBox,
+  AccountTree,
+  Home,
+  TextSnippet,
+} from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -14,11 +22,7 @@ import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
 
 const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
-const { Feature2 } = lazyImport(() => import('features/feature-2'), 'Feature2');
-const { Feature3 } = lazyImport(() => import('features/feature-3'), 'Feature3');
-const { Feature2_1 } = lazyImport(() => import('features/feature-2/feature-2-1'), 'Feature2_1');
-const { Feature2_2 } = lazyImport(() => import('features/feature-2/feature-2-2'), 'Feature2_2');
-const { Feature3_1 } = lazyImport(() => import('features/feature-3/feature-3-1'), 'Feature3_1');
+const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListing');
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 
 function useNavigation() {
@@ -45,6 +49,12 @@ function useNavigation() {
         component: <HomePage />,
       },
       {
+        key: RouteKeysEnum.Orders,
+        exact: true,
+        path: RoutePathsEnum.Orders,
+        component: <OrderListing />,
+      },
+      {
         key: RouteKeysEnum.Cart,
         exact: true,
         path: RoutePathsEnum.Cart,
@@ -56,37 +66,6 @@ function useNavigation() {
         path: RoutePathsEnum.CartStep,
         component: <Cart />,
       },
-      {
-        key: RouteKeysEnum.Feature2,
-        exact: true,
-        path: RoutePathsEnum.Feature2,
-        component: <Feature2 />,
-      },
-      {
-        key: RouteKeysEnum.Feature2_1,
-        exact: true,
-        path: RoutePathsEnum.Feature2_1,
-        component: <Feature2_1 />,
-      },
-      {
-        key: RouteKeysEnum.Feature2_2,
-        exact: true,
-        path: RoutePathsEnum.Feature2_2,
-        component: <Feature2_2 />,
-      },
-      {
-        key: RouteKeysEnum.Feature3,
-        exact: true,
-        path: RoutePathsEnum.Feature3,
-        component: <Feature3 />,
-      },
-      {
-        key: RouteKeysEnum.Feature3_1,
-        exact: true,
-        path: RoutePathsEnum.Feature3_1,
-        component: <Feature3_1 />,
-      },
-
       {
         key: RouteKeysEnum.PersonalInfo,
         exact: true,
@@ -104,43 +83,18 @@ function useNavigation() {
         name: 'Menu',
         sidebars: [
           {
-            key: SidebarKeysEnum.Feature2,
+            key: SidebarKeysEnum.HomePage,
             parentKey: null,
-            link: SidebarLinksEnum.Feature2,
-            icon: <AccountTree />,
-            label: 'Feature 2',
-            child: [
-              {
-                key: SidebarKeysEnum.Feature2_1,
-                parentKey: SidebarKeysEnum.Feature2,
-                link: SidebarLinksEnum.Feature2_1,
-                icon: <AccessibilityNew />,
-                label: 'Feature 2.1',
-              },
-              {
-                key: SidebarKeysEnum.Feature2_2,
-                parentKey: SidebarKeysEnum.Feature2,
-                link: SidebarLinksEnum.Feature2_2,
-                icon: <Accessible />,
-                label: 'Feature 2.2',
-              },
-            ],
+            link: SidebarLinksEnum.HomePage,
+            icon: <Home />,
+            label: 'Trang chủ',
           },
           {
-            key: SidebarKeysEnum.Feature3,
+            key: SidebarKeysEnum.Orders,
             parentKey: null,
-            link: SidebarLinksEnum.Feature3,
-            icon: <AccountBalance />,
-            label: 'Feature 3',
-            child: [
-              {
-                key: SidebarKeysEnum.Feature3_1,
-                parentKey: SidebarKeysEnum.Feature3,
-                link: SidebarLinksEnum.Feature3_1,
-                icon: <AccountBox />,
-                label: 'Feature 3.1',
-              },
-            ],
+            link: SidebarLinksEnum.Orders,
+            icon: <TextSnippet />,
+            label: 'Đơn hàng',
           },
         ],
       },

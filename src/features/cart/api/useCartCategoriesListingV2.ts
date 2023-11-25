@@ -3,7 +3,7 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
 
-export interface CartResponse {
+interface Item {
   id: string;
   itemId: string;
   itemName: string;
@@ -14,19 +14,13 @@ export interface CartResponse {
   quantity: number;
   price: string;
   image: string[];
-  currency: string;
-  propId: string;
   propName: string;
-  isActive: boolean;
   userId: string;
-  createdAt: string;
   updatedAt: string;
   vnPrice: string;
 }
 
-export const listCartCategories = async (
-  page: number,
-): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
+export const listCartCategories = async (page: number): Promise<{ data: Item[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/cart`, { page, perPage: 10 });
 };
 

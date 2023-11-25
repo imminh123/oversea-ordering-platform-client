@@ -22,6 +22,7 @@ import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 import { useHistory } from 'react-router-dom';
 import { useListVariables } from 'app/api/useGetVariables';
 import { EXCHANGE_KEY, REFETCH_INTERVAL } from 'app/utils/constants';
+import { formatMoneyToVND } from 'app/utils/helper';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -95,7 +96,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
               sx={{ mb: 4, '&::after': { content: '" đ"' } }}
               align='center'
             >
-              Exchange: {exchange}
+              Tỉ giá: {formatMoneyToVND(parseFloat(exchange || '0'))}
             </Typography>
           </Stack>
 
@@ -105,7 +106,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
               color='inherit'
               aria-label='open drawer'
               onClick={() => {
-                history.push('cart');
+                history.push('/cart');
               }}
               edge='start'
             >
