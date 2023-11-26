@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { MutationConfig } from 'app/api/react-query';
 import { apiWrapper } from 'app/api/axiosClient';
 import useAlert from 'app/hooks/useAlert';
+import { useHistory } from 'react-router-dom';
+import { RoutePathsEnum } from 'configs/route.config';
 
 export interface SignUpDto {
   mail: string;
@@ -25,12 +27,16 @@ export const signUpAPI = ({ body }: { body: SignUpDto }): Promise<any> => {
 type QueryFnType = typeof signUpAPI;
 
 export const useSignUp = (config?: MutationConfig<QueryFnType>) => {
-  const queryClient = useQueryClient();
+  const history = useHistory();
+
   const { alertSuccess, alertError } = useAlert();
   return useMutation({
     mutationFn: signUpAPI,
     onSuccess() {
-      alertSuccess('Create account success!');
+      alertSuccess('Please check your email to activate your account');
+      setTimeout(() => {
+        history.push(RoutePathsEnum.LoginPage);
+      }, 1500);
     },
     onError(err) {
       alertError(err.message);

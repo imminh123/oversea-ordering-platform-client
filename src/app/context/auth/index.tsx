@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthState>({
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [initialized, setInitialized] = useState(false);
+  const [initialized, setInitialized] = useState(true);
   const [user, setUser] = useState<IUser | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>('');
 

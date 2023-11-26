@@ -41,7 +41,6 @@ function useAuth() {
         context.setAuthenticated(true);
       }
     } catch (err) {
-      handleErrorResponse(err);
       context.setAuthenticated(false);
       history.push(RoutePathsEnum.LoginPage);
     } finally {

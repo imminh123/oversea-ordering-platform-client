@@ -1,22 +1,12 @@
 import * as React from 'react';
 
-import {
-  AccessibilityNew,
-  Accessible,
-  AccountBalance,
-  AccountBox,
-  AccountTree,
-  Home,
-  TextSnippet,
-} from '@mui/icons-material';
+import { Home, TextSnippet } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
 import { initSidebarActive, initSidebarExpandKey } from 'app/utils/helper';
 import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { SidebarKeysEnum, SidebarLinksEnum } from 'configs/sidebar.config';
-import { LoginPage } from 'features/auth/login';
-import { SignupPage } from 'features/auth/signup';
 import { HomePage } from 'features/home';
 import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
@@ -30,18 +20,6 @@ function useNavigation() {
   const { setSidebarActive, setSidebarExpandKey, sidebarExpandKey } = useUI();
   const routes: IRoute[] = React.useMemo(() => {
     const result: IRoute[] = [
-      {
-        key: RouteKeysEnum.LoginPage,
-        exact: true,
-        path: RoutePathsEnum.LoginPage,
-        component: <LoginPage />,
-      },
-      {
-        key: RouteKeysEnum.SignupPage,
-        exact: true,
-        path: RoutePathsEnum.SignupPage,
-        component: <SignupPage />,
-      },
       {
         key: RouteKeysEnum.HomePage,
         exact: true,
@@ -103,6 +81,10 @@ function useNavigation() {
     return result;
   }, []);
 
+  const publicRoutes = React.useMemo(() => {
+    return [RoutePathsEnum.LoginPage, RoutePathsEnum.SignupPage, RoutePathsEnum.Active];
+  }, []);
+
   React.useEffect(() => {
     if (history && history.location) {
       setSidebarActive(() => {
@@ -130,7 +112,7 @@ function useNavigation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, menus]);
 
-  return { routes, menus };
+  return { routes, menus, publicRoutes };
 }
 
 export default useNavigation;
