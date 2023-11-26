@@ -3,32 +3,34 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
 
-interface Item {
+interface CartItem {
   id: string;
   itemId: string;
   itemName: string;
   itemUrl: string;
-  shopId: string;
+  isActive: string;
+  price: number;
+  quantity: number;
+  updatedAt: string;
+}
+interface CartResponse {
+  _id: string;
   shopName: string;
   shopUrl: string;
-  quantity: number;
-  price: string;
-  image: string[];
-  propName: string;
-  userId: string;
-  updatedAt: string;
-  vnPrice: string;
+  listItem: CartItem[];
 }
 
-export const listCartCategories = async (page: number): Promise<{ data: Item[]; headers: IPaginationHeader }> => {
+export const listCartCategories = async (
+  page: number,
+): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/cart`, { page, perPage: 10 });
 };
 
 type QueryFnType = typeof listCartCategories;
 
-export const useListCartCategories = (page: number, config?: QueryConfig<QueryFnType>) => {
+export const useListCartCategoriesV2 = (page: number, config?: QueryConfig<QueryFnType>) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useListCartCategories', page],
+    queryKey: ['useListCartCategoriesV2', page],
     queryFn: () => listCartCategories(page),
     ...config,
   });

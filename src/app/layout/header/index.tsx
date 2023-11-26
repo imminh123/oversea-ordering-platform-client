@@ -90,12 +90,7 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant='subtitle2'
-              color='primary'
-              sx={{ mb: 4, '&::after': { content: '" đ"' } }}
-              align='center'
-            >
+            <Typography variant='subtitle2' color='primary' sx={{ mb: 4 }} align='center'>
               Tỉ giá: {formatMoneyToVND(parseFloat(exchange || '0'))}
             </Typography>
           </Stack>

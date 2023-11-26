@@ -159,7 +159,7 @@ export const Step1 = () => {
         {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
         {isLoading && (
           <Item elevation={3}>
-            <CircularProgress />
+            <CircularProgress className='m-5' />
           </Item>
         )}
       </Grid>
