@@ -214,7 +214,7 @@ export const Step2 = () => {
             </Card>
           </RadioGroup>
         )}
-        <Box className='w-full mt-4'>
+        {/* <Box className='w-full mt-4'>
           <TextField
             label={'Chọn kho hàng'}
             className='w-full'
@@ -223,7 +223,7 @@ export const Step2 = () => {
               setWareHouseAddress(e.target.value);
             }}
           />
-        </Box>
+        </Box> */}
       </Grid>
       <Grid item md={12} lg={6}>
         <TotalCart order={handleOrder} />

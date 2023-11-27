@@ -35,11 +35,11 @@ function useAuth() {
 
   const handleGetMe = async () => {
     try {
-      if (!pathname.includes(RoutePathsEnum.LoginPage) && !pathname.includes(RoutePathsEnum.SignupPage)) {
-        const user = await getMe();
-        context.setUser(user);
-        context.setAuthenticated(true);
-      }
+      // if (!pathname.includes(RoutePathsEnum.LoginPage) && !pathname.includes(RoutePathsEnum.SignupPage)) {
+      const user = await getMe();
+      context.setUser(user);
+      context.setAuthenticated(true);
+      // }
     } catch (err) {
       context.setAuthenticated(false);
       history.push(RoutePathsEnum.LoginPage);

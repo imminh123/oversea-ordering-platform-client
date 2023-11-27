@@ -31,7 +31,6 @@ export const LoginPage: React.FC<Props> = () => {
     scope: 'https://www.googleapis.com/auth/cloud-platform',
   });
   const handleFacebookLogin = (accessToken: string) => {
-    console.log('Access Token:', accessToken);
     handleLoginSocial({ token: accessToken, base: 'facebook' });
   };
 

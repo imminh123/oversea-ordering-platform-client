@@ -15,7 +15,7 @@ export const FacebookLoginButton = ({ onLogin }: { onLogin: any }) => {
         // });
       } else {
         console.log('User cancelled login or did not fully authorize.');
-        alertError('User cancelled login or did not fully authorize.');
+        alertError('Người dùng đã hủy đăng nhập hoặc không ủy quyền đầy đủ.');
       }
     });
   };

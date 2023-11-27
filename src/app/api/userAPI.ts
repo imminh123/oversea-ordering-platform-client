@@ -40,6 +40,7 @@ const mappingServerDataUnderUserView = (serverData: IUserServerResponse): IUser 
     email: serverData.email,
     phone: serverData.phone,
     role: serverData.role,
+    avatar: serverData.avatar,
   };
 
   return userData;

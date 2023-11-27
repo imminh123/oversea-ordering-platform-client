@@ -11,6 +11,7 @@ export interface IUser {
   phone: string;
   email: string;
   role: UserRole;
+  avatar: string;
 }
 
 export interface IUserServerResponse {
@@ -30,4 +31,5 @@ export interface IUserServerResponse {
   fullname: string;
   province: string;
   ward: string;
+  avatar: string;
 }

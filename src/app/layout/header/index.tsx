@@ -72,8 +72,11 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
     updateToggle(expandVariant);
   };
 
-  const { data: cartItems } = useListVariables({ page: 1, name: EXCHANGE_KEY }, { refetchInterval: REFETCH_INTERVAL });
-  const exchange = cartItems?.data[0].value;
+  const { data: exchangeRes } = useListVariables(
+    { page: 1, name: EXCHANGE_KEY },
+    { refetchInterval: REFETCH_INTERVAL },
+  );
+  const exchange = exchangeRes?.data[0].value;
   return (
     <>
       <CssBaseline />
