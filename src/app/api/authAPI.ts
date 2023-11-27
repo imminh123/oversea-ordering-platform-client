@@ -42,6 +42,7 @@ type ApiLoginRes = {
 };
 type ApiLoginGGArgs = {
   token: string;
+  base: 'google' | 'facebook';
 };
 
 // type ApiGetMeArgs = {}
@@ -61,10 +62,9 @@ const login = async (params: TLoginArgs): Promise<TLoginRes> => {
   };
 };
 
-export const loginGoogleAPI = async (inputs: ApiLoginGGArgs) => {
+export const loginSocial = async (inputs: ApiLoginGGArgs) => {
   const res = await apiWrapper.post<any, TLoginGGRes>('/session/createSessionWithOAuth2', {
     ...inputs,
-    base: 'google',
     redirect_uri: envConfig.VITE_APP_HOST,
   });
   return res.data;
@@ -76,6 +76,6 @@ const getMe = async (): Promise<TGetMeRes> => {
   return userAPI.mappingServerDataUnderUserView(result.data);
 };
 
-const authAPI = { login, loginGoogleAPI, getMe };
+const authAPI = { login, loginSocial, getMe };
 
 export default authAPI;

@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
 import { MutationConfig } from 'app/api/react-query';
 import storage from 'app/utils/storage';
-type QueryFnType = typeof authAPI.loginGoogleAPI;
+type QueryFnType = typeof authAPI.loginSocial;
 
 function useAuth() {
   const history = useHistory();
@@ -71,15 +71,15 @@ function useAuth() {
     return useMutation({
       mutationKey: 'useLoginWithOAuth2',
       ...config,
-      mutationFn: authAPI.loginGoogleAPI,
+      mutationFn: authAPI.loginSocial,
     });
   };
 
-  const { mutateAsync: loginGg } = useLoginWithOAuth2();
+  const { mutateAsync: loginSocial } = useLoginWithOAuth2();
 
-  const handleLoginGG = async ({ token }: { token: string }) => {
+  const handleLoginSocial = async ({ token, base }: { token: string; base: 'google' | 'facebook' }) => {
     try {
-      const { accessToken } = await loginGg({ token });
+      const { accessToken } = await loginSocial({ token, base });
       storage.setToken(accessToken);
       const user = await getMe();
       context.setUser(user);
@@ -110,7 +110,7 @@ function useAuth() {
     ...context,
     login: handleLogin,
     getMe: handleGetMe,
-    loginGg: handleLoginGG,
+    handleLoginSocial,
     logout,
   };
 }
