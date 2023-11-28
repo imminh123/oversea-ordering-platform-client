@@ -60,7 +60,7 @@ export const Step1 = () => {
   };
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={8}>
+      <Grid item md={12} lg={8} width={'100%'}>
         {!!cartItems &&
           !!cartItems?.data.length &&
           !isLoading &&
@@ -101,7 +101,7 @@ export const Step1 = () => {
           </Item>
         )}
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item md={12} lg={4} width={'100%'}>
         <SumaryInfo variant='elevation'>
           <Box display={'flex'} className=' justify-between'>
             <span>Tiền hàng:</span>
@@ -144,10 +144,10 @@ export const Step1 = () => {
                 refreshCart();
               }}
             >
-              REFRESH GIỎ HÀNG
+              REFRESH GIÁ TAOBAO
             </Button>
             <Button variant='contained' disabled={isLoading} onClick={onSubmit}>
-              ĐẶT HÀNG
+              BẮT ĐẦU ĐẶT HÀNG
             </Button>
           </Box>
         </SumaryInfo>

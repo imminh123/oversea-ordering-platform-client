@@ -18,7 +18,7 @@ import {
 import { FormAddressInput } from 'app/components/FormAddressInput';
 import { FormInputText } from 'app/components/libs/react-hooks-form/FormInputText';
 import { chooseAddessValidator } from 'app/utils/validators';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AddressRes, useListAddress } from './api/useGetAddressListing';
 import { TotalCart } from './components/TotalCart';
@@ -27,6 +27,7 @@ import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { useDeleteAddress } from './api/useDeleteAddress';
 import { IAddAddressParams, useAddAddress } from './api/useAddAddress';
 import { ICreateOrderParams, useCreateOrder } from './api/useCreateOrderAndPay';
+import useAlert from 'app/hooks/useAlert';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -53,11 +54,14 @@ const Label = ({ add }: { add: AddressRes }) => {
 export const Step2 = () => {
   const { data: listAddress, isLoading: loadingAddress } = useListAddress();
   const { confirm } = useConfirmAlert();
+  const { alertError } = useAlert();
+
   const [addressId, setAddressId] = useState('');
   const [wareHouseAddress, setWareHouseAddress] = useState('');
   const { mutateAsync: deleteAddress } = useDeleteAddress();
   const { mutateAsync: addAddress } = useAddAddress();
   const { mutateAsync: createOrder } = useCreateOrder();
+  const chooseAdress = useRef<any>();
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddressId((event.target as HTMLInputElement).value);
@@ -113,7 +117,14 @@ export const Step2 = () => {
       addressId,
       wareHouseAddress,
     };
-    createOrder(body);
+    if (!addressId) {
+      chooseAdress.current?.focus();
+      alertError('Vui lòng thêm địa chỉ nhận hàng');
+    } else if (!ids.length) {
+      alertError('Vui lòng chọn ít nhất một sản phẩm');
+    } else {
+      createOrder(body);
+    }
   };
 
   useEffect(() => {
@@ -130,7 +141,7 @@ export const Step2 = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item md={12} lg={6}>
+      <Grid item md={12} lg={6} width={'100%'}>
         <Typography variant='h6'>Chọn địa chỉ nhận hàng</Typography>
         {listAddress && listAddress.data && !loadingAddress && (
           <RadioGroup
@@ -168,7 +179,7 @@ export const Step2 = () => {
               }}
             >
               <CardContent>
-                <FormControlLabel value='' control={<Radio />} label='Chọn địa chỉ nhận hàng' />
+                <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
                 {!addressId && (
                   <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
                     <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
@@ -225,7 +236,7 @@ export const Step2 = () => {
           />
         </Box> */}
       </Grid>
-      <Grid item md={12} lg={6}>
+      <Grid item md={12} lg={6} width={'100%'}>
         <TotalCart order={handleOrder} />
       </Grid>
     </Grid>

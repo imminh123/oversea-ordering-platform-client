@@ -89,7 +89,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
   return (
     <>
       {!!cartItems && !!cartItems?.data.length && !loadingCart && (
-        <TableContainer component={Paper} elevation={3}>
+        <TableContainer className='w-full' component={Paper} elevation={3}>
           <Table aria-label='simple table'>
             <TableHead>
               <TableRow>
@@ -128,7 +128,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
             <Button color='warning' variant='contained' onClick={() => order(listSelected)}>
-              ĐẶT HÀNG
+              ĐẶT HÀNG & THANH TOÁN
             </Button>
           </Box>
         </TableContainer>
