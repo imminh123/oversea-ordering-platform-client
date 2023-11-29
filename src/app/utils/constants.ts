@@ -9,4 +9,4 @@ export const ALERT_CLOSE_TIMEOUT = 5 * 1000;
 
 export const EXCHANGE_KEY = 'exchangeRate';
 
-export const REFETCH_INTERVAL = 60 * 1000;
+export const REFETCH_INTERVAL = 10 * 60 * 1000;

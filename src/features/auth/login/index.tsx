@@ -11,6 +11,7 @@ import Google from '../../../assets/images/google.svg';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
+import { FacebookLoginButton } from './FacebookLoginButton';
 interface Props {}
 
 export const LoginPage: React.FC<Props> = () => {
@@ -21,14 +22,17 @@ export const LoginPage: React.FC<Props> = () => {
     defaultValues: { username: '', password: '' },
     resolver: yupResolver(loginValidator),
   });
-  const { login, loginGg } = useAuth();
+  const { login, handleLoginSocial } = useAuth();
   const loginWithGoogle = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      loginGg({ token: tokenResponse.code });
+      handleLoginSocial({ token: tokenResponse.code, base: 'google' });
     },
     flow: 'auth-code',
     scope: 'https://www.googleapis.com/auth/cloud-platform',
   });
+  const handleFacebookLogin = (accessToken: string) => {
+    handleLoginSocial({ token: accessToken, base: 'facebook' });
+  };
 
   const onSubmit = async (data: TLoginArgs) => {
     setLoading(true);
@@ -77,17 +81,20 @@ export const LoginPage: React.FC<Props> = () => {
               >
                 ĐĂNG NHẬP
               </LoadingButton>
-              <LoadingButton
-                variant='contained'
-                startIcon={<img src={Google} alt='Google' />}
-                loadingIndicator='Loading...'
-                fullWidth
-                color='primary'
-                size='large'
-                onClick={loginWithGoogle}
-              >
-                {'GOOGLE'}
-              </LoadingButton>
+              <Box className='flex justify-between gap-2'>
+                <LoadingButton
+                  variant='outlined'
+                  startIcon={<img src={Google} alt='Google' />}
+                  loadingIndicator='Loading...'
+                  color='primary'
+                  size='large'
+                  fullWidth
+                  onClick={loginWithGoogle}
+                >
+                  {'GOOGLE'}
+                </LoadingButton>
+                <FacebookLoginButton onLogin={handleFacebookLogin} />
+              </Box>
             </Stack>
           </form>
         </FormProvider>

@@ -26,10 +26,11 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log({ error });
-    // Handle errors
+    // TODO: add refresh token here
     if (error && error.response && error.response.data) {
-      throw error.response.data;
+      if (error.response.data.statusCode === 401 || error.response.data.statusCode === 403) {
+        window.location.href = '/login';
+      }
     }
 
     throw error;

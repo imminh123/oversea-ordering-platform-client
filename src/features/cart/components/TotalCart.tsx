@@ -65,9 +65,11 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
 
   const calculateToTalMoney = useMemo(() => {
     if (cartItems?.data.length) {
-      return cartItems?.data.reduce((acc, cur) => {
-        return acc + parseFloat(cur.vnPrice) * cur.quantity;
-      }, 0);
+      return cartItems?.data
+        .filter((e) => listSelected.includes(e.id))
+        .reduce((acc, cur) => {
+          return acc + parseFloat(cur.vnPrice) * cur.quantity;
+        }, 0);
     }
   }, [cartItems?.data, listSelected]);
 
@@ -76,10 +78,18 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
       setListSelected(defaultListSelectedIds);
     }
   }, [cartItems?.data]);
+
+  useEffect(() => {
+    if (listSelected.length !== defaultListSelectedIds.length) {
+      setSelectAll(false);
+    } else {
+      setSelectAll(true);
+    }
+  }, [listSelected]);
   return (
     <>
       {!!cartItems && !!cartItems?.data.length && !loadingCart && (
-        <TableContainer component={Paper} elevation={3}>
+        <TableContainer className='w-full' component={Paper} elevation={3}>
           <Table aria-label='simple table'>
             <TableHead>
               <TableRow>
@@ -118,7 +128,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
             <Button color='warning' variant='contained' onClick={() => order(listSelected)}>
-              ĐẶT HÀNG
+              ĐẶT HÀNG & THANH TOÁN
             </Button>
           </Box>
         </TableContainer>
