@@ -433,6 +433,40 @@
           line-height: 150% !important;
         }
       }
+      #order-detail-btn {
+        display: block;
+        margin: auto;
+        padding: 1rem 1.25rem;
+        font-family: sans-serif;
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: #00b0ff;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        z-index: 1;
+        text-align: center;
+      }
+      #order-detail-btn:after {
+        content: '';
+        display: block;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        right: 1.25rem;
+        left: 1.25rem;
+        background-color: #00b0ff;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        transform-origin: bottom center;
+        z-index: -1;
+      }
+      #order-detail-btn:hover {
+        color: white;
+      }
+      #order-detail-btn:hover:after {
+        right: 0;
+        left: 0;
+        height: 100%;
+      }
     </style>
   </head>
   <body
@@ -1100,6 +1134,11 @@
                             </tr>
                           </tbody>
                         </table>
+                        <div>
+                          <a id="order-detail-btn" href="#" target="_self" rel="noopener noreferrer"
+                            >Về trang chi tiết đơn hàng</a
+                          >
+                        </div>
                         <table
                           border="0"
                           cellpadding="0"
@@ -2010,6 +2049,7 @@
     const vnp_BankTranNo = urlParams.get('vnp_BankTranNo');
     const vnp_CardType = urlParams.get('vnp_CardType');
     const vnp_PayDate = urlParams.get('vnp_PayDate');
+    const vnp_OrderInfo = urlParams.get('vnp_OrderInfo');
     const year = vnp_PayDate.slice(0, 4);
     const month = vnp_PayDate.slice(4, 6) - 1;
     const day = vnp_PayDate.slice(6, 8);
@@ -2019,7 +2059,7 @@
 
     const date = new Date(year, month, day, hour, minute, second);
     const formattedDate = date.toLocaleString();
-
+    const orderId = vnp_OrderInfo.split(' ').slice(-1)[0];
     const amount = formatMoneyToVND(parseFloat(vnp_Amount));
     document.getElementById('vnp_Amount').innerHTML = amount;
     const status = vnp_TransactionStatus === '00' ? 'Thanh toán thành công' : 'Thanh toán thất bại';
@@ -2028,5 +2068,10 @@
     document.getElementById('payment-detail-2').innerHTML = `Mã giao dịch: ${vnp_BankTranNo}`;
     document.getElementById('payment-detail-3').innerHTML = `Phương thức thanh toán: ${vnp_CardType}`;
     document.getElementById('payment-detail-4').innerHTML = `Ngày thanh toán: ${formattedDate}`;
+    document.getElementById('order-detail-btn').href = `/orders/${orderId}`;
+
+    setTimeout(() => {
+      document.getElementById('order-detail-btn').click();
+    }, 60 * 1000);
   </script>
 </html>

@@ -17,6 +17,7 @@ import { useIndexOrders } from './api/useOrderListing';
 import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { Chip } from '@mui/material';
+import { useHistory } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -26,23 +27,31 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-export const mappingStatus = (status: OrderStatus) => {
+export const mappingStatus = (status?: OrderStatus) => {
   switch (status) {
     case OrderStatus.CREATED:
       return <Chip label='CREATED' color='primary' variant='outlined' />;
-
     case OrderStatus.PENDING_PAYMENT:
       return <Chip label='PENDING' color='warning' variant='outlined' />;
     case OrderStatus.DELIVERED:
       return <Chip label='DELIVERED' color='success' variant='outlined' />;
     case OrderStatus.SUCCEEDED:
       return <Chip label='SUCCEEDED' color='success' variant='outlined' />;
+    default:
+      return <Chip label='ERROR' color='error' variant='outlined' />;
   }
 };
 
-const CartRow = ({ item }: { item: IOrderStatusRes }) => {
+const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
+  const history = useHistory();
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRow
+      onClick={() => {
+        history.push(`orders/${item.id}`);
+      }}
+      className=' cursor-pointer'
+      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+    >
       <TableCell component='th' scope='row'>
         {item.listItem[0].itemName}
       </TableCell>
@@ -82,7 +91,7 @@ export const OrderListing = () => {
             </TableHead>
             <TableBody>
               {cartItems?.data.map((row: IOrderStatusRes) => (
-                <CartRow key={row.id} item={row} />
+                <OrderRow key={row.id} item={row} />
               ))}
             </TableBody>
           </Table>

@@ -14,6 +14,7 @@ import { lazyImport } from 'app/utils/lazyImport';
 const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
 const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListing');
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
+const { OrderDetail } = lazyImport(() => import('features/order/components/OrderDetails'), 'OrderDetail');
 
 function useNavigation() {
   const history = useHistory();
@@ -31,6 +32,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.Orders,
         component: <OrderListing />,
+      },
+      {
+        key: RouteKeysEnum.OrderDetail,
+        exact: true,
+        path: RoutePathsEnum.OrderDetail,
+        component: <OrderDetail />,
       },
       {
         key: RouteKeysEnum.Cart,

@@ -1,13 +1,13 @@
 /*global chrome*/
 import useAuth from 'app/hooks/useAuth';
 import useNavigation from 'app/hooks/useNavigation';
-import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
+import { RoutePathsEnum } from 'configs/route.config';
 import { LoginPage } from 'features/auth/login';
 import { SignupPage } from 'features/auth/signup';
 import { NotFoundPage } from 'features/not-found';
 import { ActivePage } from 'pages/ActiveAccount';
 import { useEffect } from 'react';
-import { Route, Switch, matchPath, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch, matchPath, useHistory } from 'react-router-dom';
 import { GlobalLoading } from './global-loading';
 import { LayoutPage } from './LayoutPage';
 import storage from 'app/utils/storage';
@@ -50,7 +50,6 @@ function App() {
       const token = storage.getToken();
       sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!initialized) {

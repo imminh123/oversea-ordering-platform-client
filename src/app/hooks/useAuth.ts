@@ -14,9 +14,9 @@ function useAuth() {
   const history = useHistory();
   const context = useContext(AuthContext);
   const { alertSuccess, alertError } = useAlert();
-  const pathname = useMemo(() => {
-    return history.location.pathname;
-  }, [history.location.pathname]);
+  // const pathname = useMemo(() => {
+  //   return history.location.pathname;
+  // }, [history.location.pathname]);
   const { mutateAsync: login } = useMutation<TLoginRes, TLoginError, TLoginArgs>((params) => {
     return authAPI.login(params);
   });
