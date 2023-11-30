@@ -9,13 +9,13 @@ import { Step1 } from './step1';
 import { Step2 } from './step2';
 import { Step3 } from './step3';
 
-const steps = ['Giỏ hàng', 'Chọn địa chỉ nhận hàng', 'Đặt hàng'];
+const steps = ['Giỏ hàng', 'Tạo đơn hàng', 'Thanh toán'];
 
 const SlugMapping = (slug: string) => {
   switch (slug) {
     case 'order':
       return <Step2 />;
-    case 'result':
+    case 'pay':
       return <Step3 />;
     default:
       return <Step1 />;
@@ -26,7 +26,7 @@ const ActiveTabMapping = (slug: string) => {
   switch (slug) {
     case 'order':
       return 1;
-    case 'result':
+    case 'pay':
       return 2;
     default:
       return 0;

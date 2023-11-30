@@ -3,6 +3,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
+import { Helmet } from 'react-helmet';
 import { TLoginArgs } from 'app/api/authAPI';
 import { loginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';
@@ -47,68 +48,73 @@ export const LoginPage: React.FC<Props> = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-      }}
-    >
+    <>
+      <Helmet>
+        <title>Đăng nhập</title>
+      </Helmet>
       <Box
         sx={{
-          maxWidth: 500,
-          m: 'auto',
-          px: 2,
-          py: 4,
-          mt: 10,
-          boxShadow: (theme) => theme.shadows[3],
+          width: '100%',
         }}
       >
-        <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-          ĐĂNG NHẬP
-        </Typography>
-        <FormProvider {...formMethods}>
-          <form onSubmit={formMethods.handleSubmit(onSubmit)}>
-            <Stack spacing={2}>
-              <HooksFormInputTextField fieldName={'username'} label={'Email'} />
-              <HooksFormInputTextField fieldName={'password'} label={'Mật khẩu'} type={'password'} />
-              <LoadingButton
-                variant='contained'
-                loadingIndicator='Loading...'
-                fullWidth
-                color='primary'
-                size='large'
-                type='submit'
-                loading={loading}
-              >
-                ĐĂNG NHẬP
-              </LoadingButton>
-              <Box className='flex justify-between gap-2'>
+        <Box
+          sx={{
+            maxWidth: 500,
+            m: 'auto',
+            px: 2,
+            py: 4,
+            mt: 10,
+            boxShadow: (theme) => theme.shadows[3],
+          }}
+        >
+          <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
+            ĐĂNG NHẬP
+          </Typography>
+          <FormProvider {...formMethods}>
+            <form onSubmit={formMethods.handleSubmit(onSubmit)}>
+              <Stack spacing={2}>
+                <HooksFormInputTextField fieldName={'username'} label={'Email'} />
+                <HooksFormInputTextField fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <LoadingButton
-                  variant='outlined'
-                  startIcon={<img src={Google} alt='Google' />}
+                  variant='contained'
                   loadingIndicator='Loading...'
+                  fullWidth
                   color='primary'
                   size='large'
-                  fullWidth
-                  onClick={loginWithGoogle}
+                  type='submit'
+                  loading={loading}
                 >
-                  {'GOOGLE'}
+                  ĐĂNG NHẬP
                 </LoadingButton>
-                <FacebookLoginButton onLogin={handleFacebookLogin} />
-              </Box>
-            </Stack>
-          </form>
-        </FormProvider>
-        <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-          <Button
-            variant='text'
-            onClick={() => {
-              history.push(RoutePathsEnum.SignupPage);
-            }}
-          >
-            Đăng ký
-          </Button>
+                <Box className='flex justify-between gap-2'>
+                  <LoadingButton
+                    variant='outlined'
+                    startIcon={<img src={Google} alt='Google' />}
+                    loadingIndicator='Loading...'
+                    color='primary'
+                    size='large'
+                    fullWidth
+                    onClick={loginWithGoogle}
+                  >
+                    {'GOOGLE'}
+                  </LoadingButton>
+                  <FacebookLoginButton onLogin={handleFacebookLogin} />
+                </Box>
+              </Stack>
+            </form>
+          </FormProvider>
+          <Box display={'flex'} justifyContent={'center'} className='mt-5'>
+            <Button
+              variant='text'
+              onClick={() => {
+                history.push(RoutePathsEnum.SignupPage);
+              }}
+            >
+              Đăng ký
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };

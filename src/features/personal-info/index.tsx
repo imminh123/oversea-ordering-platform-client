@@ -9,6 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGetInfo } from './api/useGetInfo';
 import { UpdateInfoDTO, useUpdateInfo } from './api/useUpdateInfo';
+import { Helmet } from 'react-helmet';
 
 interface IFormInput {
   fullname: string;
@@ -86,6 +87,9 @@ export const PersonalInfo = () => {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Thông tin</title>
+      </Helmet>
       {!!data && !isLoading && (
         <React.Fragment>
           <CssBaseline />

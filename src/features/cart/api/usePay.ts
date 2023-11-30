@@ -5,10 +5,8 @@ import { useMutation } from 'react-query';
 import { AddressRes } from './useGetAddressListing';
 import { useHistory } from 'react-router-dom';
 
-export interface ICreateOrderParams {
-  listItemId: string[];
-  addressId: string;
-  wareHouseAddress: string;
+export interface IPayParams {
+  referenceId: string;
 }
 
 interface IOrder {
@@ -25,27 +23,28 @@ interface ICreateOrderNPayRes {
   paymentGatewayUrl: string;
 }
 
-export const createOrderAndPay = async (body: ICreateOrderParams): Promise<ICreateOrderNPayRes> => {
-  const res = (await apiWrapper.post(`/order`, body)) as any;
+export const payOrder = async (body: IPayParams): Promise<ICreateOrderNPayRes> => {
+  const res = (await apiWrapper.post(`/payment`, body)) as any;
   return res.data;
 };
 
-type QueryFnType = typeof createOrderAndPay;
+type QueryFnType = typeof payOrder;
 
-export const useCreateOrderAndPay = (config?: MutationConfig<QueryFnType>) => {
+export const usePayOrder = (config?: MutationConfig<QueryFnType>) => {
   const { alertSuccess, alertError } = useAlert();
   const history = useHistory();
   return useMutation({
-    mutationFn: createOrderAndPay,
+    mutationFn: payOrder,
     onSuccess(data) {
       if (data.paymentGatewayUrl) {
         window.open(data.paymentGatewayUrl, '_blank');
+      }
+      if (data.order.id) {
         history.push({
-          pathname: '/cart/pay',
-          search: `?id=${data.order.id}`,
+          pathname: `/orders/${data.order.id}`,
         });
       }
-      alertSuccess('Tạo đơn hàng thành công');
+      alertSuccess('Thanh toán đơn hàng thành công');
     },
     onError(error) {
       alertError(error.response?.data.message[0]);

@@ -52,8 +52,8 @@ export const OrderDetail = () => {
           <span>
             {data?.data.listItem.map((e) => {
               return (
-                <a href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
-                  <img className='max-w-16 max-h-16 overflow-clip mb-2' src={e.itemImage} alt='cart-item-image' />
+                <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
+                  <img className='max-w-16 max-h-16 overflow-clip mb-2' src={e.itemImage} alt={e.itemName} />
                 </a>
               );
             })}

@@ -26,8 +26,10 @@ import { Edit, Delete } from '@mui/icons-material';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { useDeleteAddress } from './api/useDeleteAddress';
 import { IAddAddressParams, useAddAddress } from './api/useAddAddress';
-import { ICreateOrderParams, useCreateOrder } from './api/useCreateOrderAndPay';
+import { ICreateOrderParams } from './api/useCreateOrderAndPay';
 import useAlert from 'app/hooks/useAlert';
+import { useCreateOrder } from './api/useCreateOrder';
+import { Helmet } from 'react-helmet';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -140,92 +142,96 @@ export const Step2 = () => {
   }, [listAddress?.data]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item md={12} lg={6} width={'100%'}>
-        <Typography variant='h6'>Chọn địa chỉ nhận hàng</Typography>
-        {listAddress && listAddress.data && !loadingAddress && (
-          <RadioGroup
-            aria-labelledby='pick-order-address'
-            value={addressId}
-            onChange={handleRadioChange}
-            name='pick-address'
-          >
-            {listAddress.data.map((add: AddressRes) => {
-              return (
-                <Item key={add.id}>
-                  <FormControlLabel value={add.id} control={<Radio />} label={<Label add={add} />} />
-                  <Box>
-                    <IconButton title='Sửa địa chỉ' color='primary' aria-label='delete'>
-                      <Edit color='primary' />
-                    </IconButton>
-                    <IconButton
-                      title='Xóa địa chỉ'
-                      color='error'
-                      aria-label='delete'
-                      onClick={() => handleDeleteAddress(add.id)}
-                    >
-                      <Delete color='error' />
-                    </IconButton>
-                  </Box>
-                </Item>
-              );
-            })}
-            <Card
-              sx={{
-                minWidth: 275,
-                '&:hover': {
-                  background: '#f2f2f2',
-                },
-              }}
+    <>
+      <Helmet>
+        <title>Đặt hàng</title>
+      </Helmet>
+      <Grid container spacing={2}>
+        <Grid item md={12} lg={6} width={'100%'}>
+          <Typography variant='h6'>Chọn địa chỉ nhận hàng</Typography>
+          {listAddress && listAddress.data && !loadingAddress && (
+            <RadioGroup
+              aria-labelledby='pick-order-address'
+              value={addressId}
+              onChange={handleRadioChange}
+              name='pick-address'
             >
-              <CardContent>
-                <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
+              {listAddress.data.map((add: AddressRes) => {
+                return (
+                  <Item key={add.id}>
+                    <FormControlLabel value={add.id} control={<Radio />} label={<Label add={add} />} />
+                    <Box>
+                      <IconButton title='Sửa địa chỉ' color='primary' aria-label='delete'>
+                        <Edit color='primary' />
+                      </IconButton>
+                      <IconButton
+                        title='Xóa địa chỉ'
+                        color='error'
+                        aria-label='delete'
+                        onClick={() => handleDeleteAddress(add.id)}
+                      >
+                        <Delete color='error' />
+                      </IconButton>
+                    </Box>
+                  </Item>
+                );
+              })}
+              <Card
+                sx={{
+                  minWidth: 275,
+                  '&:hover': {
+                    background: '#f2f2f2',
+                  },
+                }}
+              >
+                <CardContent>
+                  <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
+                  {!addressId && (
+                    <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
+                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                        <Box flex={1}>
+                          <FormInputText name='name' control={control} label='Nguyễn Văn A' />
+                        </Box>
+                        <Box flex={1}>
+                          <FormInputText name='phone' control={control} label='0987654321' />
+                        </Box>
+                      </Box>
+                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                        <Box flex={1}>
+                          <FormInputText name='address' control={control} label='Số 1, ngõ 2, ngách 3...' />
+                        </Box>
+                        <Box flex={1}>
+                          <FormInputText name='mail' control={control} label='abc@gmail.com' />
+                        </Box>
+                      </Box>
+                      <FormAddressInput
+                        defaultVal={{}}
+                        onChangeAdress={(data: any) => {
+                          setLocation(data);
+                        }}
+                      />
+                      <FormInputText name='note' control={control} label='Ví dụ: Chuyển ngoài giờ hành chính...' />
+                    </Box>
+                  )}
+                </CardContent>
                 {!addressId && (
-                  <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-                    <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                      <Box flex={1}>
-                        <FormInputText name='name' control={control} label='Nguyễn Văn A' />
-                      </Box>
-                      <Box flex={1}>
-                        <FormInputText name='phone' control={control} label='0987654321' />
-                      </Box>
+                  <CardActions>
+                    <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                      <Button
+                        onClick={handleSubmit(onSubmit, (err) => {
+                          console.log(err);
+                        })}
+                        variant={'contained'}
+                      >
+                        Thêm địa chỉ
+                      </Button>
                     </Box>
-                    <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                      <Box flex={1}>
-                        <FormInputText name='address' control={control} label='Số 1, ngõ 2, ngách 3...' />
-                      </Box>
-                      <Box flex={1}>
-                        <FormInputText name='mail' control={control} label='abc@gmail.com' />
-                      </Box>
-                    </Box>
-                    <FormAddressInput
-                      defaultVal={{}}
-                      onChangeAdress={(data: any) => {
-                        setLocation(data);
-                      }}
-                    />
-                    <FormInputText name='note' control={control} label='Ví dụ: Chuyển ngoài giờ hành chính...' />
-                  </Box>
+                  </CardActions>
                 )}
-              </CardContent>
-              {!addressId && (
-                <CardActions>
-                  <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                    <Button
-                      onClick={handleSubmit(onSubmit, (err) => {
-                        console.log(err);
-                      })}
-                      variant={'contained'}
-                    >
-                      Thêm địa chỉ
-                    </Button>
-                  </Box>
-                </CardActions>
-              )}
-            </Card>
-          </RadioGroup>
-        )}
-        {/* <Box className='w-full mt-4'>
+              </Card>
+            </RadioGroup>
+          )}
+          {/* <Box className='w-full mt-4'>
           <TextField
             label={'Chọn kho hàng'}
             className='w-full'
@@ -235,10 +241,11 @@ export const Step2 = () => {
             }}
           />
         </Box> */}
+        </Grid>
+        <Grid item md={12} lg={6} width={'100%'}>
+          <TotalCart order={handleOrder} />
+        </Grid>
       </Grid>
-      <Grid item md={12} lg={6} width={'100%'}>
-        <TotalCart order={handleOrder} />
-      </Grid>
-    </Grid>
+    </>
   );
 };
