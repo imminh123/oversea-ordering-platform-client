@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   CircularProgress,
-  Pagination,
   Paper,
   Table,
   TableBody,
@@ -17,6 +16,8 @@ import { CartResponse, useListCartCategories } from '../api/useCartCategoriesLis
 import { CartRow } from './CartRow';
 import { useEffect, useMemo, useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
+import { useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -27,8 +28,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
-  const [page, setPage] = useState<number>(1);
-  const { data: cartItems, isLoading: loadingCart } = useListCartCategories(page);
+  const history = useHistory();
+  const locationSearch = history.location.search;
+  const queryObject: any = queryString.parse(locationSearch);
+  const cartIds = queryObject.ids?.split(',');
+  const { data: cartItems, isLoading: loadingCart } = useListCartCategories(cartIds);
   const defaultListSelectedIds = useMemo(() => {
     const listIds = cartItems && cartItems?.data.length > 0 ? cartItems?.data.map((mem) => mem.id) : [];
     return listIds;
@@ -36,10 +40,6 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
 
   const [selectAll, setSelectAll] = useState(true);
   const [listSelected, setListSelected] = useState<Array<string>>(defaultListSelectedIds);
-  const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectAll(event.target.checked);
@@ -115,7 +115,6 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               ))}
             </TableBody>
           </Table>
-          <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
           <Box
             display={'flex'}
             flexDirection={'column'}
@@ -128,7 +127,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
             <Button color='warning' variant='contained' onClick={() => order(listSelected)}>
-              ĐẶT HÀNG & THANH TOÁN
+              TẠO ĐƠN HÀNG
             </Button>
           </Box>
         </TableContainer>

@@ -1,5 +1,6 @@
 import { CssBaseline, Container, Grid, Card, Button, CardActions, CardContent, Typography } from '@mui/material';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
 
 interface Props {}
@@ -8,6 +9,9 @@ export const HomePage: React.FC<Props> = () => {
   const history = useHistory();
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Trang chủ</title>
+      </Helmet>
       <CssBaseline />
       <Container>
         <Grid container spacing={2} marginTop={'20px'}>

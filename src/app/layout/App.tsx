@@ -66,6 +66,7 @@ function App() {
           return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
         })}
       </LayoutPage>
+      // TODO: fix not redirect to 404 page
       <Route path='*' component={NotFoundPage} />
     </Switch>
   );

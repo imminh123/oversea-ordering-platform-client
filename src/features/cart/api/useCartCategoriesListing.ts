@@ -1,6 +1,5 @@
 import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
-import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
 
 export interface CartResponse {
@@ -24,18 +23,16 @@ export interface CartResponse {
   vnPrice: string;
 }
 
-export const listCartCategories = async (
-  page: number,
-): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
-  return apiWrapper.get(`/cart`, { page, perPage: 10 });
+export const listCartCategories = async (cartIds: string[]): Promise<{ data: CartResponse[] }> => {
+  return apiWrapper.get(`/cart`, { cartIds });
 };
 
 type QueryFnType = typeof listCartCategories;
 
-export const useListCartCategories = (page: number, config?: QueryConfig<QueryFnType>) => {
+export const useListCartCategories = (cartIds: string[], config?: QueryConfig<QueryFnType>) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useListCartCategories', page],
-    queryFn: () => listCartCategories(page),
+    queryKey: ['useListCartCategories', cartIds],
+    queryFn: () => listCartCategories(cartIds),
     ...config,
   });
 };

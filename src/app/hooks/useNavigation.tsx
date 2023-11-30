@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Home, TextSnippet } from '@mui/icons-material';
+import { Home, TextSnippet, Search as SearchIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -15,10 +15,13 @@ const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
 const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListing');
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 const { OrderDetail } = lazyImport(() => import('features/order/components/OrderDetails'), 'OrderDetail');
+const { Search } = lazyImport(() => import('features/search'), 'Search');
 
 function useNavigation() {
   const history = useHistory();
   const { setSidebarActive, setSidebarExpandKey, sidebarExpandKey } = useUI();
+
+  // This routes use inside layout
   const routes: IRoute[] = React.useMemo(() => {
     const result: IRoute[] = [
       {
@@ -52,6 +55,12 @@ function useNavigation() {
         component: <Cart />,
       },
       {
+        key: RouteKeysEnum.Search,
+        exact: true,
+        path: RoutePathsEnum.Search,
+        component: <Search />,
+      },
+      {
         key: RouteKeysEnum.PersonalInfo,
         exact: true,
         path: RoutePathsEnum.PersonalInfo,
@@ -80,6 +89,13 @@ function useNavigation() {
             link: SidebarLinksEnum.Orders,
             icon: <TextSnippet />,
             label: 'Đơn hàng',
+          },
+          {
+            key: SidebarKeysEnum.Search,
+            parentKey: null,
+            link: SidebarLinksEnum.Search,
+            icon: <SearchIcon />,
+            label: 'Tìm kiếm sản phẩm',
           },
         ],
       },

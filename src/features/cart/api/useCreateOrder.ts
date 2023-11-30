@@ -20,29 +20,24 @@ interface IOrder {
   userId: string;
   wareHouseAddress: string;
 }
-interface ICreateOrderNPayRes {
-  order: IOrder;
-  paymentGatewayUrl: string;
-}
 
-export const createOrderAndPay = async (body: ICreateOrderParams): Promise<ICreateOrderNPayRes> => {
-  const res = (await apiWrapper.post(`/order`, body)) as any;
+export const createOrder = async (body: ICreateOrderParams): Promise<IOrder> => {
+  const res = (await apiWrapper.post(`/order/createOrder`, body)) as any;
   return res.data;
 };
 
-type QueryFnType = typeof createOrderAndPay;
+type QueryFnType = typeof createOrder;
 
-export const useCreateOrderAndPay = (config?: MutationConfig<QueryFnType>) => {
+export const useCreateOrder = (config?: MutationConfig<QueryFnType>) => {
   const { alertSuccess, alertError } = useAlert();
   const history = useHistory();
   return useMutation({
-    mutationFn: createOrderAndPay,
+    mutationFn: createOrder,
     onSuccess(data) {
-      if (data.paymentGatewayUrl) {
-        window.open(data.paymentGatewayUrl, '_blank');
+      if (data.id) {
         history.push({
           pathname: '/cart/pay',
-          search: `?id=${data.order.id}`,
+          search: `?id=${data.id}`,
         });
       }
       alertSuccess('Tạo đơn hàng thành công');

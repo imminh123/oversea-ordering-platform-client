@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { envConfig } from 'configs/env.config';
 import storage from 'app/utils/storage';
+import queryString from 'query-string';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
 
@@ -9,6 +10,7 @@ const axiosClient: AxiosInstance = axios.create({
   headers: {
     'content-type': 'application/json',
   },
+  paramsSerializer: (params) => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use(async (config) => {
