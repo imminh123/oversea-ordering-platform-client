@@ -18,6 +18,7 @@ import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetai
 import { formatMoneyToVND } from 'app/utils/helper';
 import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -74,36 +75,41 @@ export const OrderListing = () => {
     setPage(value);
   };
   return (
-    <Container className='mt-5'>
-      {!!cartItems && !!cartItems?.data.length && !isLoading && (
-        <TableContainer component={Paper} elevation={3}>
-          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Sản phẩm</TableCell>
-                <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
-                  Trạng thái
-                </TableCell>
-                <TableCell className=' min-w-[150px]'>Người nhận</TableCell>
-                <TableCell align='right'>Kho hàng</TableCell>
-                <TableCell align='right'>Tiền hàng</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {cartItems?.data.map((row: IOrderStatusRes) => (
-                <OrderRow key={row.id} item={row} />
-              ))}
-            </TableBody>
-          </Table>
-          <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-        </TableContainer>
-      )}
-      {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
-      {isLoading && (
-        <Item elevation={3}>
-          <CircularProgress />
-        </Item>
-      )}
-    </Container>
+    <>
+      <Helmet>
+        <title>Đơn hàng</title>
+      </Helmet>
+      <Container className='mt-5'>
+        {!!cartItems && !!cartItems?.data.length && !isLoading && (
+          <TableContainer component={Paper} elevation={3}>
+            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sản phẩm</TableCell>
+                  <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+                    Trạng thái
+                  </TableCell>
+                  <TableCell className=' min-w-[150px]'>Người nhận</TableCell>
+                  <TableCell align='right'>Kho hàng</TableCell>
+                  <TableCell align='right'>Tiền hàng</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {cartItems?.data.map((row: IOrderStatusRes) => (
+                  <OrderRow key={row.id} item={row} />
+                ))}
+              </TableBody>
+            </Table>
+            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
+          </TableContainer>
+        )}
+        {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
+        {isLoading && (
+          <Item elevation={3}>
+            <CircularProgress />
+          </Item>
+        )}
+      </Container>
+    </>
   );
 };

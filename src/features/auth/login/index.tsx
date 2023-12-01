@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { TLoginArgs } from 'app/api/authAPI';
 import { loginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';

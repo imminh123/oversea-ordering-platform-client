@@ -29,7 +29,7 @@ import { IAddAddressParams, useAddAddress } from './api/useAddAddress';
 import { ICreateOrderParams } from './api/useCreateOrderAndPay';
 import useAlert from 'app/hooks/useAlert';
 import { useCreateOrder } from './api/useCreateOrder';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
