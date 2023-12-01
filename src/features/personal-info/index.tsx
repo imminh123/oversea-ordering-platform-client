@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGetInfo } from './api/useGetInfo';
 import { UpdateInfoDTO, useUpdateInfo } from './api/useUpdateInfo';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 interface IFormInput {
   fullname: string;

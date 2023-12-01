@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { signupValidator } from 'app/utils/validators';

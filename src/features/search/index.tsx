@@ -1,6 +1,6 @@
 import { Box, Container, Input, Paper, TextField, styled } from '@mui/material';
 import { useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { SortOption, useSearchItem } from './api/useSearchItem';
 import { debounce } from 'lodash';
 

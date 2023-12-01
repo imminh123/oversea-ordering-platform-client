@@ -24,7 +24,7 @@ import { CartItemV2, useListCartCategoriesV2 } from './api/useCartCategoriesList
 import { Step1CartRow } from './components/Step1CartRow';
 import queryString from 'query-string';
 import { useMemo, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const SumaryInfo = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
