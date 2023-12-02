@@ -17,6 +17,7 @@ export const useDeleteCartItem = (config?: MutationConfig<QueryFnType>) => {
     onSuccess() {
       alertSuccess('Xóa thành công');
       queryClient.invalidateQueries('useListCartCategories');
+      queryClient.invalidateQueries('useListCartCategoriesV2');
     },
     onError(error) {
       alertError(error.message);

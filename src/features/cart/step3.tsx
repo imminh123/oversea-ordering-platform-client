@@ -7,6 +7,7 @@ import moment from 'moment';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { usePayOrder } from './api/usePay';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 export const Step3 = () => {
   const { search } = useLocation();

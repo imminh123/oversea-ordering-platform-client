@@ -1,10 +1,13 @@
-import { Box, Container, Divider, Paper, Typography, styled } from '@mui/material';
-import { formatMoneyToVND } from 'app/utils/helper';
+import { Box, Button, Container, Divider, Paper, Typography, styled } from '@mui/material';
+import { formatMoneyToCN, formatMoneyToVND } from 'app/utils/helper';
 import { useParams } from 'react-router-dom';
 import { useGetOrder } from '../api/useOrderDetail';
 import { mappingStatus } from '..';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
+import { usePayOrder } from 'features/cart/api/usePay';
+import { Payments } from '@mui/icons-material';
+import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 
 const Card = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -21,6 +24,10 @@ const Card = styled(Paper)(({ theme }) => ({
 export const OrderDetail = () => {
   const param: { id: string } = useParams();
   const { data } = useGetOrder(param.id);
+  const { mutateAsync: pay } = usePayOrder();
+  const handlePay = () => {
+    pay({ referenceId: param.id });
+  };
   return (
     <>
       <Helmet>
@@ -28,9 +35,16 @@ export const OrderDetail = () => {
       </Helmet>
       <Container className='mt-5'>
         <Card variant='elevation'>
-          <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
-            Chi tiết đơn hàng
-          </Typography>
+          <Box className='flex justify-between'>
+            <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
+              Chi tiết đơn hàng
+            </Typography>
+            {!!data?.data.status && data?.data.status !== OrderStatus.SUCCEEDED && (
+              <Button variant='outlined' startIcon={<Payments />} onClick={handlePay} size='small'>
+                Thanh toán lại
+              </Button>
+            )}
+          </Box>
           <Box display={'flex'} className=' justify-between'>
             <span>Trạng thái:</span>
             <span>{mappingStatus(data?.data.status)}</span>
@@ -55,11 +69,19 @@ export const OrderDetail = () => {
           <Box display={'flex'} className=' justify-between'>
             <span>Sản phẩm:</span>
             <span>
-              {data?.data.listItem.map((e) => {
+              {data?.data.listItem.map((e, index) => {
                 return (
-                  <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
-                    <img className='max-w-16 max-h-16 overflow-clip mb-2' src={e.itemImage} alt={e.itemName} />
-                  </a>
+                  <div key={index} className='flex justify-between'>
+                    <div className='flex flex-col justify-start items-start'>
+                      <span>Tên: {e.itemName}</span>
+                      <span>
+                        Số lượng: {e.quantity} x Đơn giá: {formatMoneyToVND(e.vnCost)}
+                      </span>
+                    </div>
+                    <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
+                      <img className='max-w-16 max-h-16 overflow-clip mb-2 ml-2' src={e.image} alt={e.itemName} />
+                    </a>
+                  </div>
                 );
               })}
             </span>

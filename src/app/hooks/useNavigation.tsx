@@ -16,6 +16,7 @@ const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListin
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 const { OrderDetail } = lazyImport(() => import('features/order/components/OrderDetails'), 'OrderDetail');
 const { Search } = lazyImport(() => import('features/search'), 'Search');
+const { ItemDetail } = lazyImport(() => import('features/search/components/ItemDetail'), 'ItemDetail');
 
 function useNavigation() {
   const history = useHistory();
@@ -59,6 +60,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.Search,
         component: <Search />,
+      },
+      {
+        key: RouteKeysEnum.SearchResult,
+        exact: true,
+        path: RoutePathsEnum.SearchResult,
+        component: <ItemDetail />,
       },
       {
         key: RouteKeysEnum.PersonalInfo,

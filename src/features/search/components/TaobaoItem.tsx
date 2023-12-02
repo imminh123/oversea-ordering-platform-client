@@ -6,15 +6,19 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { ISearchRes } from '../api/useSearchItem';
 import { formatMoneyToCN } from 'app/utils/helper';
+import { useHistory } from 'react-router-dom';
 
 export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
+  const history = useHistory();
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia sx={{ height: 140 }} image={`https:${item.pic}`} title={item.title} />
       <CardContent>
-        <Typography variant='body2' color='text.secondary'>
-          {item.title}
-        </Typography>
+        <a href={`http:${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
+          <Typography variant='body2' color='text.secondary'>
+            {item.title}
+          </Typography>
+        </a>
         <Typography gutterBottom variant='body2' component='div' className='mt-2 line-through'>
           Giá cũ: {formatMoneyToCN(parseFloat(item.price))}
         </Typography>
@@ -23,9 +27,15 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <a href={`http:${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
-          <Button size='small'>Xem trên Taobao</Button>
-        </a>
+        <Button
+          size='small'
+          onClick={() => {
+            history.push(`/search/${item.num_iid}`);
+          }}
+        >
+          Xem thêm
+        </Button>
+        <Button size='small'>Thêm vào giỏ hàng</Button>
       </CardActions>
     </Card>
   );

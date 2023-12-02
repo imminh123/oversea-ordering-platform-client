@@ -17,6 +17,7 @@ export const useUpdateQuantity = (config?: MutationConfig<QueryFnType>) => {
     onSuccess() {
       alertSuccess('Cập nhật thành công');
       queryClient.invalidateQueries('useListCartCategories');
+      queryClient.invalidateQueries('useListCartCategoriesV2');
       queryClient.invalidateQueries('useCalculatePrice');
     },
     onError(error) {

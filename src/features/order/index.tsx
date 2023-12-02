@@ -31,15 +31,15 @@ const Item = styled(Paper)(({ theme }) => ({
 export const mappingStatus = (status?: OrderStatus) => {
   switch (status) {
     case OrderStatus.CREATED:
-      return <Chip label='CREATED' color='primary' variant='outlined' />;
+      return <Chip label='Đã tạo đơn hàng' color='primary' variant='outlined' />;
     case OrderStatus.PENDING_PAYMENT:
-      return <Chip label='PENDING' color='warning' variant='outlined' />;
+      return <Chip label='Đang chờ' color='warning' variant='outlined' />;
     case OrderStatus.DELIVERED:
-      return <Chip label='DELIVERED' color='success' variant='outlined' />;
+      return <Chip label='Đang vận chuyển' color='success' variant='outlined' />;
     case OrderStatus.SUCCEEDED:
-      return <Chip label='SUCCEEDED' color='success' variant='outlined' />;
+      return <Chip label='Thành công' color='success' variant='outlined' />;
     default:
-      return <Chip label='ERROR' color='error' variant='outlined' />;
+      return <Chip label='Lỗi' color='error' variant='outlined' />;
   }
 };
 
