@@ -13,6 +13,10 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
 import { FacebookLoginButton } from './FacebookLoginButton';
+import { envConfig } from 'configs/env.config';
+import { sendTokenToChromeExtension } from 'app/utils/helper';
+import storage from 'app/utils/storage';
+
 interface Props {}
 
 export const LoginPage: React.FC<Props> = () => {
@@ -45,6 +49,9 @@ export const LoginPage: React.FC<Props> = () => {
     } finally {
       setLoading(false);
     }
+
+    const token = storage.getToken();
+    sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
   };
 
   return (

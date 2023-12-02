@@ -5,6 +5,7 @@ export enum RouteKeysEnum {
   OrderDetail = 'order-details',
   Active = 'register',
   Search = 'search',
+  SearchResult = 'search-result',
 
   // auth
   LoginPage = 'login-page',
@@ -23,6 +24,7 @@ export enum RoutePathsEnum {
   Orders = '/orders',
   OrderDetail = '/orders/:id',
   Search = '/search',
+  SearchResult = '/search/:id',
 
   // auth
   LoginPage = '/login',

@@ -98,3 +98,22 @@ export const formatMoneyToVND = (number: number) => {
 
   return formatter.format(number);
 };
+
+export const formatMoneyToCN = (number: number) => {
+  const formatter = new Intl.NumberFormat('zh-CN', {
+    style: 'currency',
+    currency: 'CNY',
+  });
+
+  return formatter.format(number);
+};
+
+export const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: string; jwt: string }) => {
+  chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
+    if (!response.success) {
+      console.log('error sending message', response);
+      return response;
+    }
+    console.log('Sucesss ::: ', response.message);
+  });
+};

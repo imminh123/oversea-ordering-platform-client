@@ -3,7 +3,7 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
 
-interface ISearchRes {
+export interface ISearchRes {
   num_iid: string;
   pic: string;
   title: string;
@@ -28,7 +28,7 @@ interface ISearchParam {
   sort: SortOption;
 }
 export const search = async (param: ISearchParam): Promise<{ data: ISearchRes[]; headers: IPaginationHeader }> => {
-  return apiWrapper.get(`/taobao`, { ...param, perPage: 10 });
+  return apiWrapper.get(`/taobao`, { ...param });
 };
 
 type QueryFnType = typeof search;

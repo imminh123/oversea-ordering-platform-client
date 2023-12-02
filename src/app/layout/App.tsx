@@ -12,16 +12,7 @@ import { GlobalLoading } from './global-loading';
 import { LayoutPage } from './LayoutPage';
 import storage from 'app/utils/storage';
 import { envConfig } from 'configs/env.config';
-
-const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: string; jwt: string }) => {
-  chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
-    if (!response.success) {
-      console.log('error sending message', response);
-      return response;
-    }
-    console.log('Sucesss ::: ', response.message);
-  });
-};
+import { sendTokenToChromeExtension } from 'app/utils/helper';
 
 function App() {
   const { routes, publicRoutes } = useNavigation();

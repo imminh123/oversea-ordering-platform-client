@@ -18,6 +18,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
+import { ChoosePaymentMethod } from './ChoosePaymentMethod';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -40,6 +41,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
 
   const [selectAll, setSelectAll] = useState(true);
   const [listSelected, setListSelected] = useState<Array<string>>(defaultListSelectedIds);
+  const [choosingPay, setChoosingPay] = useState(false);
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectAll(event.target.checked);
@@ -126,9 +128,22 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <span>Tổng tiền hàng:</span>
               <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
-            <Button color='warning' variant='contained' onClick={() => order(listSelected)}>
+            <Button
+              color='warning'
+              variant='contained'
+              onClick={() => {
+                setChoosingPay(true);
+              }}
+            >
               TẠO ĐƠN HÀNG
             </Button>
+            <ChoosePaymentMethod
+              pay={() => {
+                order(listSelected);
+              }}
+              open={choosingPay}
+              setOpen={(val: any) => setChoosingPay(val)}
+            />
           </Box>
         </TableContainer>
       )}
