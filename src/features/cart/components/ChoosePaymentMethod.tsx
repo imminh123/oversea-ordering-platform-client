@@ -13,6 +13,7 @@ export const ChoosePaymentMethod = ({ open, setOpen, pay }: { open: boolean; set
   };
   const handleClose = () => {
     setOpen(false);
+    setSelectedValue('');
   };
 
   return (
@@ -63,7 +64,7 @@ export const ChoosePaymentMethod = ({ open, setOpen, pay }: { open: boolean; set
             >
               <div className='flex justify-between items-center'>
                 <div className='flex gap-1'>
-                  <Radio value='momo' checked={selectedValue === 'momo'} onChange={handleInputChange} />
+                  <Radio disabled value='momo' checked={selectedValue === 'momo'} onChange={handleInputChange} />
                   <img
                     src='https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png'
                     alt='Momo'
@@ -90,7 +91,7 @@ export const ChoosePaymentMethod = ({ open, setOpen, pay }: { open: boolean; set
             >
               <div className='flex justify-between items-center'>
                 <div className='flex gap-1'>
-                  <Radio value='zalopay' checked={selectedValue === 'zalopay'} onChange={handleInputChange} />
+                  <Radio disabled value='zalopay' checked={selectedValue === 'zalopay'} onChange={handleInputChange} />
                   <img
                     src='https://imgs.search.brave.com/G-JsBGx4puWGhlIeBlbKHYFSHWpPAJjS3nKOaKDgPnw/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/aGFpdHJpZXUuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDIy/LzEwL0xvZ28tWmFs/b1BheS5wbmc'
                     alt='Zalopay'
@@ -105,11 +106,11 @@ export const ChoosePaymentMethod = ({ open, setOpen, pay }: { open: boolean; set
         <DialogActions>
           <Button
             onClick={() => {
-              pay();
+              pay(selectedValue);
               handleClose();
             }}
           >
-            Xác nhận
+            THANH TOÁN
           </Button>
         </DialogActions>
       </Dialog>

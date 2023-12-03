@@ -9,17 +9,15 @@ export interface IPayParams {
   referenceId: string;
 }
 
-interface IOrder {
-  address: AddressRes;
+interface ITransaction {
   id: string;
-  listItem: Array<any>;
+  amount: number;
+  referenceId: string;
   status: string;
-  total: number;
   userId: string;
-  wareHouseAddress: string;
 }
 interface ICreateOrderNPayRes {
-  order: IOrder;
+  transaction: ITransaction;
   paymentGatewayUrl: string;
 }
 
@@ -31,7 +29,7 @@ export const payOrder = async (body: IPayParams): Promise<ICreateOrderNPayRes> =
 type QueryFnType = typeof payOrder;
 
 export const usePayOrder = (config?: MutationConfig<QueryFnType>) => {
-  const { alertSuccess, alertError } = useAlert();
+  const { alertError } = useAlert();
   const history = useHistory();
   return useMutation({
     mutationFn: payOrder,
@@ -39,15 +37,14 @@ export const usePayOrder = (config?: MutationConfig<QueryFnType>) => {
       if (data.paymentGatewayUrl) {
         window.open(data.paymentGatewayUrl, '_blank');
       }
-      if (data.order.id) {
+      if (data?.transaction?.referenceId) {
         history.push({
-          pathname: `/orders/${data.order.id}`,
+          pathname: `/orders/${data.transaction.referenceId}`,
         });
       }
-      alertSuccess('Thanh toán đơn hàng thành công');
     },
     onError(error) {
-      alertError(error.response?.data.message[0]);
+      alertError(error.message);
     },
     ...config,
   });

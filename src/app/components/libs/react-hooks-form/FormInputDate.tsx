@@ -15,6 +15,7 @@ export const FormInputDate = ({ name, control, label }: FormInputProps) => {
             <DatePicker
               value={value && new Date(value)}
               onChange={onChange}
+              label={label}
               format='dd/MM/yyyy'
               className='w-full'
               sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}

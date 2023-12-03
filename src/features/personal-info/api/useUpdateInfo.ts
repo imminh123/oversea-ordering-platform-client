@@ -9,9 +9,9 @@ export interface UpdateInfoDTO {
   birthday?: string;
   phone: string;
   address: string;
-  province: string;
-  city: string;
-  ward: string;
+  province?: string;
+  city?: string;
+  ward?: string;
 }
 
 export const updateInfoAPI = ({ body }: { body: UpdateInfoDTO }): Promise<any> => {
