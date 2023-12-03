@@ -109,11 +109,14 @@ export const formatMoneyToCN = (number: number) => {
 };
 
 export const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: string; jwt: string }) => {
-  chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
-    if (!response.success) {
-      console.log(`Error sending message to ${extensionId}`, response);
-      return response;
-    }
-    console.log(`Sucesss sending to ${extensionId}`, response.message);
-  });
+  console.log(`Attempt in sending message to ${extensionId}`);
+  if (chrome.runtime && chrome.runtime.sendMessage) {
+    chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
+      if (!response.success) {
+        console.log(`Error sending message to ${extensionId}`, response);
+        return response;
+      }
+      console.log(`Sucesss sending to ${extensionId}`, response.message);
+    });
+  }
 };
