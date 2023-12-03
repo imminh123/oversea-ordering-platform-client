@@ -112,7 +112,7 @@ export const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: 
   console.log(`Attempt in sending message to ${extensionId}`);
   if (chrome.runtime && chrome.runtime.sendMessage) {
     chrome.runtime.sendMessage(extensionId, { jwt }, (response: any) => {
-      if (!response.success) {
+      if (!response?.success) {
         console.log(`Error sending message to ${extensionId}`, response);
         return response;
       }

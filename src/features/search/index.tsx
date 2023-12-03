@@ -15,7 +15,7 @@ export const Search = () => {
   const queryObject: any = queryString.parse(locationSearch);
   const [page, setPage] = useState<number>(parseInt(queryObject.page) || 1);
   const [q, setQ] = useState(queryObject.q || '');
-  const [sort, setSort] = useState(queryObject.sort || '');
+  const [sort, setSort] = useState(queryObject.sort || SortOption.default);
   const [search, setSearch] = useState(queryObject.q || '');
   const handleInputChange = (event: any) => {
     setSearch(event.target.value);
@@ -34,7 +34,7 @@ export const Search = () => {
       return newVal;
     });
   };
-  const { data, isLoading } = useSearchItem({ q, page, sort }, { enabled: !!q });
+  const { data, isLoading } = useSearchItem({ q, page, sort }, { enabled: !!q, refetchOnWindowFocus: false });
   useEffect(() => {
     const queryObject = { page, q, sort };
     history.push({ search: queryString.stringify(queryObject) });

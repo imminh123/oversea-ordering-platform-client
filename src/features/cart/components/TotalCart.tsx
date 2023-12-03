@@ -74,6 +74,11 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
         }, 0);
     }
   }, [cartItems?.data, listSelected]);
+  const handleSelectMethod = (method: string) => {
+    if (method === 'vnpay') {
+      order(listSelected);
+    }
+  };
 
   useEffect(() => {
     if (cartItems && cartItems?.data.length > 0) {
@@ -135,11 +140,11 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                 setChoosingPay(true);
               }}
             >
-              TẠO ĐƠN HÀNG
+              CHỌN PHƯƠNG THỨC THANH TOÁN
             </Button>
             <ChoosePaymentMethod
-              pay={() => {
-                order(listSelected);
+              pay={(selectedValue: string) => {
+                handleSelectMethod(selectedValue);
               }}
               open={choosingPay}
               setOpen={(val: any) => setChoosingPay(val)}
