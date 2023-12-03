@@ -51,6 +51,11 @@ export const Step3 = () => {
         return <Assignment color='primary' sx={{ height: '160px', width: '160px' }} />;
     }
   };
+  useEffect(() => {
+    if (!isLoading && !!data && id) {
+      pay({ referenceId: id });
+    }
+  }, [isLoading]);
   return (
     <>
       <Helmet>

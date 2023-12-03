@@ -17,9 +17,9 @@ interface IFormInput {
   birthday?: any;
   phone: string;
   address: string;
-  province: string;
-  city: string;
-  ward: string;
+  province?: string;
+  city?: string;
+  ward?: string;
 }
 
 const genderOptions = [
@@ -68,9 +68,9 @@ export const PersonalInfo = () => {
     !!data &&
       reset({
         ...data,
-        province: location.province,
-        city: location.district,
-        ward: location.ward,
+        province: location.province || data?.province,
+        city: location.district || data?.city,
+        ward: location.ward || data?.ward,
       });
   }, [data, location]);
 
@@ -97,24 +97,24 @@ export const PersonalInfo = () => {
             <Card sx={{ minWidth: 275 }} className=' mt-10'>
               <CardContent>
                 <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-                  <Typography variant='h4'>Update Personal Information</Typography>
+                  <Typography variant='h4'>Chỉnh sửa thông tin tài khoản</Typography>
                   <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
                     <Box flex={1}>
-                      <FormInputText name='fullname' control={control} label='Full Name' />
+                      <FormInputText name='fullname' control={control} label='Họ và tên' />
                     </Box>
                     <Box flex={1}>
-                      <FormInputDate name='birthday' control={control} label='Birthday' />
+                      <FormInputDate name='birthday' control={control} label='Ngày sinh' />
                     </Box>
                   </Box>
                   <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
                     <Box flex={1}>
-                      <FormInputText name='phone' control={control} label='Phone' />
+                      <FormInputText name='phone' control={control} label='Sđt' />
                     </Box>
                     <Box flex={1}>
-                      <FormInputDropdown name='gender' control={control} label='Gender' options={genderOptions} />
+                      <FormInputDropdown name='gender' control={control} label='Giới tính' options={genderOptions} />
                     </Box>
                   </Box>
-                  <FormInputText name='address' control={control} label='Address' />
+                  <FormInputText name='address' control={control} label='Địa chỉ' />
                   <FormAddressInput
                     defaultVal={{ province: data?.province, district: data?.city, ward: data?.ward }}
                     onChangeAdress={(data: any) => {
@@ -132,10 +132,10 @@ export const PersonalInfo = () => {
                     variant={'contained'}
                     disabled={isUpdating}
                   >
-                    Save
+                    Lưu
                   </Button>
                   <Button onClick={() => reset()} variant={'outlined'}>
-                    Cancel
+                    Hủy
                   </Button>
                 </Box>
               </CardActions>
