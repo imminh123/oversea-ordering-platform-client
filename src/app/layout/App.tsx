@@ -4,6 +4,7 @@ import useNavigation from 'app/hooks/useNavigation';
 import { RoutePathsEnum } from 'configs/route.config';
 import { LoginPage } from 'features/auth/login';
 import { SignupPage } from 'features/auth/signup';
+/*global chrome*/
 import { NotFoundPage } from 'features/not-found';
 import { ActivePage } from 'pages/ActiveAccount';
 import { useEffect } from 'react';
