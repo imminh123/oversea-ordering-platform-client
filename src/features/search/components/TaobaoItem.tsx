@@ -11,14 +11,34 @@ import { useHistory } from 'react-router-dom';
 export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
   const history = useHistory();
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia sx={{ height: 140 }} image={`https:${item.pic}`} title={item.title} />
+    <Card sx={{ maxWidth: 345 }} className='flex flex-col justify-between'>
+      <CardMedia
+        sx={{
+          height: 140,
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'transform 0.3s',
+          '&:hover': {
+            transform: 'scale(1.1)', // Apply scale transform on hover
+          },
+          '&:hover::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change background color on hover
+            transition: 'background-color 0.3s',
+          },
+        }}
+        image={`https:${item.pic}`}
+        title={item.title}
+      />
       <CardContent>
-        <a href={`http:${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
-          <Typography variant='body2' color='text.secondary'>
-            {item.title}
-          </Typography>
-        </a>
+        <Typography variant='body2' color='text.secondary'>
+          {item.title}
+        </Typography>
         <Typography gutterBottom variant='body2' component='div' className='mt-2 line-through'>
           Giá cũ: {formatMoneyToCN(parseFloat(item.price))}
         </Typography>
@@ -26,16 +46,21 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
           Giá mới: {formatMoneyToCN(parseFloat(item.promotion_price))}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className='flex justify-between'>
         <Button
           size='small'
+          variant='contained'
           onClick={() => {
             history.push(`/search/${item.num_iid}`);
           }}
         >
-          Xem thêm
+          Chi tiết
         </Button>
-        <Button size='small'>Thêm vào giỏ hàng</Button>
+        <a href={`http:${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
+          <Button variant='contained' size='small'>
+            Mở trên Taobao
+          </Button>
+        </a>
       </CardActions>
     </Card>
   );

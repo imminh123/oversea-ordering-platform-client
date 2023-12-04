@@ -74,7 +74,7 @@ export const Search = () => {
         </Box>
         {!!data && !isLoading && !!data?.data.length && (
           <>
-            <div className='grid grid-cols-4 gap-4 auto-rows-max'>
+            <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 auto-rows-max'>
               {data?.data.map((item) => (
                 <TaobaoItem key={item.num_iid} item={item} />
               ))}
