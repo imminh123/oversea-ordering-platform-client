@@ -2,7 +2,7 @@ import { Box, Button, CardMedia, Container, Grid, TextField, Typography, styled 
 import { Helmet } from 'react-helmet-async';
 import { useGetSearchItemDetail } from '../api/useGetSearchDetail';
 import { useParams } from 'react-router-dom';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { formatMoneyToCN } from 'app/utils/helper';
 import { SkuList } from './SkuList';
 import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
@@ -16,10 +16,6 @@ export const ItemDetail = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const handleMapChange = (newMap: any) => {
     const updatedMap = new Map([...mapPVid, ...newMap]);
-    console.log(
-      `🚀🚀🚀 ~ file: ItemDetail.tsx:15 ~ handleMapChange ~ updatedMap:`,
-      Array.from(updatedMap).map(([key, value]) => `${key}:${value}`),
-    );
     setMapPVid(updatedMap);
   };
   const { alertError } = useAlert();
