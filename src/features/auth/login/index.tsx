@@ -80,8 +80,8 @@ export const LoginPage: React.FC<Props> = () => {
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
-                <HooksFormInputTextField fieldName={'username'} label={'Email'} />
-                <HooksFormInputTextField fieldName={'password'} label={'Mật khẩu'} type={'password'} />
+                <HooksFormInputTextField type='email' name='email' fieldName={'username'} label={'Email'} />
+                <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <LoadingButton
                   variant='contained'
                   loadingIndicator='Loading...'

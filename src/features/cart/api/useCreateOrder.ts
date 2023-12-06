@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 export interface ICreateOrderParams {
   listItemId: string[];
   addressId: string;
-  wareHouseAddress: string;
+  wareHouseAddress?: string;
 }
 
 interface IOrder {
@@ -18,7 +18,7 @@ interface IOrder {
   status: string;
   total: number;
   userId: string;
-  wareHouseAddress: string;
+  wareHouseAddress?: string;
 }
 
 export const createOrder = async (body: ICreateOrderParams): Promise<IOrder> => {

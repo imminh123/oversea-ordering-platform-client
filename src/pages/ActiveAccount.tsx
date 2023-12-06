@@ -24,7 +24,7 @@ export const ActivePage: React.FC<Props> = () => {
         }}
       >
         <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-          OVERSEA ORDER PLATFORM
+          MBY Logistics
         </Typography>
         <Box display={'flex'} justifyContent={'center'} className='mt-5'>
           <Button

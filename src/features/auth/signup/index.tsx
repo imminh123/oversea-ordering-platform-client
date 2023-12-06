@@ -56,9 +56,9 @@ export const SignupPage: React.FC<Props> = () => {
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
-                <HooksFormInputTextField fieldName={'mail'} label={'Email'} />
-                <HooksFormInputTextField fieldName={'phone'} label={'Số điện thoại'} />
-                <HooksFormInputTextField fieldName={'password'} label={'Mật khẩu'} type={'password'} />
+                <HooksFormInputTextField name='email' fieldName={'mail'} label={'Email'} />
+                <HooksFormInputTextField name='phone_number' fieldName={'phone'} label={'Số điện thoại'} />
+                <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <HooksFormInputTextField fieldName={'confirmPassword'} label={'Nhập lại mật khẩu'} type={'password'} />
                 <HooksFormInputTextField fieldName={'wareHouseAddress'} label={'Kho nhận hàng'} />
                 <LoadingButton

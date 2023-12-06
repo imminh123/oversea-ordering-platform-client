@@ -1,5 +1,6 @@
 import './404.css';
-export const NotFoundPage = () => {
+interface Props {}
+export const NotFoundPage: React.FC<Props> = () => {
   return (
     <div className='bg-gray-100 h-screen justify-center'>
       <div className='m-auto pt-30 flex flex-col items-center justify-center'>

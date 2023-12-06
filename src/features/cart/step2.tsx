@@ -59,7 +59,6 @@ export const Step2 = () => {
   const { alertError } = useAlert();
 
   const [addressId, setAddressId] = useState('');
-  const [wareHouseAddress, setWareHouseAddress] = useState('');
   const { mutateAsync: deleteAddress } = useDeleteAddress();
   const { mutateAsync: addAddress } = useAddAddress();
   const { mutateAsync: createOrder } = useCreateOrder();
@@ -117,7 +116,6 @@ export const Step2 = () => {
     const body: ICreateOrderParams = {
       listItemId: ids,
       addressId,
-      wareHouseAddress,
     };
     if (!addressId) {
       chooseAdress.current?.focus();
@@ -231,16 +229,6 @@ export const Step2 = () => {
               </Card>
             </RadioGroup>
           )}
-          {/* <Box className='w-full mt-4'>
-          <TextField
-            label={'Chọn kho hàng'}
-            className='w-full'
-            value={wareHouseAddress}
-            onChange={(e) => {
-              setWareHouseAddress(e.target.value);
-            }}
-          />
-        </Box> */}
         </Grid>
         <Grid item md={12} lg={6} width={'100%'}>
           <TotalCart order={handleOrder} />
