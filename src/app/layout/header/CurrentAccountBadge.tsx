@@ -84,13 +84,13 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
           <ListItemIcon>
             <Person fontSize='small' />
           </ListItemIcon>
-          Personal Info
+          Thông tin cá nhân
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize='small' />
           </ListItemIcon>
-          Logout
+          Đăng xuất
         </MenuItem>
       </Menu>
     </Box>

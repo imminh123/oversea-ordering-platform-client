@@ -1,4 +1,4 @@
-# oversea-ordering-platform-client
+# MBY Logistics
 
 ## Technologies
 
@@ -27,5 +27,7 @@ and [docker compose](https://docs.docker.com/compose/install/)
 Run this command line
 
 ```
-docker-compose up
+npm install
+
+npm run start
 ```

@@ -24,15 +24,15 @@ interface IFormInput {
 
 const genderOptions = [
   {
-    label: 'Male',
+    label: 'Nam',
     value: 'male',
   },
   {
-    label: 'Female',
+    label: 'Nữ',
     value: 'female',
   },
   {
-    label: 'Other',
+    label: 'Khác',
     value: 'other',
   },
 ];
@@ -134,7 +134,7 @@ export const PersonalInfo = () => {
                   >
                     Lưu
                   </Button>
-                  <Button onClick={() => reset()} variant={'outlined'}>
+                  <Button onClick={() => reset(defaultValues)} variant={'outlined'}>
                     Hủy
                   </Button>
                 </Box>

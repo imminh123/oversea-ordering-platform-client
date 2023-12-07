@@ -4,6 +4,7 @@ import {
   Checkbox,
   CircularProgress,
   Paper,
+  Radio,
   Table,
   TableBody,
   TableCell,
@@ -41,7 +42,10 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
 
   const [selectAll, setSelectAll] = useState(true);
   const [listSelected, setListSelected] = useState<Array<string>>(defaultListSelectedIds);
-  const [choosingPay, setChoosingPay] = useState(false);
+  const [selectedPayMethod, setSelectedPayMethod] = useState('vnpay');
+  const handleInputChange = (event: any) => {
+    setSelectedPayMethod(event.target.value);
+  };
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectAll(event.target.checked);
@@ -74,8 +78,9 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
         }, 0);
     }
   }, [cartItems?.data, listSelected]);
-  const handleSelectMethod = (method: string) => {
-    if (method === 'vnpay') {
+
+  const handleSelectMethod = () => {
+    if (selectedPayMethod === 'vnpay') {
       order(listSelected);
     }
   };
@@ -133,22 +138,96 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <span>Tổng tiền hàng:</span>
               <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
             </Box>
-            <Button
-              color='warning'
-              variant='contained'
-              onClick={() => {
-                setChoosingPay(true);
-              }}
-            >
-              CHỌN PHƯƠNG THỨC THANH TOÁN
+
+            <Box className='w-full flex flex-col items-center gap-3'>
+              <input
+                type='radio'
+                id='vn-pay'
+                name='payment-method'
+                value='vnpay'
+                checked={selectedPayMethod === 'vnpay'}
+                onChange={handleInputChange}
+                className='hidden peer/vnpay'
+              />
+              <label
+                htmlFor='vn-pay'
+                className='cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/vnpay:border-sky-500 hover:bg-slate-200 hover:shadow-lg'
+              >
+                <div className='flex justify-between items-center'>
+                  <div className='flex gap-1'>
+                    <Radio value='vnpay' checked={selectedPayMethod === 'vnpay'} onChange={handleInputChange} />
+                    <img
+                      src='https://www.ppro.com/wp-content/uploads/2021/06/VNPAYQR-logo.png'
+                      alt='vn-pay'
+                      className='w-auto h-10 bg-cover object-cover'
+                    />
+                  </div>
+                  <span>Ví điện tử VNPAY/ VNPAY QR</span>
+                </div>
+              </label>
+
+              <input
+                type='radio'
+                id='momo'
+                disabled
+                name='payment-method'
+                value='momo'
+                checked={selectedPayMethod === 'momo'}
+                onChange={handleInputChange}
+                className='hidden peer/momo'
+              />
+              <label
+                htmlFor='momo'
+                className='cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/momo:border-sky-500 peer-disabled/momo:border-slate-200 peer-disabled/momo:bg-slate-200 peer-disabled/momo:cursor-not-allowed hover:bg-slate-200 hover:shadow-lg'
+              >
+                <div className='flex justify-between items-center'>
+                  <div className='flex gap-1'>
+                    <Radio disabled value='momo' checked={selectedPayMethod === 'momo'} onChange={handleInputChange} />
+                    <img
+                      src='https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png'
+                      alt='Momo'
+                      className='w-auto h-10 bg-cover object-cover'
+                    />
+                  </div>
+                  <span>Thanh toán MoMo</span>
+                </div>
+              </label>
+
+              <input
+                type='radio'
+                id='zalopay'
+                disabled
+                name='payment-method'
+                value='zalopay'
+                checked={selectedPayMethod === 'zalopay'}
+                onChange={handleInputChange}
+                className='hidden peer/zalopay'
+              />
+              <label
+                htmlFor='zalopay'
+                className='cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/zalopay:border-sky-500 peer-disabled/zalopay:border-slate-200 peer-disabled/zalopay:bg-slate-200 peer-disabled/zalopay:cursor-not-allowed hover:bg-slate-200 hover:shadow-lg'
+              >
+                <div className='flex justify-between items-center'>
+                  <div className='flex gap-1'>
+                    <Radio
+                      disabled
+                      value='zalopay'
+                      checked={selectedPayMethod === 'zalopay'}
+                      onChange={handleInputChange}
+                    />
+                    <img
+                      src='https://imgs.search.brave.com/G-JsBGx4puWGhlIeBlbKHYFSHWpPAJjS3nKOaKDgPnw/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/aGFpdHJpZXUuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDIy/LzEwL0xvZ28tWmFs/b1BheS5wbmc'
+                      alt='Zalopay'
+                      className='w-auto h-10 bg-cover object-cover'
+                    />
+                  </div>
+                  <span>Ví điện tử ZaloPay</span>
+                </div>
+              </label>
+            </Box>
+            <Button color='warning' variant='contained' onClick={handleSelectMethod}>
+              THANH TOÁN
             </Button>
-            <ChoosePaymentMethod
-              pay={(selectedValue: string) => {
-                handleSelectMethod(selectedValue);
-              }}
-              open={choosingPay}
-              setOpen={(val: any) => setChoosingPay(val)}
-            />
           </Box>
         </TableContainer>
       )}
