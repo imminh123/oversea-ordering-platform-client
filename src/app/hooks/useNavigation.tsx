@@ -81,7 +81,7 @@ function useNavigation() {
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
-        name: 'Menu',
+        name: '',
         sidebars: [
           {
             key: SidebarKeysEnum.HomePage,

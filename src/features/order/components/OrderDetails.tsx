@@ -5,10 +5,10 @@ import { useGetOrder } from '../api/useOrderDetail';
 import { mappingStatus } from '..';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
-import { usePayOrder } from 'features/cart/api/usePay';
 import { Payments } from '@mui/icons-material';
 import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import Spinner from 'app/layout/async/Spinner';
+import { useRePay } from '../api/useRePay';
 
 const Card = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -25,9 +25,9 @@ const Card = styled(Paper)(({ theme }) => ({
 export const OrderDetail = () => {
   const param: { id: string } = useParams();
   const { data, isLoading } = useGetOrder(param.id);
-  const { mutateAsync: pay } = usePayOrder();
+  const { mutateAsync: rePay } = useRePay();
   const handlePay = () => {
-    pay({ referenceId: param.id });
+    rePay({ orderId: param.id });
   };
   const payAgain =
     !!data?.data.status && data?.data.status !== OrderStatus.SUCCEEDED && data?.data.status !== OrderStatus.DELIVERED;
@@ -77,9 +77,12 @@ export const OrderDetail = () => {
                   return (
                     <div key={index} className='flex justify-between'>
                       <div className='flex flex-col justify-start items-start'>
-                        <span>Tên: {e.itemName}</span>
                         <span>
-                          Số lượng: {e.quantity} x Đơn giá: {formatMoneyToVND(e.vnCost)}
+                          Tên: <span className='text-cyan-500'>{e.itemName}</span>
+                        </span>
+                        <span>
+                          Số lượng: <span className='text-cyan-500'>{e.quantity}</span> x Đơn giá:{' '}
+                          <span className='text-cyan-500'>{formatMoneyToVND(e.vnCost)}</span>
                         </span>
                       </div>
                       <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
