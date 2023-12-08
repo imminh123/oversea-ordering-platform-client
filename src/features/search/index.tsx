@@ -25,6 +25,7 @@ export const Search = () => {
       setQ(e.target.value);
     }
   };
+
   const handleChangePage = (p: number) => {
     setPage((prev) => {
       const newVal = p + prev;
@@ -58,7 +59,7 @@ export const Search = () => {
               InputProps={{
                 endAdornment: (
                   <>
-                    <IconButton aria-label='search icon' edge='end' onClick={handleKeyPress}>
+                    <IconButton aria-label='search icon' edge='end' onClick={() => setQ(search)}>
                       <SearchIcon color='primary' />
                     </IconButton>
                     <SelectSort
