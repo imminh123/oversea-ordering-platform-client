@@ -9,7 +9,7 @@ import { NotFoundPage } from 'features/not-found';
 import { ActivePage } from 'pages/ActiveAccount';
 
 import { useEffect } from 'react';
-import { Route, Switch, matchPath, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, matchPath, useHistory } from 'react-router-dom';
 import { GlobalLoading } from './global-loading';
 import { LayoutPage } from './LayoutPage';
 import storage from 'app/utils/storage';
@@ -52,26 +52,23 @@ function App() {
 
   return (
     <Switch>
-      <Route exact={true} path={RoutePathsEnum.LoginPage} component={LoginPage} />
-      <Route exact={true} path={RoutePathsEnum.SignupPage} component={SignupPage} />
-      <Route exact={true} path={RoutePathsEnum.Active} component={ActivePage} />
-      <Route>
+      <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
+      <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
+      <Route exact path={RoutePathsEnum.Active} component={ActivePage} />
+
+      <LayoutPage>
         <Switch>
-          <LayoutPage>
-            {routes.map((route) => {
-              return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
-            })}
-          </LayoutPage>
+          {routes.map((route) => {
+            return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
+          })}
+
+          <Route path={'/admin/:path?'} exact>
+            <Route exact={true} path={RoutePathsEnum.AdminHome} component={LoginPage} />
+          </Route>
+
+          <Route component={NotFoundPage} />
         </Switch>
-      </Route>
-      <Route path={'/admin/:path?'} exact>
-        <Switch>
-          <LayoutPage>
-            <Route exact={true} path={RoutePathsEnum.AdminHome} component={HomePage} />
-          </LayoutPage>
-        </Switch>
-      </Route>
-      <Route path='*' component={NotFoundPage} />
+      </LayoutPage>
     </Switch>
   );
 }

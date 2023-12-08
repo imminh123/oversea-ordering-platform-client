@@ -1,6 +1,10 @@
+import { useHistory } from 'react-router-dom';
 import './404.css';
+import { Button } from '@mui/material';
 interface Props {}
 export const NotFoundPage: React.FC<Props> = () => {
+  const history = useHistory();
+
   return (
     <div className='bg-gray-100 h-screen justify-center'>
       <div className='m-auto pt-30 flex flex-col items-center justify-center'>
@@ -95,9 +99,9 @@ export const NotFoundPage: React.FC<Props> = () => {
         </div>
       </div>
       <div className='mt-6 flex flex-col items-center justify-center'>
-        <a href='/' className='text-gray-500 font-mono bg-gray-200 rounded-md p-3 text-xl hover:shadow-md'>
-          Go back{' '}
-        </a>
+        <Button variant='outlined' autoFocus onClick={() => history.push('/')}>
+          Go back
+        </Button>
       </div>
     </div>
   );
