@@ -19,7 +19,7 @@ const PropItem = ({ props, selectedVid: id, setVid: setId }: Props) => {
       <img
         src={props.imageUrl}
         alt={props.name}
-        className={`border-2 border-solid h-10 w-10 bg-cover hover:bg-slate-100 cursor-pointer ${
+        className={`border-2 border-solid h-10 w-10 bg-cover hover:bg-slate-100 cursor-pointer mb-1 ${
           selected === id ? 'border-sky-500' : ''
         }`}
         onClick={handleSelected}
@@ -28,12 +28,14 @@ const PropItem = ({ props, selectedVid: id, setVid: setId }: Props) => {
   } else {
     return (
       <div
-        className={`h-10 w-10 border-2 border-solid hover:bg-slate-100 justify-center items-center flex text-slate-500 cursor-pointer ${
+        className={`h-10 w-10 border-2 border-solid hover:bg-slate-100 justify-center items-center flex text-slate-500 cursor-pointer mb-1 ${
           selected === id ? 'border-sky-500' : ''
         }`}
         onClick={handleSelected}
       >
-        {props.name}
+        <span title={props.name} className=' inline-block overflow-hidden whitespace-nowrap'>
+          {props.name}
+        </span>
       </div>
     );
   }
@@ -62,11 +64,13 @@ export const SkuList = ({ sku_props: sku, emitVid }: { sku_props: SkuProps; emit
         {sku.prop_name}:
       </Grid>
       <Grid item xs={12} sm={10}>
-        <Box className='flex gap-1 w-full'>
+        <Grid container className='w-full'>
           {sku.values.map((p) => (
-            <PropItem selectedVid={vid} setVid={handleChangeId} key={p.vid} props={p} />
+            <Grid item sm={1} key={p.vid}>
+              <PropItem selectedVid={vid} setVid={handleChangeId} props={p} />
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       </Grid>
     </React.Fragment>
   );

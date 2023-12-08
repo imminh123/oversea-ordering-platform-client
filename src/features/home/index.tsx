@@ -47,13 +47,7 @@ export const HomePage: React.FC<Props> = () => {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: [
-        'Đơn trong giỏ hàng',
-        'Tổng đơn hàng',
-        'Đơn đặt hàng',
-        'Đơn chờ thanh toán',
-        'Đơn thanh toán thành công',
-      ],
+      categories: ['Giỏ hàng', 'Tổng đơn hàng', 'Đơn mới', 'Chờ thanh toán', 'Đã thanh toán'],
       axisBorder: {
         show: false,
       },
