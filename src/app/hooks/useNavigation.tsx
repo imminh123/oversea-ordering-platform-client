@@ -78,6 +78,19 @@ function useNavigation() {
     return result;
   }, []);
 
+  const adminRoutes: IRoute[] = React.useMemo(() => {
+    const result: IRoute[] = [
+      {
+        key: RouteKeysEnum.AdminHome,
+        exact: true,
+        path: RoutePathsEnum.AdminHome,
+        component: <HomePage />,
+      },
+    ];
+
+    return result;
+  }, []);
+
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
@@ -142,7 +155,7 @@ function useNavigation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, menus]);
 
-  return { routes, menus, publicRoutes };
+  return { routes, adminRoutes, publicRoutes, menus };
 }
 
 export default useNavigation;

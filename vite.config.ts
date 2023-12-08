@@ -31,11 +31,8 @@ export default defineConfig({
           if (id.includes('lodash')) {
             return 'lodash';
           }
-          if (id.includes('moment')) {
-            return 'moment';
-          }
-          if (id.includes('date-fns')) {
-            return 'date-fns';
+          if (id.includes('date-fns') || id.includes('moment') || id.includes('dayjs')) {
+            return 'date-time';
           }
           if (id.includes('node_modules')) {
             return 'vendor';

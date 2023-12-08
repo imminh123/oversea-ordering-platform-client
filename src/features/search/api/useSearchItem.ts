@@ -2,6 +2,7 @@ import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
+import { Language, SortOption } from '../search.const';
 
 export interface ISearchRes {
   num_iid: string;
@@ -19,21 +20,14 @@ export interface ISearchRes {
   status: string;
 }
 
-export enum SortOption {
-  default = 'default',
-  totalPriceAsc = 'total_price_asc',
-  totalPriceDesc = 'total_price_desc',
-  priceAsc = 'price_asc',
-  priceDesc = 'price_des',
-  volumeDesc = 'volume_desc',
-  vendorRatingDesc = 'vendor_rating_desc',
-  updatedTimeDesc = 'updated_time_desc',
-}
-
 interface ISearchParam {
   q?: string;
   page: number;
   sort: SortOption;
+  target_language?: Language;
+  query_language?: Language;
+  minPrice?: number;
+  maxPrice?: number;
 }
 export const search = async (param: ISearchParam): Promise<{ data: ISearchRes[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/taobao`, { ...param });
@@ -42,9 +36,11 @@ export const search = async (param: ISearchParam): Promise<{ data: ISearchRes[];
 type QueryFnType = typeof search;
 
 export const useSearchItem = (param: ISearchParam, config?: QueryConfig<QueryFnType>) => {
+  const { page, q, sort, target_language, query_language, minPrice, maxPrice } = param;
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useSearchItem', param.q, param.page, param.sort],
+    queryKey: ['useSearchItem', page, q, sort, target_language, query_language, minPrice, maxPrice],
     queryFn: () => search(param),
     ...config,
   });
 };
+export { SortOption };

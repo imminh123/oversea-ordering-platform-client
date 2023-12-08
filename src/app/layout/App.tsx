@@ -15,9 +15,10 @@ import { LayoutPage } from './LayoutPage';
 import storage from 'app/utils/storage';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
+import { HomePage } from 'features/home';
 
 function App() {
-  const { routes, publicRoutes } = useNavigation();
+  const { routes, publicRoutes, adminRoutes } = useNavigation();
   const { getMe, initialized } = useAuth();
   const history = useHistory();
   const isPublicPage = publicRoutes.some((p) => {
@@ -60,6 +61,13 @@ function App() {
             {routes.map((route) => {
               return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
             })}
+          </LayoutPage>
+        </Switch>
+      </Route>
+      <Route path={'/admin/:path?'} exact>
+        <Switch>
+          <LayoutPage>
+            <Route exact={true} path={RoutePathsEnum.AdminHome} component={HomePage} />
           </LayoutPage>
         </Switch>
       </Route>
