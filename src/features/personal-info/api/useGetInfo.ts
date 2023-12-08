@@ -3,10 +3,11 @@ import { ExtractFnReturnType } from 'app/api/react-query';
 import { apiWrapper } from 'app/api/axiosClient';
 import { ApiGetMeRes } from 'app/api/authAPI';
 
-export const getProfile = (): Promise<ApiGetMeRes> => {
+export const getProfile = async (): Promise<ApiGetMeRes> => {
   const url = `/authentication/client`;
 
-  return apiWrapper.get(url, {}).then((res) => res.data);
+  const res = await apiWrapper.get<{ data: ApiGetMeRes }>(url, {});
+  return res.data;
 };
 
 type QueryFnType = typeof getProfile;

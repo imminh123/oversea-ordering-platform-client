@@ -11,15 +11,12 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  TextField,
   Typography,
   styled,
 } from '@mui/material';
-import { FormAddressInput } from 'app/components/FormAddressInput';
-import { FormInputText } from 'app/components/libs/react-hooks-form/FormInputText';
 import { chooseAddessValidator } from 'app/utils/validators';
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { AddressRes, useListAddress } from './api/useGetAddressListing';
 import { TotalCart } from './components/TotalCart';
 import { Edit, Delete } from '@mui/icons-material';
@@ -30,6 +27,8 @@ import { ICreateOrderParams } from './api/useCreateOrderAndPay';
 import useAlert from 'app/hooks/useAlert';
 import { useCreateOrder } from './api/useCreateOrder';
 import { Helmet } from 'react-helmet-async';
+import { HooksFormInputAddress, HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
+import { AddressData } from 'app/components/form/AddressInput';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -43,6 +42,15 @@ const Item = styled(Paper)(({ theme }) => ({
     background: '#f2f2f2',
   },
 }));
+
+interface IFormInput {
+  name: string;
+  phone: string;
+  mail: string;
+  note?: string;
+  address: string;
+  addressObjectData?: AddressData;
+}
 
 const Label = ({ add }: { add: AddressRes }) => {
   return (
@@ -67,11 +75,6 @@ export const Step2 = () => {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddressId((event.target as HTMLInputElement).value);
   };
-  const [location, setLocation] = useState<{ province?: string; district?: string; ward?: string }>({
-    province: '',
-    district: '',
-    ward: '',
-  });
 
   const handleDeleteAddress = (id: string) => {
     confirm({
@@ -88,26 +91,27 @@ export const Step2 = () => {
   };
 
   const onSubmit = (data: any) => {
-    const { province, district, ward } = location;
     const body: IAddAddressParams = {
       ...data,
-      province: province || data?.province,
-      city: district || data?.city,
-      ward: ward || data?.ward,
+      province: data?.addressObjectData?.province,
+      city: data?.addressObjectData?.district,
+      ward: data?.addressObjectData?.ward,
     };
     addAddress(body);
   };
 
-  const { handleSubmit, control } = useForm<IAddAddressParams>({
+  const formMethods = useForm<IFormInput>({
     defaultValues: {
       name: '',
       phone: '',
       mail: '',
       note: '',
       address: '',
-      province: location.province,
-      city: location.district,
-      ward: location.ward,
+      addressObjectData: {
+        province: '',
+        district: '',
+        ward: '',
+      },
     },
     resolver: yupResolver(chooseAddessValidator),
   });
@@ -182,41 +186,43 @@ export const Step2 = () => {
                   },
                 }}
               >
-                <CardContent>
-                  <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
-                  {!addressId && (
-                    <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                        <Box flex={1}>
-                          <FormInputText name='name' control={control} label='Nguyễn Văn A' />
+                <FormProvider {...formMethods}>
+                  <CardContent>
+                    <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
+                    {!addressId && (
+                      <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
+                        <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                          <Box flex={1}>
+                            <HooksFormInputTextField fullWidth size={'small'} fieldName={'name'} label={'Họ và tên'} />
+                          </Box>
+                          <Box flex={1}>
+                            <HooksFormInputTextField fullWidth size={'small'} fieldName={'phone'} label={'Sđt'} />
+                          </Box>
                         </Box>
-                        <Box flex={1}>
-                          <FormInputText name='phone' control={control} label='0987654321' />
+                        <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                          <Box flex={1}>
+                            <HooksFormInputTextField fullWidth size={'small'} fieldName={'address'} label={'Địa chỉ'} />
+                          </Box>
+                          <Box flex={1}>
+                            <HooksFormInputTextField fullWidth size={'small'} fieldName={'mail'} label={'Email'} />
+                          </Box>
                         </Box>
+                        <HooksFormInputAddress
+                          fieldName={'addressObjectData'}
+                          size={'small'}
+                          sx={{ gridColumn: 'span 2' }}
+                          spacing={'10px'}
+                        />
+                        <HooksFormInputTextField size={'small'} fieldName={'note'} label={'Ghi chú'} />
                       </Box>
-                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                        <Box flex={1}>
-                          <FormInputText name='address' control={control} label='Số 1, ngõ 2, ngách 3...' />
-                        </Box>
-                        <Box flex={1}>
-                          <FormInputText name='mail' control={control} label='abc@gmail.com' />
-                        </Box>
-                      </Box>
-                      <FormAddressInput
-                        defaultVal={{}}
-                        onChangeAdress={(data: any) => {
-                          setLocation(data);
-                        }}
-                      />
-                      <FormInputText name='note' control={control} label='Ví dụ: Chuyển ngoài giờ hành chính...' />
-                    </Box>
-                  )}
-                </CardContent>
+                    )}
+                  </CardContent>
+                </FormProvider>
                 {!addressId && (
                   <CardActions>
                     <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
                       <Button
-                        onClick={handleSubmit(onSubmit, (err) => {
+                        onClick={formMethods.handleSubmit(onSubmit, (err) => {
                           console.log(err);
                         })}
                         variant={'contained'}

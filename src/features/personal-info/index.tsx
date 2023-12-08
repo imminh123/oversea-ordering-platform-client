@@ -72,7 +72,7 @@ export const PersonalInfo = () => {
           ward: data?.ward || '',
         },
       });
-  }, [data, location]);
+  }, [data]);
 
   const onSubmit = async (data: IFormInput) => {
     const body: UpdateInfoDTO = {

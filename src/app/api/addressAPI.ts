@@ -1,6 +1,5 @@
 import { DistrictItem, ProvinceItem, WardItem } from 'app/types/address';
-import { ApiWrapper } from 'app/api/apiWrapper';
-import queryString from 'query-string';
+import axios from 'axios';
 
 type ApiProvince = {
   name: string;
@@ -28,14 +27,14 @@ type ApiWard = {
   district_code: number;
 };
 
-const provinceApiWrapper = new ApiWrapper('https://provinces.open-api.vn/api');
+const PROVINCE_OPENAI_URL = 'https://provinces.open-api.vn/api';
 
 class AddressAPI {
   async fetchProvinces(): Promise<ProvinceItem[]> {
     try {
-      const apiResult = await provinceApiWrapper.get<ApiProvince[]>(`p/`);
+      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/p/`);
 
-      return apiResult.map((it) => this.mappingProvinceItemServerToClient(it));
+      return apiResult.data.map((it: ApiProvince) => this.mappingProvinceItemServerToClient(it));
     } catch (e) {
       return [];
     }
@@ -47,13 +46,9 @@ class AddressAPI {
     }
 
     try {
-      const url = queryString.stringifyUrl({
-        url: `p/${provinceCode}`,
-        query: { depth: 2 },
-      });
-      const apiResult = await provinceApiWrapper.get<{ districts: ApiDistrict[] }>(url);
+      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/p/${provinceCode}`, { params: { depth: 2 } });
 
-      return apiResult.districts.map((it) => this.mappingDistrictItemServerToClient(it));
+      return apiResult.data.districts.map((it: ApiDistrict) => this.mappingDistrictItemServerToClient(it));
     } catch (e) {
       return [];
     }
@@ -65,13 +60,9 @@ class AddressAPI {
     }
 
     try {
-      const url = queryString.stringifyUrl({
-        url: `d/${districtCode}`,
-        query: { depth: 2 },
-      });
-      const apiResult = await provinceApiWrapper.get<{ wards: ApiWard[] }>(url);
+      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/d/${districtCode}`, { params: { depth: 2 } });
 
-      return apiResult.wards.map((it) => this.mappingWardItemServerToClient(it));
+      return apiResult.data.wards.map((it: ApiWard) => this.mappingWardItemServerToClient(it));
     } catch (e) {
       return [];
     }

@@ -47,7 +47,6 @@ export const Search = () => {
     }
   };
   const handleKeyPress = (e: any, type: string) => {
-    console.log(`🚀🚀🚀 ~ file: index.tsx:50 ~ handleKeyPress ~ type:`, !!q || !!minPrice || !!maxPrice);
     if (e.keyCode == 13) {
       switch (type) {
         case 'q':
