@@ -2,11 +2,12 @@
 import useAuth from 'app/hooks/useAuth';
 import useNavigation from 'app/hooks/useNavigation';
 import { RoutePathsEnum } from 'configs/route.config';
+
 import { LoginPage } from 'features/auth/login';
 import { SignupPage } from 'features/auth/signup';
-/*global chrome*/
 import { NotFoundPage } from 'features/not-found';
 import { ActivePage } from 'pages/ActiveAccount';
+
 import { useEffect } from 'react';
 import { Route, Switch, matchPath, useHistory } from 'react-router-dom';
 import { GlobalLoading } from './global-loading';
@@ -53,12 +54,15 @@ function App() {
       <Route exact={true} path={RoutePathsEnum.LoginPage} component={LoginPage} />
       <Route exact={true} path={RoutePathsEnum.SignupPage} component={SignupPage} />
       <Route exact={true} path={RoutePathsEnum.Active} component={ActivePage} />
-      <LayoutPage>
-        {routes.map((route) => {
-          return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
-        })}
-      </LayoutPage>
-      // TODO: fix not redirect to 404 page
+      <Route>
+        <Switch>
+          <LayoutPage>
+            {routes.map((route) => {
+              return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
+            })}
+          </LayoutPage>
+        </Switch>
+      </Route>
       <Route path='*' component={NotFoundPage} />
     </Switch>
   );

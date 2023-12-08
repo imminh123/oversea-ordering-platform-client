@@ -65,8 +65,8 @@ export const SelectSort = ({ onSort }: { onSort: (sort: SortOption) => void }) =
         <MenuItem onClick={() => handleSelectSort(SortOption.default)}>Mặc định</MenuItem>
         <MenuItem onClick={() => handleSelectSort(SortOption.priceAsc)}>Giá tăng dần</MenuItem>
         <MenuItem onClick={() => handleSelectSort(SortOption.priceDesc)}>Giá giảm dần</MenuItem>
-        <MenuItem onClick={() => handleSelectSort(SortOption.salesAsc)}>Khuyến mại tăng dần</MenuItem>
-        <MenuItem onClick={() => handleSelectSort(SortOption.salesDesc)}>Khuyến mại tăng dần</MenuItem>
+        <MenuItem onClick={() => handleSelectSort(SortOption.volumeDesc)}>Số lương giảm dần</MenuItem>
+        <MenuItem onClick={() => handleSelectSort(SortOption.vendorRatingDesc)}>Đánh giá giảm dần</MenuItem>
       </Menu>
     </Box>
   );

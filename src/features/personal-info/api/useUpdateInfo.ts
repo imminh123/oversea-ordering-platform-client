@@ -28,7 +28,7 @@ export const useUpdateInfo = (config?: MutationConfig<QueryFnType>) => {
     mutationFn: updateInfoAPI,
     onSuccess() {
       queryClient.invalidateQueries('useGetInfo');
-      alertSuccess('Đăng ký thành công');
+      alertSuccess('Chỉnh sửa thông tin thành công');
     },
     onError(error) {
       alertError(error.message);

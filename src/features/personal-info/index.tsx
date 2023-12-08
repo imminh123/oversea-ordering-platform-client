@@ -25,15 +25,15 @@ interface IFormInput {
 
 const genderOptions = [
   {
-    label: 'Male',
+    label: 'Nam',
     value: 'male',
   },
   {
-    label: 'Female',
+    label: 'Nữ',
     value: 'female',
   },
   {
-    label: 'Other',
+    label: 'Khác',
     value: 'other',
   },
 ];

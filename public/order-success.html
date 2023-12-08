@@ -895,9 +895,7 @@
                                         <span style="font-size: 20px"><strong>Hello!</strong></span
                                         ><span style="font-size: 20px"><strong>,</strong></span
                                         ><br />
-                                        <span style="font-size: 18px"
-                                          >Thanks for using Oversea Order Platform for shoping!</span
-                                        >
+                                        <span style="font-size: 18px">Thanks for using MBY Logistics for shoping!</span>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -2060,7 +2058,7 @@
     const date = new Date(year, month, day, hour, minute, second);
     const formattedDate = date.toLocaleString();
     const orderId = vnp_OrderInfo.split(' ').slice(-1)[0];
-    const amount = formatMoneyToVND(parseFloat(vnp_Amount));
+    const amount = formatMoneyToVND(parseFloat(vnp_Amount) / 100);
     document.getElementById('vnp_Amount').innerHTML = amount;
     const status = vnp_TransactionStatus === '00' ? 'Thanh toán thành công' : 'Thanh toán thất bại';
     document.getElementById('vnp_TransactionStatus').innerHTML = status;

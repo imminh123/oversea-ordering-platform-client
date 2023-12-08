@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 export interface ICreateOrderParams {
   listItemId: string[];
   addressId: string;
-  wareHouseAddress: string;
+  wareHouseAddress?: string;
 }
 
 interface IOrder {
