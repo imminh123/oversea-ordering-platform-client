@@ -27,3 +27,4 @@ yarn-error.log*
 /.idea/modules.xml
 /.idea/prettier.xml
 /.idea/vcs.xml
+/.idea/oversea-ordering-platform-client.iml
