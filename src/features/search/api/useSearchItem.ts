@@ -5,21 +5,29 @@ import { useQuery } from 'react-query';
 
 export interface ISearchRes {
   num_iid: string;
-  pic: string;
-  title: string;
-  price: string;
-  promotion_price: string;
-  sales: string;
-  user_type: string;
+  category_id: string;
   detail_url: string;
+  isTmall: boolean;
+  pic_url: string;
+  title: string;
+  original_price: number;
+  price: number;
+  original_title: string;
+  location: any;
+  physical_parameters: any;
+  quantity: number;
+  status: string;
 }
 
 export enum SortOption {
   default = 'default',
-  salesDesc = 'sales_des',
-  salesAsc = 'sales_asc',
+  totalPriceAsc = 'total_price_asc',
+  totalPriceDesc = 'total_price_desc',
   priceAsc = 'price_asc',
   priceDesc = 'price_des',
+  volumeDesc = 'volume_desc',
+  vendorRatingDesc = 'vendor_rating_desc',
+  updatedTimeDesc = 'updated_time_desc',
 }
 
 interface ISearchParam {

@@ -32,7 +32,7 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
             transition: 'background-color 0.3s',
           },
         }}
-        image={`https:${item.pic}`}
+        image={`${item.pic_url}`}
         title={item.title}
       />
       <CardContent>
@@ -40,10 +40,13 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
           {item.title}
         </Typography>
         <Typography gutterBottom variant='body2' component='div' className='mt-2 line-through'>
-          Giá cũ: {formatMoneyToCN(parseFloat(item.price))}
+          Giá cũ: {formatMoneyToCN(item.original_price)}
         </Typography>
         <Typography gutterBottom variant='body2' component='div' className='text-red-500'>
-          Giá mới: {formatMoneyToCN(parseFloat(item.promotion_price))}
+          Giá mới: {formatMoneyToCN(item.price)}
+        </Typography>
+        <Typography gutterBottom variant='caption' component='div'>
+          Số lượng: {item.quantity}
         </Typography>
       </CardContent>
       <CardActions className='flex justify-between'>
@@ -56,7 +59,7 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         >
           Chi tiết
         </Button>
-        <a href={`http:${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
+        <a href={`${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
           <Button variant='contained' size='small'>
             Mở trên Taobao
           </Button>
