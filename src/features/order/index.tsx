@@ -10,15 +10,25 @@ import {
   CircularProgress,
   Box,
   Container,
+  Grid,
+  FormControl,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { useIndexOrders } from './api/useOrderListing';
 import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { OrderStatusOptions } from './order.const';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -38,6 +48,8 @@ export const mappingStatus = (status?: OrderStatus) => {
       return <Chip label='Đang vận chuyển' color='success' variant='outlined' />;
     case OrderStatus.SUCCEEDED:
       return <Chip label='Thành công' color='success' variant='outlined' />;
+    case OrderStatus.TIMEOUT:
+      return <Chip label='Hết hạn' color='error' variant='outlined' />;
     default:
       return <Chip label='Lỗi' color='error' variant='outlined' />;
   }
@@ -68,11 +80,26 @@ const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
 
 export const OrderListing = () => {
   const [page, setPage] = useState<number>(1);
-  const { data: cartItems, isLoading } = useIndexOrders(page);
+  const [status, setStatus] = useState<OrderStatus>();
+  const [value, setValue] = useState<any>([null, null]);
+  const { data: cartItems, isLoading } = useIndexOrders({
+    page,
+    status,
+    ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
+    ...(value[0] && { timeTo: new Date(value[1]).toISOString() }),
+  });
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+  };
+
+  const handleInputChange = (event: any, type: string) => {
+    switch (type) {
+      case 'status':
+        setStatus(event.target.value);
+        break;
+    }
   };
   return (
     <>
@@ -80,6 +107,50 @@ export const OrderListing = () => {
         <title>Đơn hàng</title>
       </Helmet>
       <Container className='mt-5'>
+        <Grid container className='my-3' gap={3}>
+          <Grid item xs={12} sm={5}>
+            <FormControl fullWidth>
+              <InputLabel id='status-select-label'>Trạng thái đơn hàng</InputLabel>
+              <Select
+                labelId='status-select-label'
+                id='status-select'
+                variant='outlined'
+                value={status || ''}
+                label='Trạng thái đơn hàng'
+                onChange={(e) => handleInputChange(e, 'status')}
+              >
+                {OrderStatusOptions.map((lang, index) => {
+                  return (
+                    <MenuItem key={index} value={lang.value}>
+                      {lang.label}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateRangePicker
+                startText='Bắt đầu'
+                endText='Kết thúc'
+                value={value}
+                disableFuture
+                inputFormat='dd/MM/yyyy'
+                onChange={(newValue) => {
+                  setValue(newValue);
+                }}
+                renderInput={(startProps, endProps) => (
+                  <React.Fragment>
+                    <TextField {...startProps} />
+                    <Box sx={{ mx: 2 }}> tới </Box>
+                    <TextField {...endProps} />
+                  </React.Fragment>
+                )}
+              />
+            </LocalizationProvider>
+          </Grid>
+        </Grid>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
           <TableContainer component={Paper} elevation={3}>
             <Table sx={{ minWidth: 650 }} aria-label='simple table'>

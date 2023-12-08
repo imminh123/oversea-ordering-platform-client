@@ -155,7 +155,12 @@ export const ItemDetail = () => {
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
-                    <Button className=' !mt-4' onClick={handleSubmit} variant={'contained'} disabled={adding}>
+                    <Button
+                      className=' !mt-4'
+                      onClick={handleSubmit}
+                      variant={'contained'}
+                      disabled={adding || !quantity || mapPVid.size === 0}
+                    >
                       Thêm vào giỏ hàng
                     </Button>
                   </Grid>

@@ -1,19 +1,29 @@
 import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
-import { IOrderStatusRes } from 'features/cart/api/useGetOrderDetail';
+import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { useQuery } from 'react-query';
 
-export const indexOrder = async (page: number): Promise<{ data: IOrderStatusRes[]; headers: IPaginationHeader }> => {
-  return apiWrapper.get(`/order`, { page, perPage: 10 });
+interface IOrderListingParams {
+  page: number;
+  status?: OrderStatus;
+  timeFrom?: string;
+  timeTo?: string;
+}
+
+export const indexOrder = async (
+  param: IOrderListingParams,
+): Promise<{ data: IOrderStatusRes[]; headers: IPaginationHeader }> => {
+  return apiWrapper.get(`/order`, { ...param, perPage: 10 });
 };
 
 type QueryFnType = typeof indexOrder;
 
-export const useIndexOrders = (page: number, config?: QueryConfig<QueryFnType>) => {
+export const useIndexOrders = (param: IOrderListingParams, config?: QueryConfig<QueryFnType>) => {
+  const { page, status, timeFrom, timeTo } = param;
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useIndexOrders', page],
-    queryFn: () => indexOrder(page),
+    queryKey: ['useIndexOrders', page, status, timeFrom, timeTo],
+    queryFn: () => indexOrder(param),
     ...config,
   });
 };

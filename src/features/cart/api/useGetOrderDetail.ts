@@ -8,6 +8,8 @@ export enum OrderStatus {
   PENDING_PAYMENT = 'pending_payment',
   DELIVERED = 'delivered',
   SUCCEEDED = 'succeeded',
+  TIMEOUT = 'timeout',
+  FAILED = 'failed',
 }
 
 export interface IOrderStatusRes {
@@ -23,7 +25,7 @@ export interface IOrderStatusRes {
 }
 
 export const getOrderStatus = async (id: string): Promise<IOrderStatusRes> => {
-  const res = await apiWrapper.get(`/order/${id}`, {});
+  const res = await apiWrapper.get<{ data: IOrderStatusRes }>(`/order/${id}`, {});
   return res.data;
 };
 

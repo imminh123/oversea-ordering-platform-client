@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
+  Badge,
 } from '@mui/material';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { sidebarWidth } from 'configs/sidebar.config';
@@ -23,6 +24,7 @@ import { useHistory } from 'react-router-dom';
 import { useListVariables } from 'app/api/useGetVariables';
 import { EXCHANGE_KEY, REFETCH_INTERVAL } from 'app/utils/constants';
 import { formatMoneyToVND } from 'app/utils/helper';
+import { useCountCart } from 'features/cart/api/useCountCart';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -77,6 +79,10 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
     { refetchInterval: REFETCH_INTERVAL },
   );
   const exchange = exchangeRes?.data[0].value;
+  const { data: numberInCart } = useCountCart({ refetchInterval: 10000 });
+  const number = React.useMemo(() => {
+    return numberInCart?.data || 0;
+  }, [numberInCart?.data]);
   return (
     <>
       <CssBaseline />
@@ -108,12 +114,12 @@ export const Header: React.FC<Props> = ({ open, setOpen }) => {
               }}
               edge='start'
             >
-              <ShoppingCart />
+              <Badge invisible={!number} badgeContent={number} color='error'>
+                <ShoppingCart />
+              </Badge>
             </IconButton>
-
             <Notifications />
             <CurrentAccountBadge loading={false} />
-            {/* <LanguageSwitcher /> */}
           </Stack>
         </Toolbar>
       </AppBar>

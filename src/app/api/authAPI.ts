@@ -71,7 +71,7 @@ export const loginSocial = async (inputs: ApiLoginGGArgs) => {
 };
 
 const getMe = async (): Promise<TGetMeRes> => {
-  const result = await apiWrapper.get(`authentication/client`, {});
+  const result = await apiWrapper.get<any>(`authentication/client`, {});
 
   return userAPI.mappingServerDataUnderUserView(result.data);
 };

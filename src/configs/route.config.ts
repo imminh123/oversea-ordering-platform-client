@@ -14,6 +14,9 @@ export enum RouteKeysEnum {
   // common
   HomePage = 'home-page',
   NotFoundPage = 'not-found-page',
+
+  // admin
+  AdminHome = 'admin-home',
 }
 
 export enum RoutePathsEnum {
@@ -32,4 +35,7 @@ export enum RoutePathsEnum {
 
   // common
   HomePage = '/',
+
+  // admin
+  AdminHome = '/admin',
 }

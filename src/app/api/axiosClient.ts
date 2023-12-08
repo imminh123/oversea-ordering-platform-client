@@ -1,161 +1,121 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import queryString from 'query-string';
+
 import { envConfig } from 'configs/env.config';
 import storage from 'app/utils/storage';
-import queryString from 'query-string';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
 
-const axiosClient: AxiosInstance = axios.create({
-  baseURL: envConfig.baseURL,
-  headers: {
-    'content-type': 'application/json',
-  },
-  paramsSerializer: (params) => queryString.stringify(params),
-});
+export class ApiWrapper {
+  private readonly axiosInstance: AxiosInstance;
 
-axiosClient.interceptors.request.use(async (config) => {
-  const token = storage.getToken();
+  constructor(baseURL?: string) {
+    this.axiosInstance = axios.create({
+      baseURL: baseURL || envConfig.baseURL,
+      headers: {
+        'content-type': 'application/json',
+      },
+      paramsSerializer: (params) => {
+        return queryString.stringify(params);
+      },
+    });
 
-  if (token) {
-    config.headers['access-token'] = `${token}`;
+    this.axiosInstance.interceptors.request.use(async (config) => {
+      const token = storage.getToken();
+
+      if (token) {
+        config.headers['access-token'] = `${token}`;
+      }
+
+      return config;
+    });
+
+    this.axiosInstance.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      async (error) => {
+        // TODO: add refresh token here
+        if (error && error.response && error.response.data) {
+          if (error.response.data.statusCode === 401 || error.response.data.statusCode === 403) {
+            window.location.href = '/login';
+          }
+        }
+
+        throw error;
+      },
+    );
   }
 
-  return config;
-});
+  async get<T>(url: string, params?: any, withCredentials = false): Promise<T> {
+    const data: any = await this.axiosInstance.get(url, { params, withCredentials, timeout: REQUEST_TIMEOUT });
 
-axiosClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    // TODO: add refresh token here
-    if (error && error.response && error.response.data) {
-      if (error.response.data.statusCode === 401 || error.response.data.statusCode === 403) {
-        window.location.href = '/login';
-      }
-    }
-
-    throw error;
-  },
-);
-
-async function get(url: string, params?: any): Promise<any> {
-  const data: AxiosResponse = await axiosClient({
-    method: 'GET',
-    url,
-    params,
-    timeout: REQUEST_TIMEOUT,
-  });
-
-  return data;
-}
-
-async function post<T, U>(
-  url: string,
-  body: T,
-  options: {
-    contentType?: 'application/json' | 'multipart/form-data';
-  } = {},
-): Promise<U> {
-  let bodyData: T | FormData;
-  const { contentType = 'application/json' } = options;
-  if (contentType === 'application/json') {
-    bodyData = body;
-  } else {
-    bodyData = new FormData();
-    for (const key in body) {
-      if (Object.prototype.hasOwnProperty.call(body, key)) {
-        const element = body[key];
-        bodyData.append(key, element as any);
-      }
-    }
+    return data;
   }
 
-  const data: any = await axiosClient({
-    method: 'POST',
-    url,
-    data: bodyData,
-    headers: {
-      'Content-Type': contentType,
-      'X-CSRF-TOKEN': document.querySelector('[name~=csrf-token][content]') as any,
-    },
-    timeout: REQUEST_TIMEOUT,
-  });
+  async post<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+    const data: any = await this.axiosInstance({
+      method: 'POST',
+      url,
+      data: body,
+      headers: {
+        ...this.axiosInstance.defaults.headers,
+        ...headers,
+      },
+      timeout: REQUEST_TIMEOUT,
+      withCredentials,
+    });
 
-  return data;
-}
-
-async function put<T, U>(
-  url: string,
-  body: T,
-  options: {
-    contentType?: 'application/json' | 'multipart/form-data';
-  } = {},
-): Promise<U> {
-  let bodyData: T | FormData;
-  const { contentType = 'application/json' } = options;
-  if (contentType === 'application/json') {
-    bodyData = body;
-  } else {
-    bodyData = new FormData();
-    for (const key in body) {
-      if (Object.prototype.hasOwnProperty.call(body, key)) {
-        const element = body[key];
-        bodyData.append(key, element as any);
-      }
-    }
+    return data;
   }
 
-  const data: any = await axiosClient({
-    method: 'PUT',
-    url,
-    data: bodyData,
-    headers: {
-      'Content-Type': contentType,
-    },
-    timeout: REQUEST_TIMEOUT,
-  });
+  async put<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+    const data: any = await this.axiosInstance({
+      method: 'PUT',
+      url,
+      data: body,
+      headers: {
+        ...this.axiosInstance.defaults.headers,
+        ...headers,
+      },
+      timeout: REQUEST_TIMEOUT,
+      withCredentials,
+    });
 
-  return data;
-}
-
-async function _delete<T, U>(
-  url: string,
-  body: T,
-  options: {
-    contentType?: 'application/json' | 'multipart/form-data';
-  } = {},
-): Promise<U> {
-  let bodyData: T | FormData;
-  const { contentType = 'application/json' } = options;
-  if (contentType === 'application/json') {
-    bodyData = body;
-  } else {
-    bodyData = new FormData();
-    for (const key in body) {
-      if (Object.prototype.hasOwnProperty.call(body, key)) {
-        const element = body[key];
-        bodyData.append(key, element as any);
-      }
-    }
+    return data;
   }
 
-  const data: any = await axiosClient({
-    method: 'DELETE',
-    url,
-    data: bodyData,
-    headers: {
-      'Content-Type': contentType,
-    },
-    timeout: REQUEST_TIMEOUT,
-  });
+  async _delete<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+    const data: any = await this.axiosInstance({
+      method: 'DELETE',
+      url,
+      data: body,
+      headers: {
+        ...this.axiosInstance.defaults.headers,
+        ...headers,
+      },
+      timeout: REQUEST_TIMEOUT,
+      withCredentials,
+    });
 
-  return data;
+    return data;
+  }
+
+  async patch<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+    const data: any = await this.axiosInstance({
+      method: 'PATCH',
+      url,
+      data: body,
+      headers: {
+        ...this.axiosInstance.defaults.headers,
+        ...headers,
+      },
+      timeout: REQUEST_TIMEOUT,
+      withCredentials,
+    });
+
+    return data;
+  }
 }
 
-export const apiWrapper = {
-  get,
-  post,
-  put,
-  _delete,
-};
+export const apiWrapper = new ApiWrapper();

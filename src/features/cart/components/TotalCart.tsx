@@ -19,7 +19,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { ChoosePaymentMethod } from './ChoosePaymentMethod';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
