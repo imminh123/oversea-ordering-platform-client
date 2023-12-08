@@ -1,13 +1,12 @@
 import * as React from 'react';
-
-import { TextField, TextFieldProps } from '@mui/material';
+import { BaseHooksFormInputProps } from 'app/components/libs/react-hooks-form/index';
+import { InputSingleSelect, InputSingleSelectProps } from 'app/components/form/InputSingleSelect';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { BaseHooksFormInputProps } from 'app/components/libs/react-hooks-form/index';
+export type HooksFormInputSingleSelectProps = BaseHooksFormInputProps &
+  Omit<InputSingleSelectProps, 'value' | 'onChange'>;
 
-export type HooksFormInputTextFieldProps = BaseHooksFormInputProps & TextFieldProps;
-
-export const HooksFormInputTextField: React.FC<HooksFormInputTextFieldProps> = ({ fieldName, ...rest }) => {
+export const HooksFormInputSingleSelect: React.FC<HooksFormInputSingleSelectProps> = ({ fieldName, ...rest }) => {
   const {
     control,
     getFieldState,
@@ -27,7 +26,7 @@ export const HooksFormInputTextField: React.FC<HooksFormInputTextFieldProps> = (
           helperText = fieldState.error?.message?.toString();
         }
 
-        return <TextField {...rest} {...field} error={isError} helperText={helperText} />;
+        return <InputSingleSelect {...rest} {...field} error={isError} helperText={helperText} />;
       }}
       name={fieldName}
       control={control}
