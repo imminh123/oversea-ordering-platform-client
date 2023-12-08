@@ -39,7 +39,7 @@ axiosClient.interceptors.response.use(
   },
 );
 
-async function get(url: string, params: any): Promise<any> {
+async function get(url: string, params?: any): Promise<any> {
   const data: AxiosResponse = await axiosClient({
     method: 'GET',
     url,
