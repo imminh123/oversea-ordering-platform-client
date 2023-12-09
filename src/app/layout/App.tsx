@@ -15,7 +15,8 @@ import { LayoutPage } from './LayoutPage';
 import storage from 'app/utils/storage';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
-import { HomePage } from 'features/home';
+import { HomePage } from 'features/home/ClientHome';
+import { AdminLayoutPage } from './AdminLayoutPage';
 
 function App() {
   const { routes, publicRoutes, adminRoutes } = useNavigation();
@@ -52,26 +53,45 @@ function App() {
 
   return (
     <Switch>
-      <Route exact={true} path={RoutePathsEnum.LoginPage} component={LoginPage} />
-      <Route exact={true} path={RoutePathsEnum.SignupPage} component={SignupPage} />
-      <Route exact={true} path={RoutePathsEnum.Active} component={ActivePage} />
-      <Route>
-        <Switch>
-          <LayoutPage>
-            {routes.map((route) => {
-              return <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />;
-            })}
-          </LayoutPage>
-        </Switch>
-      </Route>
-      <Route path={'/admin/:path?'} exact>
-        <Switch>
-          <LayoutPage>
-            <Route exact={true} path={RoutePathsEnum.AdminHome} component={HomePage} />
-          </LayoutPage>
-        </Switch>
-      </Route>
-      <Route path='*' component={NotFoundPage} />
+      <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
+      <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
+      <Route exact path={RoutePathsEnum.Active} component={ActivePage} />
+      <Route
+        key={'admin'}
+        path={'/admin/:path?'}
+        render={() => {
+          return (
+            <AdminLayoutPage>
+              <Switch>
+                {adminRoutes.map((route) => {
+                  return (
+                    <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />
+                  );
+                })}
+              </Switch>
+            </AdminLayoutPage>
+          );
+        }}
+      />
+      <Route
+        key={'client'}
+        path={'/:path?'}
+        render={() => {
+          return (
+            <LayoutPage>
+              <Switch>
+                {routes.map((route) => {
+                  return (
+                    <Route key={route.path} exact={route.exact} path={route.path} render={() => route.component} />
+                  );
+                })}
+              </Switch>
+            </LayoutPage>
+          );
+        }}
+      />
+
+      <Route path={'*'} component={NotFoundPage} />
     </Switch>
   );
 }

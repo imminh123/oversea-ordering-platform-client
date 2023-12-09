@@ -82,7 +82,7 @@ export const UIContext = React.createContext<UIState>({
   checkOpen: () => false,
   setAlert: () => {},
   clearAlert: () => {},
-  activeLanguage: undefined,
+  activeLanguage: 'vi',
   setActiveLanguage: () => {},
 });
 
@@ -138,7 +138,7 @@ export const UIProvider: React.FC = ({ children }) => {
 
     return { open, type, props, position };
   });
-  const [activeLanguage, setActiveLanguage] = React.useState<LanguageUnion | undefined>('en');
+  const [activeLanguage, setActiveLanguage] = React.useState<LanguageUnion | undefined>('vi');
   const [alert, setAlert] = React.useState<IAlertState>({
     open: false,
     status: null,

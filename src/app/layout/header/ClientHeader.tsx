@@ -51,7 +51,7 @@ const AppBar = styled(MUIAppBar, {
   }),
 }));
 
-export const Header: React.FC<Props> = ({ open, setOpen }) => {
+export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
   const theme = useTheme();
   const history = useHistory();
   const matchSM = useMediaQuery(theme.breakpoints.down('sm'));

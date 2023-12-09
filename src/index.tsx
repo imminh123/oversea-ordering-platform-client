@@ -18,8 +18,8 @@ import theme from './app/utils/theme';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { envConfig } from 'configs/env.config';
-import Spinner from 'app/layout/async/Spinner';
 import { HelmetProvider } from 'react-helmet-async';
+import { GlobalLoading } from 'app/layout/global-loading';
 
 const queryClient = new QueryClient();
 
@@ -32,16 +32,7 @@ ReactDOM.render(
             <UIProvider>
               <AuthProvider>
                 <GoogleOAuthProvider clientId={envConfig.GG_CLIENT_ID}>
-                  <Suspense
-                    fallback={
-                      <div className='h-screen text-center flex justify-center items-center'>
-                        <span>
-                          <Spinner />
-                          Loading...
-                        </span>
-                      </div>
-                    }
-                  >
+                  <Suspense fallback={<GlobalLoading loading={true} />}>
                     <HelmetProvider>
                       <App />
                     </HelmetProvider>

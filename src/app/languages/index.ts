@@ -11,7 +11,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    lng: 'en',
+    lng: 'vi',
     resources: {
       en: {
         translation: enTranslation,
@@ -20,7 +20,7 @@ i18n
         translation: viTranslation,
       },
     },
-    fallbackLng: 'en',
+    fallbackLng: 'vi',
     interpolation: {
       escapeValue: false,
     },

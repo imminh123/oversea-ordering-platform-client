@@ -7,7 +7,8 @@ import { ISidebarMenu } from 'app/types/sidebar';
 import { initSidebarActive, initSidebarExpandKey } from 'app/utils/helper';
 import { RouteKeysEnum, RoutePathsEnum } from 'configs/route.config';
 import { SidebarKeysEnum, SidebarLinksEnum } from 'configs/sidebar.config';
-import { HomePage } from 'features/home';
+import { HomePage } from 'features/home/ClientHome';
+import { AdminHome } from 'features/home/AdminHome';
 import { useUI } from './index';
 import { lazyImport } from 'app/utils/lazyImport';
 
@@ -84,7 +85,7 @@ function useNavigation() {
         key: RouteKeysEnum.AdminHome,
         exact: true,
         path: RoutePathsEnum.AdminHome,
-        component: <HomePage />,
+        component: <AdminHome />,
       },
     ];
 
@@ -94,7 +95,7 @@ function useNavigation() {
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
-        name: '',
+        name: 'Client Menu',
         sidebars: [
           {
             key: SidebarKeysEnum.HomePage,
@@ -116,6 +117,32 @@ function useNavigation() {
             link: SidebarLinksEnum.Search,
             icon: <SearchIcon />,
             label: 'Tìm kiếm sản phẩm',
+          },
+        ],
+      },
+    ];
+
+    return result;
+  }, []);
+
+  const adminMenus: ISidebarMenu[] = React.useMemo(() => {
+    const result: ISidebarMenu[] = [
+      {
+        name: 'Admin menu',
+        sidebars: [
+          {
+            key: SidebarKeysEnum.AdminHomepage,
+            parentKey: null,
+            link: SidebarLinksEnum.AdminHomepage,
+            icon: <Home />,
+            label: 'Trang chủ',
+          },
+          {
+            key: SidebarKeysEnum.Orders,
+            parentKey: null,
+            link: SidebarLinksEnum.Orders,
+            icon: <TextSnippet />,
+            label: 'Đơn hàng',
           },
         ],
       },
@@ -155,7 +182,7 @@ function useNavigation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, menus]);
 
-  return { routes, adminRoutes, publicRoutes, menus };
+  return { routes, adminRoutes, publicRoutes, menus, adminMenus };
 }
 
 export default useNavigation;

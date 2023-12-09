@@ -5,10 +5,16 @@ export enum SidebarKeysEnum {
   HomePage = 'home-page',
   Orders = 'orders',
   Search = 'search',
+
+  // admin
+  AdminHomepage = 'admin-home-page',
 }
 
 export enum SidebarLinksEnum {
   HomePage = '/',
   Orders = '/orders',
   Search = '/search',
+
+  // admin
+  AdminHomepage = '/admin',
 }
