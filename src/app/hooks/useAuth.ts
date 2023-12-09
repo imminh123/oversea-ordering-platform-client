@@ -2,21 +2,19 @@ import authAPI, { TGetMeRes, TLoginArgs, TLoginError, TLoginRes } from 'app/api/
 import AuthContext from 'app/context/auth';
 import { LanguageTranslate } from 'app/languages';
 import { RoutePathsEnum } from 'configs/route.config';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useAlert from './useAlert';
 import { MutationConfig } from 'app/api/react-query';
 import storage from 'app/utils/storage';
+import { UserRole } from 'app/types/user';
 type QueryFnType = typeof authAPI.loginSocial;
 
 function useAuth() {
   const history = useHistory();
   const context = useContext(AuthContext);
   const { alertSuccess, alertError } = useAlert();
-  // const pathname = useMemo(() => {
-  //   return history.location.pathname;
-  // }, [history.location.pathname]);
   const { mutateAsync: login } = useMutation<TLoginRes, TLoginError, TLoginArgs>((params) => {
     return authAPI.login(params);
   });
@@ -35,11 +33,9 @@ function useAuth() {
 
   const handleGetMe = async () => {
     try {
-      // if (!pathname.includes(RoutePathsEnum.LoginPage) && !pathname.includes(RoutePathsEnum.SignupPage)) {
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
-      // }
     } catch (err) {
       context.setAuthenticated(false);
       history.push(RoutePathsEnum.LoginPage);
@@ -58,7 +54,11 @@ function useAuth() {
       context.setUser(user);
       context.setAuthenticated(true);
       alertSuccess(LanguageTranslate.alert.login.success);
-      history.push(RoutePathsEnum.HomePage);
+      if (user.role === UserRole.Admin) {
+        history.push(RoutePathsEnum.AdminHome);
+      } else {
+        history.push(RoutePathsEnum.HomePage);
+      }
     } catch (err) {
       handleErrorResponse(err);
       context.setAuthenticated(false);

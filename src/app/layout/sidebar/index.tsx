@@ -10,9 +10,10 @@ const SidebarLoading = lazy(() => import('./SidebarLoading'));
 interface Props {
   open: boolean;
   loading: boolean;
+  type?: string;
 }
 
-export const Sidebar: React.FC<Props> = ({ open, loading }) => {
+export const Sidebar: React.FC<Props> = ({ open, loading, type }) => {
   return (
     <Drawer
       sx={{
@@ -29,7 +30,7 @@ export const Sidebar: React.FC<Props> = ({ open, loading }) => {
     >
       <HeaderPlaceHolder />
       <Divider />
-      {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} />}
+      {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} type={type} />}
 
       <SidebarDrawer loading={loading} />
     </Drawer>

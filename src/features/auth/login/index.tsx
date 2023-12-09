@@ -46,8 +46,6 @@ export const LoginPage: React.FC<Props> = () => {
       await login(data.username, data.password);
     } catch (err) {
       console.log({ err });
-    } finally {
-      setLoading(false);
     }
 
     const token = storage.getToken();

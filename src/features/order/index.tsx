@@ -86,7 +86,7 @@ export const OrderListing = () => {
     page,
     status,
     ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
-    ...(value[0] && { timeTo: new Date(value[1]).toISOString() }),
+    ...(value[1] && { timeTo: new Date(value[1]).toISOString() }),
   });
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
 

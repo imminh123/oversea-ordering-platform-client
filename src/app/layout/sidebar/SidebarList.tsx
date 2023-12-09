@@ -10,28 +10,44 @@ const SidebarItem = React.lazy(() => import('./SidebarItem'));
 
 interface Props {
   sidebarOpen: boolean;
+  type?: string;
 }
 
-const SidebarList: React.FC<Props> = ({ sidebarOpen }) => {
+const SidebarList: React.FC<Props> = ({ sidebarOpen, type }) => {
   const { t } = useTranslation();
   const { listDense } = useUI();
-  const { menus } = useNavigation();
+  const { menus, adminMenus } = useNavigation();
 
   return (
     <>
-      {menus.map((menu) => (
-        <React.Fragment key={`${menu.name}`}>
-          <List
-            dense={listDense}
-            subheader={<ListSubheader disableSticky>{sidebarOpen ? t(menu.name) : <Divider />}</ListSubheader>}
-          >
-            {menu.sidebars.map((item) => {
-              return <SidebarItem key={item.label} item={item} />;
-            })}
-          </List>
-          <Divider />
-        </React.Fragment>
-      ))}
+      {(!type || type !== 'admin') &&
+        menus.map((menu) => (
+          <React.Fragment key={`${menu.name}`}>
+            <List
+              dense={listDense}
+              subheader={<ListSubheader disableSticky>{sidebarOpen ? t(menu.name) : <Divider />}</ListSubheader>}
+            >
+              {menu.sidebars.map((item) => {
+                return <SidebarItem key={item.label} item={item} />;
+              })}
+            </List>
+            <Divider />
+          </React.Fragment>
+        ))}
+      {type === 'admin' &&
+        adminMenus.map((menu) => (
+          <React.Fragment key={`${menu.name}`}>
+            <List
+              dense={listDense}
+              subheader={<ListSubheader disableSticky>{sidebarOpen ? t(menu.name) : <Divider />}</ListSubheader>}
+            >
+              {menu.sidebars.map((item) => {
+                return <SidebarItem key={item.label} item={item} />;
+              })}
+            </List>
+            <Divider />
+          </React.Fragment>
+        ))}
     </>
   );
 };

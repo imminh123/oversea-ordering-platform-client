@@ -76,9 +76,9 @@ export const Search = () => {
     { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
   );
   useEffect(() => {
-    const queryObject = { page, q, sort, target_language, query_language, minPrice, maxPrice };
+    const queryObject = { page, q, sort, target_language, query_language };
     history.push({ search: queryString.stringify(queryObject) });
-  }, [page, q, sort, target_language, query_language, minPrice, maxPrice]);
+  }, [page, q, sort, target_language, query_language]);
 
   return (
     <>
