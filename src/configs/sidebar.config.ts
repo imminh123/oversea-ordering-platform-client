@@ -8,6 +8,8 @@ export enum SidebarKeysEnum {
 
   // admin
   AdminHomepage = 'admin-home-page',
+  AdminVariables = 'admin-variables',
+  AdminOrders = 'admin-order',
 }
 
 export enum SidebarLinksEnum {
@@ -17,4 +19,6 @@ export enum SidebarLinksEnum {
 
   // admin
   AdminHomepage = '/admin',
+  AdminVariables = '/admin/variables',
+  AdminOrders = '/admin/orders',
 }

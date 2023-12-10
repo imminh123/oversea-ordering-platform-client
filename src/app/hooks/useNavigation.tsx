@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Home, TextSnippet, Search as SearchIcon } from '@mui/icons-material';
+import { Home, TextSnippet, Search as SearchIcon, AttachMoney } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -18,6 +18,8 @@ const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'Per
 const { OrderDetail } = lazyImport(() => import('features/order/components/OrderDetails'), 'OrderDetail');
 const { Search } = lazyImport(() => import('features/search'), 'Search');
 const { ItemDetail } = lazyImport(() => import('features/search/components/ItemDetail'), 'ItemDetail');
+const { AdminVariables } = lazyImport(() => import('features/variables/AdminVariables'), 'AdminVariables');
+const { AdminOrders } = lazyImport(() => import('features/order/AdminOrders'), 'AdminOrders');
 
 function useNavigation() {
   const history = useHistory();
@@ -87,6 +89,24 @@ function useNavigation() {
         path: RoutePathsEnum.AdminHome,
         component: <AdminHome />,
       },
+      {
+        key: RouteKeysEnum.AdminInfo,
+        exact: true,
+        path: RoutePathsEnum.AdminInfo,
+        component: <PersonalInfo />,
+      },
+      {
+        key: RouteKeysEnum.AdminVariables,
+        exact: true,
+        path: RoutePathsEnum.AdminVariables,
+        component: <AdminVariables />,
+      },
+      {
+        key: RouteKeysEnum.AdminOrders,
+        exact: true,
+        path: RoutePathsEnum.AdminOrders,
+        component: <AdminOrders />,
+      },
     ];
 
     return result;
@@ -138,11 +158,18 @@ function useNavigation() {
             label: 'Trang chủ',
           },
           {
-            key: SidebarKeysEnum.Orders,
+            key: SidebarKeysEnum.AdminVariables,
             parentKey: null,
-            link: SidebarLinksEnum.Orders,
+            link: SidebarLinksEnum.AdminVariables,
+            icon: <AttachMoney />,
+            label: 'Quản lý tỉ giá',
+          },
+          {
+            key: SidebarKeysEnum.AdminOrders,
+            parentKey: null,
+            link: SidebarLinksEnum.AdminOrders,
             icon: <TextSnippet />,
-            label: 'Đơn hàng',
+            label: 'Quản lý đơn hàng',
           },
         ],
       },

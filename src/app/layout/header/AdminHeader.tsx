@@ -20,9 +20,10 @@ import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
 import { Notifications } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
-import { useListVariables } from 'app/api/useGetVariables';
-import { EXCHANGE_KEY, REFETCH_INTERVAL } from 'app/utils/constants';
+import { REFETCH_INTERVAL } from 'app/utils/constants';
 import { formatMoneyToVND } from 'app/utils/helper';
+import { useListVariables } from 'features/variables/api/useGetVariables';
+import { VariableType } from 'features/variables/variables.const';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -72,7 +73,7 @@ export const AdminHeader: React.FC<Props> = ({ open, setOpen }) => {
   };
 
   const { data: exchangeRes } = useListVariables(
-    { page: 1, name: EXCHANGE_KEY },
+    { page: 1, name: VariableType.EXCHANGE_KEY },
     { refetchInterval: REFETCH_INTERVAL },
   );
   const exchange = exchangeRes?.data[0].value;

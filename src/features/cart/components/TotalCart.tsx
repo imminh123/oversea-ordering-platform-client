@@ -101,7 +101,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
     <>
       {!!cartItems && !!cartItems?.data.length && !loadingCart && (
         <TableContainer className='w-full' component={Paper} elevation={3}>
-          <Table aria-label='simple table'>
+          <Table aria-label='Kết đơn'>
             <TableHead>
               <TableRow>
                 <TableCell width={'30px'} size='small' align='left'>
@@ -230,7 +230,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
           </Box>
         </TableContainer>
       )}
-      {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
+      {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
       {loadingCart && (
         <Item elevation={3}>
           <CircularProgress />

@@ -1,4 +1,5 @@
 export enum RouteKeysEnum {
+  // client
   Cart = 'cart',
   PersonalInfo = 'info',
   Orders = 'orders',
@@ -6,20 +7,29 @@ export enum RouteKeysEnum {
   Active = 'register',
   Search = 'search',
   SearchResult = 'search-result',
+  HomePage = 'home-page',
 
   // auth
   LoginPage = 'login-page',
   SignupPage = 'signup-page',
 
   // common
-  HomePage = 'home-page',
   NotFoundPage = 'not-found-page',
 
   // admin
   AdminHome = 'admin-home',
+  AdminInfo = 'admin-tinfo',
+  AdminVariables = 'admin-variables',
+  AdminOrders = 'admin-order',
+  AdminOrderDetail = 'admin-order-details',
 }
 
 export enum RoutePathsEnum {
+  // auth
+  LoginPage = '/login',
+  SignupPage = '/signup',
+
+  // client
   Cart = '/cart',
   CartStep = '/cart/:slug',
   PersonalInfo = '/info',
@@ -28,14 +38,12 @@ export enum RoutePathsEnum {
   OrderDetail = '/orders/:id',
   Search = '/search',
   SearchResult = '/search/:id',
-
-  // auth
-  LoginPage = '/login',
-  SignupPage = '/signup',
-
-  // common
   HomePage = '/',
 
   // admin
   AdminHome = '/admin',
+  AdminInfo = '/admin/info',
+  AdminVariables = '/admin/variables',
+  AdminOrders = '/admin/orders',
+  AdminOrderDetail = '/admin/orders/:id',
 }

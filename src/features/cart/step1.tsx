@@ -107,7 +107,7 @@ export const Step1 = () => {
             cartItems?.data.map((item) => {
               return (
                 <TableContainer key={item._id} component={Paper} elevation={3} className='mb-3'>
-                  <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                  <Table sx={{ minWidth: 650 }} aria-label='giỏ hàng'>
                     <TableHead>
                       <tr className='text-left'>
                         <th>
@@ -138,7 +138,7 @@ export const Step1 = () => {
                 </TableContainer>
               );
             })}
-          {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
+          {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
           {isLoading && (
             <Item elevation={3}>
               <CircularProgress className='m-5' />

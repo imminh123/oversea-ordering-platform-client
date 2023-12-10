@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { jwtDecode } from 'jwt-decode';
 import { ESidebarExpandVariant } from 'app/context/ui/enum';
 import { HeaderPlaceHolder } from './header-placeholder';
 import { Main } from './main';
@@ -13,19 +14,25 @@ import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
 
 interface Props {}
-
+interface TokenEntity {
+  userId: string;
+  role: UserRole;
+}
 export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
   const history = useHistory();
+  const token = storage.getToken();
+  const user: TokenEntity = jwtDecode(token);
+  const context = React.useContext(AuthContext);
 
   const { sidebarExpandVariant } = useUI();
-  const context = React.useContext(AuthContext);
-  //   if (context.user?.role !== UserRole.Admin) {
-  //     history.push(RoutePathsEnum.LoginPage);
-  //     storage.clearToken();
-  //     context.setAuthenticated(false);
-  //     context.setUser(null);
-  //   }
+
+  if (user?.role !== UserRole.Admin) {
+    history.push(RoutePathsEnum.LoginPage);
+    storage.clearToken();
+    context.setAuthenticated(false);
+    context.setUser(null);
+  }
 
   const matchMD = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = React.useState(() => {
@@ -45,7 +52,7 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
       <AdminHeader open={open} setOpen={setOpen} />
       <Sidebar loading={false} open={open} type='admin' />
       <Main open={open}>
-        <HeaderPlaceHolder />
+        <HeaderPlaceHolder bgcolor='green' />
         {children}
       </Main>
     </Box>

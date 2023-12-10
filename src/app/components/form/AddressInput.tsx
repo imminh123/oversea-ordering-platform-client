@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { InputBaseProps, Stack, StackProps, Typography } from '@mui/material';
 import { InputSingleSelect, OptionData } from 'app/components/form/InputSingleSelect';
-import { useAddressDataQuery } from 'data-query/useAddressDataQuery';
+import { useAddressDataQuery } from 'app/api/addressAPI';
 
 export type AddressData = {
   province?: string;
