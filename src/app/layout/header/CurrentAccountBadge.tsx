@@ -80,7 +80,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => history.push('/info')}>
+        <MenuItem onClick={() => history.push(`${history.location.pathname}/info`)}>
           <ListItemIcon>
             <Person fontSize='small' />
           </ListItemIcon>

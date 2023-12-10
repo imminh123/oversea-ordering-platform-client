@@ -153,7 +153,7 @@ export const OrderListing = () => {
         </Grid>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
           <TableContainer component={Paper} elevation={3}>
-            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+            <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
               <TableHead>
                 <TableRow>
                   <TableCell>Sản phẩm</TableCell>
@@ -174,7 +174,7 @@ export const OrderListing = () => {
             <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
           </TableContainer>
         )}
-        {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>No item</Item>}
+        {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
         {isLoading && (
           <Item elevation={3}>
             <CircularProgress />

@@ -31,3 +31,8 @@ export const chooseAddessValidator = yup.object({
   // city: yup.string().required('City is required'),
   // ward: yup.string().required('Ward is required'),
 });
+
+export const updateVariableValidator = yup.object({
+  value: yup.string().required('Vui lòng nhập giá trị'),
+  description: yup.string().required('Vui lòng nhập mô tả'),
+});

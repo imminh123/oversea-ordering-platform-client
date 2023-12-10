@@ -9,7 +9,7 @@ import { useUI } from 'app/hooks';
 
 interface Props {}
 
-export const LayoutPage: React.FC<Props> = ({ children }) => {
+export const ClientLayoutPage: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
   const { sidebarExpandVariant } = useUI();
   const matchMD = useMediaQuery(theme.breakpoints.down('md'));

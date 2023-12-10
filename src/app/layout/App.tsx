@@ -11,11 +11,10 @@ import { ActivePage } from 'pages/ActiveAccount';
 import { useEffect } from 'react';
 import { Route, Switch, matchPath, useHistory } from 'react-router-dom';
 import { GlobalLoading } from './global-loading';
-import { LayoutPage } from './LayoutPage';
+import { ClientLayoutPage } from './ClientLayoutPage';
 import storage from 'app/utils/storage';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
-import { HomePage } from 'features/home/ClientHome';
 import { AdminLayoutPage } from './AdminLayoutPage';
 
 function App() {
@@ -78,7 +77,7 @@ function App() {
         path={'/:path?'}
         render={() => {
           return (
-            <LayoutPage>
+            <ClientLayoutPage>
               <Switch>
                 {routes.map((route) => {
                   return (
@@ -86,7 +85,7 @@ function App() {
                   );
                 })}
               </Switch>
-            </LayoutPage>
+            </ClientLayoutPage>
           );
         }}
       />

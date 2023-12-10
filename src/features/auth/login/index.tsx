@@ -44,6 +44,7 @@ export const LoginPage: React.FC<Props> = () => {
 
     try {
       await login(data.username, data.password);
+      setLoading(false);
     } catch (err) {
       console.log({ err });
     }
