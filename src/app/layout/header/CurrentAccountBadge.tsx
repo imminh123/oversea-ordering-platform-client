@@ -9,9 +9,10 @@ import { useHistory } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
+  isAdmin?: boolean;
 }
 
-export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
+export const CurrentAccountBadge: React.FC<Props> = ({ loading, isAdmin }) => {
   const { logout } = useAuth();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -80,7 +81,7 @@ export const CurrentAccountBadge: React.FC<Props> = ({ loading }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => history.push(`${history.location.pathname}/info`)}>
+        <MenuItem onClick={() => history.push(isAdmin ? `/admin/info` : `/info`)}>
           <ListItemIcon>
             <Person fontSize='small' />
           </ListItemIcon>

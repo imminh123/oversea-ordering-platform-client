@@ -230,7 +230,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
           </Box>
         </TableContainer>
       )}
-      {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
+      {(!cartItems || !cartItems?.data.length) && !loadingCart && <Item elevation={3}>Không có bản ghi</Item>}
       {loadingCart && (
         <Item elevation={3}>
           <CircularProgress />

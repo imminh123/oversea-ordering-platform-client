@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
@@ -22,6 +22,8 @@ interface Props {}
 export const LoginPage: React.FC<Props> = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const formMethods = useForm<TLoginArgs>({
     mode: 'onChange',
     defaultValues: { username: '', password: '' },
@@ -70,7 +72,9 @@ export const LoginPage: React.FC<Props> = () => {
             px: 2,
             py: 4,
             mt: 10,
-            boxShadow: (theme) => theme.shadows[3],
+            ...(matches && {
+              boxShadow: (theme) => theme.shadows[3],
+            }),
           }}
         >
           <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>

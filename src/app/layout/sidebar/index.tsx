@@ -28,11 +28,11 @@ export const Sidebar: React.FC<Props> = ({ open, loading, type }) => {
       anchor='left'
       open={open}
     >
-      <HeaderPlaceHolder />
+      <HeaderPlaceHolder bg='../../../src/assets/images/myb.png' />
       <Divider />
       {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} type={type} />}
 
-      <SidebarDrawer loading={loading} />
+      <SidebarDrawer loading={loading} type={type} />
     </Drawer>
   );
 };
