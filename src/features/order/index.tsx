@@ -36,6 +36,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   height: 60,
   lineHeight: '60px',
+  padding: '10px',
 }));
 
 export const mappingStatus = (status?: OrderStatus) => {
@@ -174,7 +175,7 @@ export const OrderListing = () => {
             <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
           </TableContainer>
         )}
-        {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
+        {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
         {isLoading && (
           <Item elevation={3}>
             <CircularProgress />

@@ -138,7 +138,7 @@ export const Step1 = () => {
                 </TableContainer>
               );
             })}
-          {(!cartItems || !cartItems?.data.length) && <Item elevation={3}>Không có bản ghi</Item>}
+          {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
           {isLoading && (
             <Item elevation={3}>
               <CircularProgress className='m-5' />

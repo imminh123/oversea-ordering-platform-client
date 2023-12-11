@@ -100,7 +100,7 @@ export const AdminHeader: React.FC<Props> = ({ open, setOpen }) => {
 
           <Stack direction={'row'} alignItems={'center'} spacing={1} sx={{ ml: 'auto' }}>
             <Notifications />
-            <CurrentAccountBadge loading={false} />
+            <CurrentAccountBadge loading={false} isAdmin={true} />
           </Stack>
         </Toolbar>
       </AppBar>
