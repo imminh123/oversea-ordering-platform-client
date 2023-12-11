@@ -52,7 +52,7 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
       <AdminHeader open={open} setOpen={setOpen} />
       <Sidebar loading={false} open={open} type='admin' />
       <Main open={open}>
-        <HeaderPlaceHolder />
+        <HeaderPlaceHolder bgcolor='green' />
         {children}
       </Main>
     </Box>

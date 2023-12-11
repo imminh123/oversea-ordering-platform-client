@@ -1,4 +1,5 @@
 import { styled } from '@mui/material';
+import { unstable_extendSxProp as extendSxProp } from '@mui/system';
 
 type DivProps = {
   bg?: string;
@@ -19,3 +20,8 @@ export const HeaderPlaceHolder = styled('div')<DivProps>(({ theme, bg }) => ({
     backgroundColor: 'black',
   }),
 }));
+
+export const HeaderPlaceHolder = (inProps: any) => {
+  const { sx } = extendSxProp(inProps);
+  return <StyledDiv sx={sx} />;
+};
