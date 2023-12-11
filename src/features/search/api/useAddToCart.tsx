@@ -28,7 +28,7 @@ export const useAddToCart = (config?: MutationConfig<QueryFnType>) => {
       queryClient.invalidateQueries('useCountCart');
     },
     onError(error) {
-      alertError(error.response?.data.message[0]);
+      alertError(error.response?.data.message);
     },
     ...config,
   });

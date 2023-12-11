@@ -29,8 +29,8 @@ export const ItemDetail = () => {
     }
     if (data?.data) {
       const body: IAddCartParams = {
-        id: data?.data.item_id,
-        pvid: Array.from(mapPVid).map(([key, value]) => `${key}:${value}`),
+        id: data?.data.OfferId.toString(),
+        pvid: [...mapPVid.values()],
         volume: quantity,
       };
       addToCart(body);
@@ -53,11 +53,11 @@ export const ItemDetail = () => {
         {!isLoading && !!data?.data && (
           <Grid container spacing={2}>
             <Grid item sm={12} md={4} width={'100%'}>
-              {!!data?.data.main_imgs.length && (
+              {!!data?.data.ImageUrls.length && (
                 <>
                   <CardMedia
                     component='img'
-                    src={data?.data.main_imgs[currentImg]}
+                    src={data?.data.ImageUrls[currentImg]}
                     className='mb-3'
                     sx={{
                       border: 'solid 1px gray',
@@ -65,7 +65,7 @@ export const ItemDetail = () => {
                     }}
                   />
                   <Box className='flex justify-around'>
-                    {data?.data.main_imgs.map((img, index) => (
+                    {data?.data.ImageUrls.map((img, index) => (
                       <CardMedia
                         component='img'
                         key={index}
@@ -93,18 +93,16 @@ export const ItemDetail = () => {
             </Grid>
             <Grid item sm={12} md={8} width={'100%'}>
               <Box className='flex flex-col gap-2'>
-                <a href={data?.data.product_url} target='_blank' rel='noopener noreferrer'>
-                  <Typography variant='h6' color='primary' sx={{ mb: 4, '&:hover': { color: 'red' } }} align='left'>
-                    {data?.data.title}
-                  </Typography>
-                </a>
+                <Typography variant='h6' color='primary' sx={{ mb: 4, '&:hover': { color: 'red' } }} align='left'>
+                  {data?.data.Subject}
+                </Typography>
                 <Grid container spacing={1} width={'100%'}>
                   <Grid item xs={12} sm={2}>
                     Shop:
                   </Grid>
                   <Grid item xs={12} sm={10}>
-                    <a href={data?.data.shop_info.shop_url} target='_blank' rel='noopener noreferrer'>
-                      {data?.data.shop_info.shop_name}
+                    <a href={data?.data.ShopUrl} target='_blank' rel='noopener noreferrer'>
+                      {data?.data.ShopName}
                     </a>
                   </Grid>
                 </Grid>
@@ -113,15 +111,15 @@ export const ItemDetail = () => {
                     Giá:
                   </Grid>
                   <Grid item xs={12} sm={10}>
-                    {formatMoneyToCN(parseFloat(data?.data.price_info.price || '0'))}
+                    {formatMoneyToCN(data?.data.PriceRangeInfos[0].Price)}
                   </Grid>
                 </Grid>
-                {data?.data.sku_props.map((sku) => (
-                  <Grid key={sku.pid} container spacing={1}>
+                {data?.data.SkuProps.map((sku, index) => (
+                  <Grid key={index} container spacing={1}>
                     <SkuList
                       sku_props={sku}
-                      emitVid={(mapPVid: any) => {
-                        handleMapChange(mapPVid);
+                      emitValue={(value: any) => {
+                        handleMapChange(value);
                       }}
                     />
                   </Grid>

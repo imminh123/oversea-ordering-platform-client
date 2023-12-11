@@ -3,24 +3,25 @@ import React, { useState } from 'react';
 import { SkuProps } from '../api/useGetSearchDetail';
 
 interface Props {
-  props: { vid: string; name: string; imageUrl: string };
-  selectedVid: string;
-  setVid: any;
+  props: { value: string; name: string; imageUrl: string };
+  selectedValue: string;
+  setValue: any;
+  IsImg: boolean;
 }
 
-const PropItem = ({ props, selectedVid: id, setVid: setId }: Props) => {
+const PropItem = ({ props, selectedValue, setValue, IsImg }: Props) => {
   const [selected, setSelected] = useState<any>();
   const handleSelected = () => {
-    setSelected(props.vid);
-    setId(props.vid);
+    setSelected(props.value);
+    setValue(props.value);
   };
-  if (!!props.imageUrl) {
+  if (IsImg) {
     return (
       <img
         src={props.imageUrl}
         alt={props.name}
-        className={`border-2 border-solid h-10 w-10 bg-cover hover:bg-slate-100 cursor-pointer mb-1 ${
-          selected === id ? 'border-sky-500' : ''
+        className={`border-2 border-solid h-10 w-10 bg-cover hover:bg-slate-100 cursor-pointer mb-1 mx-1 ${
+          selected === selectedValue ? 'border-sky-500' : ''
         }`}
         onClick={handleSelected}
       />
@@ -28,8 +29,8 @@ const PropItem = ({ props, selectedVid: id, setVid: setId }: Props) => {
   } else {
     return (
       <div
-        className={`h-10 w-10 border-2 border-solid hover:bg-slate-100 justify-center items-center flex text-slate-500 cursor-pointer mb-1 ${
-          selected === id ? 'border-sky-500' : ''
+        className={`h-10 w-auto border-2 border-solid hover:bg-slate-100 justify-center items-center flex text-slate-500 cursor-pointer mb-1 mx-1 ${
+          selected === selectedValue ? 'border-sky-500' : ''
         }`}
         onClick={handleSelected}
       >
@@ -41,33 +42,32 @@ const PropItem = ({ props, selectedVid: id, setVid: setId }: Props) => {
   }
 };
 
-export const SkuList = ({ sku_props: sku, emitVid }: { sku_props: SkuProps; emitVid: any }) => {
+export const SkuList = ({ sku_props, emitValue }: { sku_props: SkuProps; emitValue: any }) => {
   const [vid, setVid] = useState('');
   const [myMap, setMyMap] = useState(new Map());
 
   const handleChangeId = (id: string) => {
     setVid(id);
-    // emitVid(`${sku.pid}:${id}`);
-    handleMapChange(sku.pid, id);
+    handleMapChange(sku_props.Prop, id);
   };
 
   const handleMapChange = (key: string, value: string) => {
     const updatedMap = new Map(myMap);
     updatedMap.set(key, value);
-    emitVid(updatedMap);
+    emitValue(updatedMap);
     setMyMap(updatedMap);
   };
 
   return (
     <React.Fragment>
       <Grid item xs={12} sm={2}>
-        {sku.prop_name}:
+        {sku_props.Prop}:
       </Grid>
       <Grid item xs={12} sm={10}>
         <Grid container className='w-full'>
-          {sku.values.map((p) => (
-            <Grid item sm={1} key={p.vid}>
-              <PropItem selectedVid={vid} setVid={handleChangeId} props={p} />
+          {sku_props.Value.map((p) => (
+            <Grid item gap={1} key={p.value}>
+              <PropItem IsImg={sku_props.IsImg} selectedValue={vid} setValue={handleChangeId} props={p} />
             </Grid>
           ))}
         </Grid>
