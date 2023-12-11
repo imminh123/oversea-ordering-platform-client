@@ -8,7 +8,7 @@ export const AdminOrders = () => {
         <title>Đơn hàng</title>
       </Helmet>
       <Container className='mt-5'>
-        <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>
+        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
           Quản lý đơn hàng
         </Typography>
         <h1>Đang đợi api...</h1>

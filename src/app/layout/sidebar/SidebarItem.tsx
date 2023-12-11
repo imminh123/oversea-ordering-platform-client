@@ -64,7 +64,7 @@ const ListItemIcon = styled(MUIListItemIcon, {
 const SidebarItem: React.FC<Props> = ({ item, borderBottom }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const { listDense, sidebarExpandKey, sidebarActive, setSidebarExpandKey, setSidebarActive } = useUI();
+  const { listDense, sidebarExpandKey, sidebarActive, setSidebarExpandKey, setSidebarActive, closeDrawer } = useUI();
 
   const renderLabelItem = (item: ISidebarItem): JSX.Element => {
     return <span>{t(item.label)}</span>;
@@ -86,6 +86,7 @@ const SidebarItem: React.FC<Props> = ({ item, borderBottom }) => {
     } else {
       history.push(item.link);
       setSidebarActive(item);
+      closeDrawer();
       setSidebarExpandKey((prev) => {
         if (prev !== item.parentKey) {
           return null;

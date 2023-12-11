@@ -29,7 +29,7 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
     updateQuantity({ id: row.id, quantity });
   };
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
       <TableCell component='th' scope='row'>
         <Box display={'flex'} gap={'10px'}>
           <img className='max-w-16 max-h-16 overflow-clip' src={row.itemImage} alt='cart-item-image' />

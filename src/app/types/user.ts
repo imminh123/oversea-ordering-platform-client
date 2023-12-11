@@ -1,7 +1,6 @@
 export enum UserRole {
-  SuperAdmin = 'super_admin',
+  Root = 'root',
   Admin = 'admin',
-  User = 'user',
   Client = 'client',
 }
 
@@ -16,7 +15,7 @@ export interface IUser {
 
 export interface IUserServerResponse {
   id: string;
-  email: string;
+  mail: string;
   phone: string;
   password: string;
   gender: string;

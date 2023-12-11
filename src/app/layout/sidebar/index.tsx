@@ -28,7 +28,7 @@ export const Sidebar: React.FC<Props> = ({ open, loading, type }) => {
       anchor='left'
       open={open}
     >
-      <HeaderPlaceHolder bg='../../../src/assets/images/myb.png' />
+      <HeaderPlaceHolder bg='/myb.png' />
       <Divider />
       {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} type={type} />}
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Home, TextSnippet, Search as SearchIcon, AttachMoney } from '@mui/icons-material';
+import { Home, TextSnippet, Search as SearchIcon, AttachMoney, ManageAccounts } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -20,6 +20,8 @@ const { Search } = lazyImport(() => import('features/search'), 'Search');
 const { ItemDetail } = lazyImport(() => import('features/search/components/ItemDetail'), 'ItemDetail');
 const { AdminVariables } = lazyImport(() => import('features/variables/AdminVariables'), 'AdminVariables');
 const { AdminOrders } = lazyImport(() => import('features/order/AdminOrders'), 'AdminOrders');
+const { UsersListing } = lazyImport(() => import('features/users'), 'UsersListing');
+const { UserDetail } = lazyImport(() => import('features/users/components/UserDetail'), 'UserDetail');
 
 function useNavigation() {
   const history = useHistory();
@@ -107,6 +109,18 @@ function useNavigation() {
         path: RoutePathsEnum.AdminOrders,
         component: <AdminOrders />,
       },
+      {
+        key: RouteKeysEnum.AdminUsers,
+        exact: true,
+        path: RoutePathsEnum.AdminUsers,
+        component: <UsersListing />,
+      },
+      {
+        key: RouteKeysEnum.AdminUserDetail,
+        exact: true,
+        path: RoutePathsEnum.AdminUserDetail,
+        component: <UserDetail />,
+      },
     ];
 
     return result;
@@ -170,6 +184,13 @@ function useNavigation() {
             link: SidebarLinksEnum.AdminOrders,
             icon: <TextSnippet />,
             label: 'Quản lý đơn hàng',
+          },
+          {
+            key: SidebarKeysEnum.AdminUsers,
+            parentKey: null,
+            link: SidebarLinksEnum.AdminUsers,
+            icon: <ManageAccounts />,
+            label: 'Quản lý người dùng',
           },
         ],
       },

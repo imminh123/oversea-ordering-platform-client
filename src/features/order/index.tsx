@@ -29,15 +29,7 @@ import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { OrderStatusOptions } from './order.const';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
-  padding: '10px',
-}));
+import { Item } from 'app/utils/Item';
 
 export const mappingStatus = (status?: OrderStatus) => {
   switch (status) {
@@ -61,19 +53,18 @@ const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
   return (
     <TableRow
       onClick={() => {
-        history.push(`orders/${item.id}`);
+        history.push(`/orders/${item.id}`);
       }}
       className=' cursor-pointer'
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
     >
-      <TableCell component='th' scope='row'>
+      <TableCell component='th' scope='row' className='sm:text-xs'>
         {item.listItem[0].itemName}
       </TableCell>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingStatus(item.status)}
       </TableCell>
       <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
-      <TableCell>{item.wareHouseAddress}</TableCell>
       <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>
     </TableRow>
   );
@@ -153,27 +144,28 @@ export const OrderListing = () => {
           </Grid>
         </Grid>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
-          <TableContainer component={Paper} elevation={3}>
-            <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Sản phẩm</TableCell>
-                  <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
-                    Trạng thái
-                  </TableCell>
-                  <TableCell className=' min-w-[150px]'>Người nhận</TableCell>
-                  <TableCell align='right'>Kho hàng</TableCell>
-                  <TableCell align='right'>Tiền hàng</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cartItems?.data.map((row: IOrderStatusRes) => (
-                  <OrderRow key={row.id} item={row} />
-                ))}
-              </TableBody>
-            </Table>
+          <>
+            <TableContainer component={Paper} elevation={3}>
+              <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Sản phẩm</TableCell>
+                    <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+                      Trạng thái
+                    </TableCell>
+                    <TableCell className=' min-w-[150px]'>Người nhận</TableCell>
+                    <TableCell align='right'>Tiền hàng</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cartItems?.data.map((row: IOrderStatusRes) => (
+                    <OrderRow key={row.id} item={row} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-          </TableContainer>
+          </>
         )}
         {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
         {isLoading && (

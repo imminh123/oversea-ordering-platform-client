@@ -25,6 +25,7 @@ import { Step1CartRow } from './components/Step1CartRow';
 import queryString from 'query-string';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Item } from 'app/utils/Item';
 
 const SumaryInfo = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -35,14 +36,6 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: 'center',
   backgroundColor: '#f2f2f2',
-}));
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
 }));
 
 export const Step1 = () => {

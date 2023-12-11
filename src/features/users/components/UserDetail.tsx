@@ -1,18 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Container, CssBaseline, Box, Typography, Card, CardContent, CardActions } from '@mui/material';
-import { updateProfileValidator } from 'app/utils/validators';
-import React, { useEffect, useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useGetInfo } from './api/useGetInfo';
-import { UpdateInfoDTO, useUpdateInfo } from './api/useUpdateInfo';
-import { Helmet } from 'react-helmet-async';
+import { Box, Button, Card, CardActions, CardContent, Container, CssBaseline, Typography } from '@mui/material';
 import { AddressData } from 'app/components/form/AddressInput';
 import {
-  HooksFormInputAddress,
+  HooksFormInputTextField,
   HooksFormInputSingleDatePicker,
   HooksFormInputSingleSelect,
-  HooksFormInputTextField,
+  HooksFormInputAddress,
 } from 'app/components/libs/react-hooks-form';
+import { updateProfileValidator } from 'app/utils/validators';
+import { UpdateInfoDTO, useUpdateInfo } from 'features/personal-info/api/useUpdateInfo';
+import { useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useAdminGetUerDetail } from '../apis/useAdminGetInfo';
+import { useParams } from 'react-router-dom';
 import { UserRole } from 'app/types/user';
 
 interface IFormInput {
@@ -53,8 +54,9 @@ const statusOptions = [
   },
 ];
 
-export const PersonalInfo = () => {
-  const { data, isLoading } = useGetInfo();
+export const UserDetail = () => {
+  const param: { id: string } = useParams();
+  const { data, isLoading } = useAdminGetUerDetail(param.id);
   const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
 
   const defaultValues = useMemo<IFormInput>(() => {
@@ -93,30 +95,24 @@ export const PersonalInfo = () => {
       });
   }, [data]);
 
-  const onSubmit = async (data: IFormInput) => {
-    const body: UpdateInfoDTO = {
-      ...data,
-      province: data?.addressObjectData?.province,
-      city: data?.addressObjectData?.district,
-      ward: data?.addressObjectData?.ward,
-    };
-    await updateUserInfo({ body });
+  const onSubmit = async (_data: IFormInput) => {
+    alert('waiting endpoit');
   };
 
   return (
-    <React.Fragment>
+    <>
       <Helmet>
-        <title>Thông tin</title>
+        <title>Quản lý người dùng</title>
       </Helmet>
+      <CssBaseline />
       {!!data && !isLoading && (
         <FormProvider {...formMethods}>
-          <CssBaseline />
           <Container maxWidth='md'>
             <Card sx={{ minWidth: 275 }} className=' mt-10'>
               <CardContent>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-                    Chỉnh sửa thông tin tài khoản
+                  <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>
+                    Thông tin tài khoản
                   </Typography>
                   <HooksFormInputTextField size={'small'} fieldName={'fullname'} label={'Họ và tên'} />
                   <HooksFormInputSingleDatePicker fieldName={'birthday'} label={'Ngày sinh'} />
@@ -155,8 +151,8 @@ export const PersonalInfo = () => {
                   >
                     Lưu
                   </Button>
-                  <Button onClick={() => formMethods.reset()} variant={'outlined'}>
-                    Hủy
+                  <Button onClick={() => history.back()} variant={'outlined'}>
+                    Quay lại
                   </Button>
                 </Box>
               </CardActions>
@@ -164,6 +160,6 @@ export const PersonalInfo = () => {
           </Container>
         </FormProvider>
       )}
-    </React.Fragment>
+    </>
   );
 };
