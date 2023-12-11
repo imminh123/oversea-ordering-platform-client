@@ -20,8 +20,3 @@ export const HeaderPlaceHolder = styled('div')<DivProps>(({ theme, bg }) => ({
     backgroundColor: 'black',
   }),
 }));
-
-export const HeaderPlaceHolder = (inProps: any) => {
-  const { sx } = extendSxProp(inProps);
-  return <StyledDiv sx={sx} />;
-};
