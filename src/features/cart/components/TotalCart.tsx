@@ -19,14 +19,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
-}));
+import { Item } from 'app/utils/Item';
 
 export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
   const history = useHistory();
@@ -104,7 +97,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
           <Table aria-label='Kết đơn'>
             <TableHead>
               <TableRow>
-                <TableCell width={'30px'} size='small' align='left'>
+                <TableCell padding='none' width={'30px'} size='small' align='left'>
                   <Checkbox checked={selectAll} onChange={handleSelectAll} />
                 </TableCell>
                 <TableCell>Ảnh</TableCell>
@@ -161,7 +154,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                       className='w-auto h-10 bg-cover object-cover'
                     />
                   </div>
-                  <span>Ví điện tử VNPAY/ VNPAY QR</span>
+                  <span className=' text-right'>Ví điện tử VNPAY</span>
                 </div>
               </label>
 

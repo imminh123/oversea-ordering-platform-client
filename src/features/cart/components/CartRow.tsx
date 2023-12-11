@@ -24,8 +24,8 @@ export const CartRow = ({
     }
   }, [isChecked]);
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-      <TableCell width={'30px'} size='small' align='left'>
+    <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
+      <TableCell padding='none' width={'30px'} size='small' align='left'>
         <Checkbox checked={checked} onChange={(e) => handleChecked(e.target.checked, row.id)} />
       </TableCell>
       <TableCell component='th' scope='row'>
@@ -41,9 +41,7 @@ export const CartRow = ({
       <TableCell width={'100px'} size='small' align='right'>
         {row.quantity}
       </TableCell>
-      <TableCell align='right' sx={{ '&::after': { content: '"đ"' } }}>
-        {formatMoneyToVND(parseFloat(row.vnPrice) * row.quantity)}
-      </TableCell>
+      <TableCell align='right'>{formatMoneyToVND(parseFloat(row.vnPrice) * row.quantity)}</TableCell>
     </TableRow>
   );
 };

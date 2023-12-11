@@ -46,10 +46,10 @@ export const LoginPage: React.FC<Props> = () => {
 
     try {
       await login(data.username, data.password);
-      setLoading(false);
     } catch (err) {
       console.log({ err });
     }
+    setLoading(false);
 
     const token = storage.getToken();
     sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });

@@ -18,15 +18,7 @@ import { Helmet } from 'react-helmet-async';
 import { Variable, useListVariables } from './api/useGetVariables';
 import { useState } from 'react';
 import { EditVariableModal } from './components/EditVariableModal';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: '60px',
-  padding: '10px',
-}));
+import { Item } from 'app/utils/Item';
 
 const VariableRow = ({ item }: { item: Variable }) => {
   return (
@@ -62,28 +54,30 @@ export const AdminVariables = () => {
         <title>Tỉ giá</title>
       </Helmet>
       <Container className='mt-5'>
-        <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>
+        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
           Quản lý tỉ giá
         </Typography>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
-          <TableContainer className='mt-2' component={Paper} elevation={3}>
-            <Table sx={{ minWidth: 650 }} aria-label='variable table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell align='left'>Tên</TableCell>
-                  <TableCell align='right'>Giá trị</TableCell>
-                  <TableCell align='right'>Mô tả</TableCell>
-                  <TableCell align='right'></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cartItems?.data.map((row: Variable) => (
-                  <VariableRow key={row.id} item={row} />
-                ))}
-              </TableBody>
-            </Table>
+          <>
+            <TableContainer className='mt-2' component={Paper} elevation={3}>
+              <Table sx={{ minWidth: 650 }} aria-label='variable table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='left'>Tên</TableCell>
+                    <TableCell align='right'>Giá trị</TableCell>
+                    <TableCell align='right'>Mô tả</TableCell>
+                    <TableCell align='right'></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cartItems?.data.map((row: Variable) => (
+                    <VariableRow key={row.id} item={row} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-          </TableContainer>
+          </>
         )}
         {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
         {isLoading && (

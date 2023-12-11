@@ -37,7 +37,7 @@ const mappingServerDataUnderUserView = (serverData: IUserServerResponse): IUser 
   const userData: IUser = {
     id: serverData.id,
     fullname: serverData.fullname,
-    email: serverData.email,
+    email: serverData.mail,
     phone: serverData.phone,
     role: serverData.role,
     avatar: serverData.avatar,

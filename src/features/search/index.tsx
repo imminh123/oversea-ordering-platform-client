@@ -91,7 +91,6 @@ export const Search = () => {
             <TextField
               value={search}
               fullWidth
-              variant='filled'
               onKeyDown={(e) => handleKeyPress(e, 'q')}
               label='Tìm kiếm sản phẩm Taobao'
               onChange={(e) => handleInputChange(e, 'q')}
@@ -113,7 +112,6 @@ export const Search = () => {
                 <Select
                   labelId='target-lang-label'
                   id='target-lang'
-                  variant='filled'
                   value={target_language}
                   label='Ngôn ngữ trả về'
                   onChange={(e) => handleInputChange(e, 'target_language')}
@@ -135,7 +133,6 @@ export const Search = () => {
                 <Select
                   labelId='query-lang-label'
                   id='query-lang'
-                  variant='filled'
                   value={query_language}
                   label='Ngôn ngữ tìm kiếm'
                   onChange={(e) => handleInputChange(e, 'query_language')}
@@ -157,7 +154,6 @@ export const Search = () => {
                 <Select
                   labelId='sort-label'
                   id='sort'
-                  variant='filled'
                   value={sort}
                   label='Sắp xếp'
                   onChange={(e) => handleInputChange(e, 'sort')}
@@ -177,7 +173,6 @@ export const Search = () => {
               <FormControl fullWidth>
                 <TextField
                   value={min}
-                  variant='filled'
                   type='number'
                   onKeyDown={(e) => handleKeyPress(e, 'min')}
                   label='Tối thiểu'
@@ -191,7 +186,6 @@ export const Search = () => {
                 <TextField
                   value={max}
                   type='number'
-                  variant='filled'
                   onKeyDown={(e) => handleKeyPress(e, 'max')}
                   label='Tối đa'
                   onChange={(e) => handleInputChange(e, 'max')}

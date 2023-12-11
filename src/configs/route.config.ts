@@ -22,6 +22,8 @@ export enum RouteKeysEnum {
   AdminVariables = 'admin-variables',
   AdminOrders = 'admin-order',
   AdminOrderDetail = 'admin-order-details',
+  AdminUsers = 'admin-users',
+  AdminUserDetail = 'admin-user-detail',
 }
 
 export enum RoutePathsEnum {
@@ -46,4 +48,6 @@ export enum RoutePathsEnum {
   AdminVariables = '/admin/variables',
   AdminOrders = '/admin/orders',
   AdminOrderDetail = '/admin/orders/:id',
+  AdminUsers = '/admin/users',
+  AdminUserDetail = '/admin/users/:id',
 }
