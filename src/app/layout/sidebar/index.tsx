@@ -32,7 +32,7 @@ export const Sidebar: React.FC<Props> = ({ open, loading, type }) => {
       <Divider />
       {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} type={type} />}
 
-      <SidebarDrawer loading={loading} />
+      <SidebarDrawer loading={loading} type={type} />
     </Drawer>
   );
 };

@@ -8,12 +8,13 @@ const SidebarLoading = lazy(() => import('./SidebarLoading'));
 
 interface Props {
   loading: boolean;
+  type?: string;
 }
 
-const SidebarDrawer: React.FC<Props> = ({ loading }) => {
+const SidebarDrawer: React.FC<Props> = ({ loading, type }) => {
   return (
-    <DrawerWrapper drawerType={EDrawerType.SIDEBAR_DRAWER} drawerWidth={sidebarWidth} closeable={false}>
-      {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={true} />}
+    <DrawerWrapper drawerType={EDrawerType.SIDEBAR_DRAWER} drawerWidth={sidebarWidth} closeable={true}>
+      {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={true} type={type} />}
     </DrawerWrapper>
   );
 };
