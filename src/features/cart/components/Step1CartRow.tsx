@@ -1,7 +1,7 @@
 import { Save, Delete } from '@mui/icons-material';
 import { TableRow, TableCell, Box, IconButton, Input } from '@mui/material';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
-import { formatMoneyToVND } from 'app/utils/helper';
+import { formatMoneyToCN, formatMoneyToVND } from 'app/utils/helper';
 import { useState } from 'react';
 import { CartItemV2 } from '../api/useCartCategoriesListingV2';
 import { useDeleteCartItem } from '../api/useDeleteCategory';
@@ -56,10 +56,13 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
           }}
         />
       </TableCell>
-      <TableCell align='right' sx={{ '&::before': { content: '"¥"' } }}>
-        {row.price}
+      <TableCell align='right'>{row.price}</TableCell>
+      <TableCell align='right'>
+        <Box className='flex flex-col'>
+          <span>{formatMoneyToVND(parseFloat(row.vnPrice) * Number(row.quantity))}</span>{' '}
+          <span>{formatMoneyToCN(row.price)}</span>
+        </Box>
       </TableCell>
-      <TableCell align='right'>{formatMoneyToVND(parseFloat(row.vnPrice) * Number(row.quantity))}</TableCell>
       <TableCell align='center' width={'120px'}>
         <IconButton title='Lưu thay đổi' color='primary' aria-label='save' onClick={handleSave}>
           <Save color='primary' />

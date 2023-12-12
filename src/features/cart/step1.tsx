@@ -45,7 +45,7 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f2f2f2',
 }));
 
-const drawerBleeding = 56;
+const drawerBleeding = 85;
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : 'grey',
@@ -126,6 +126,9 @@ export const Step1 = () => {
             height: `calc(50% - ${drawerBleeding}px)`,
             overflow: 'visible',
           },
+          '.MuiDrawer-root > .MuiBackdrop-root': {
+            ...(!open && { backgroundColor: '#fff' }),
+          },
         }}
       />
       <Helmet>
@@ -156,12 +159,12 @@ export const Step1 = () => {
                         <TD sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>
                           Số lượng
                         </TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Thuộc tính</TD>
                         <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TD>
-                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Tiền hàng</TD>
                         <TD sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TD>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody sx={{ marginBottom: '20px' }}>
                       {item.listItem.map((row: CartItemV2) => (
                         <Step1CartRow key={row.id} row={row} />
                       ))}
@@ -178,7 +181,7 @@ export const Step1 = () => {
           )}
         </Grid>
         {!matchesSM && (
-          <Grid item md={12} lg={4} width={'100%'}>
+          <Grid item md={12} lg={4} width={'100%'} className='pb-3'>
             <SumaryInfo variant='elevation'>
               <Box display={'flex'} className=' justify-between'>
                 <span>Tiền hàng:</span>
@@ -253,13 +256,15 @@ export const Step1 = () => {
               visibility: 'visible',
               right: 0,
               left: 0,
+              height: 85,
             }}
           >
             <Puller />
-            <div className=' h-full flex justify-around p-3 mt-2'>
+            <Box className='grid grid-cols-2 gap-3 p-3 mt-2'>
               <Button
                 variant='contained'
                 size='small'
+                sx={{ height: '50px' }}
                 disabled={refreshing}
                 onClick={() => {
                   refreshCart();
@@ -267,10 +272,16 @@ export const Step1 = () => {
               >
                 REFRESH GIÁ TAOBAO
               </Button>
-              <Button size='small' variant='contained' disabled={isLoading || !cartIds.length} onClick={onSubmit}>
+              <Button
+                sx={{ height: '50px' }}
+                size='small'
+                variant='contained'
+                disabled={isLoading || !cartIds.length}
+                onClick={onSubmit}
+              >
                 {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
               </Button>
-            </div>
+            </Box>
           </StyledBox>
           <StyledBox
             sx={{
@@ -280,7 +291,6 @@ export const Step1 = () => {
               overflow: 'auto',
             }}
           >
-            {/* <Skeleton variant='rectangular' height='100%' /> */}
             <SumaryInfo variant='elevation'>
               <Box display={'flex'} className=' justify-between'>
                 <span>Tiền hàng:</span>
