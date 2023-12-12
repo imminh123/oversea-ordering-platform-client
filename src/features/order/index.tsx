@@ -18,7 +18,6 @@ import {
   MenuItem,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -29,7 +28,7 @@ import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { OrderStatusOptions } from './order.const';
-import { Item } from 'app/utils/Item';
+import { Item, TD } from 'app/utils/Item';
 
 export const mappingStatus = (status?: OrderStatus) => {
   switch (status) {
@@ -58,14 +57,14 @@ const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
       className=' cursor-pointer'
       sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
     >
-      <TableCell component='th' scope='row' className='sm:text-xs'>
+      <TD component='th' scope='row' className='sm:text-xs'>
         {item.listItem[0].itemName}
-      </TableCell>
+      </TD>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingStatus(item.status)}
       </TableCell>
-      <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
-      <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>
+      <TD className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TD>
+      <TD align='right'>{formatMoneyToVND(item?.total)}</TD>
     </TableRow>
   );
 };
@@ -99,13 +98,16 @@ export const OrderListing = () => {
         <title>Đơn hàng</title>
       </Helmet>
       <Container className='mt-5'>
-        <Grid container className='my-3' gap={3}>
-          <Grid item xs={12} sm={5}>
+        <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+          <Box>
             <FormControl fullWidth>
-              <InputLabel id='status-select-label'>Trạng thái đơn hàng</InputLabel>
+              <InputLabel size='small' id='status-select-label'>
+                Trạng thái đơn hàng
+              </InputLabel>
               <Select
                 labelId='status-select-label'
                 id='status-select'
+                size='small'
                 variant='outlined'
                 value={status || ''}
                 label='Trạng thái đơn hàng'
@@ -120,8 +122,8 @@ export const OrderListing = () => {
                 })}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={5}>
+          </Box>
+          <Box className='flex justify-end'>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateRangePicker
                 startText='Bắt đầu'
@@ -134,27 +136,29 @@ export const OrderListing = () => {
                 }}
                 renderInput={(startProps, endProps) => (
                   <React.Fragment>
-                    <TextField {...startProps} />
+                    <TextField size='small' {...startProps} />
                     <Box sx={{ mx: 2 }}> tới </Box>
-                    <TextField {...endProps} />
+                    <TextField size='small' {...endProps} />
                   </React.Fragment>
                 )}
               />
             </LocalizationProvider>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
           <>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Sản phẩm</TableCell>
-                    <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+                    <TD sx={{ fontWeight: 'bold' }}>Sản phẩm</TD>
+                    <TD sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
                       Trạng thái
-                    </TableCell>
-                    <TableCell className=' min-w-[150px]'>Người nhận</TableCell>
-                    <TableCell align='right'>Tiền hàng</TableCell>
+                    </TD>
+                    <TD sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
+                      Người nhận
+                    </TD>
+                    <TD sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TD>
                   </TableRow>
                 </TableHead>
                 <TableBody>

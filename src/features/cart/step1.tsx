@@ -3,10 +3,14 @@ import {
   Button,
   Checkbox,
   CircularProgress,
+  CssBaseline,
   Divider,
+  Drawer,
   Grid,
   Link,
   Paper,
+  Skeleton,
+  SwipeableDrawer,
   Table,
   TableBody,
   TableCell,
@@ -14,6 +18,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +31,8 @@ import { Step1CartRow } from './components/Step1CartRow';
 import queryString from 'query-string';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Item } from 'app/utils/Item';
+import { Item, TD } from 'app/utils/Item';
+import { Global } from '@emotion/react';
 
 const SumaryInfo = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -38,7 +45,30 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f2f2f2',
 }));
 
+const drawerBleeding = 56;
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'light' ? '#fff' : 'grey',
+}));
+
+const Puller = styled(Box)(({ theme }) => ({
+  width: 30,
+  height: 6,
+  backgroundColor: 'grey',
+  borderRadius: 3,
+  position: 'absolute',
+  top: 8,
+  left: 'calc(50% - 15px)',
+}));
+
 export const Step1 = () => {
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
   const history = useHistory();
   const { data: cartItems, isLoading } = useListCartCategoriesV2();
   const [cartIds, setCartIds] = useState<string[]>([]);
@@ -89,10 +119,19 @@ export const Step1 = () => {
   };
   return (
     <>
+      <CssBaseline />
+      <Global
+        styles={{
+          '.MuiDrawer-root > .MuiPaper-root': {
+            height: `calc(50% - ${drawerBleeding}px)`,
+            overflow: 'visible',
+          },
+        }}
+      />
       <Helmet>
         <title>Giỏ hàng</title>
       </Helmet>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className='mb-5'>
         <Grid item md={12} lg={8} width={'100%'}>
           {!!cartItems &&
             !!cartItems?.data.length &&
@@ -100,12 +139,12 @@ export const Step1 = () => {
             cartItems?.data.map((item) => {
               return (
                 <TableContainer key={item._id} component={Paper} elevation={3} className='mb-3'>
-                  <Table sx={{ minWidth: 650 }} aria-label='giỏ hàng'>
+                  <Table aria-label='giỏ hàng'>
                     <TableHead>
                       <tr className='text-left'>
                         <th>
-                          <br />
                           <Checkbox
+                            size='small'
                             value={cartIds.includes(item._id)}
                             onChange={(e) => handleCheckCart(e.target.checked, item._id)}
                           />
@@ -113,13 +152,13 @@ export const Step1 = () => {
                         </th>
                       </tr>
                       <TableRow>
-                        <TableCell>Sản phẩm</TableCell>
-                        <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+                        <TD sx={{ fontWeight: 'bold', padding: '8px' }}>Sản phẩm</TD>
+                        <TD sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>
                           Số lượng
-                        </TableCell>
-                        <TableCell align='right'>Đơn giá</TableCell>
-                        <TableCell align='right'>Tiền hàng</TableCell>
-                        <TableCell align='center'>Thao tác</TableCell>
+                        </TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Tiền hàng</TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TD>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -138,44 +177,89 @@ export const Step1 = () => {
             </Item>
           )}
         </Grid>
-        <Grid item md={12} lg={4} width={'100%'}>
-          <SumaryInfo variant='elevation'>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Tiền hàng:</span>
-              <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
-            </Box>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Phí mua hàng:</span>
-              <span>_</span>
-            </Box>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Phí kiểm đếm:</span>
-              <span>_</span>
-            </Box>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Phí vận chuyển nội địa TQ:</span>
-              <span>_</span>
-            </Box>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Phí vận chuyển TQ - VN:</span>
-              <span>_</span>
-            </Box>
-            <Box display={'flex'} className=' justify-between'>
-              <span>Phí vận chuyển nội địa VN:</span>
-              <span>_</span>
-            </Box>
-            <Divider />
-            <Box display={'flex'} className=' justify-between'>
-              <Typography variant='h6' sx={{ mb: 4 }}>
-                Tổng tiền:
-              </Typography>
-              <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-                {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
-              </Typography>
-            </Box>
-            <Box display={'flex'} gap={'10px'} className='justify-end'>
+        {!matchesSM && (
+          <Grid item md={12} lg={4} width={'100%'}>
+            <SumaryInfo variant='elevation'>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Tiền hàng:</span>
+                <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí mua hàng:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí kiểm đếm:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển nội địa TQ:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển TQ - VN:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển nội địa VN:</span>
+                <span>_</span>
+              </Box>
+              <Divider />
+              <Box display={'flex'} className=' justify-between'>
+                <Typography variant='h6' sx={{ mb: 4 }}>
+                  Tổng tiền:
+                </Typography>
+                <Typography variant='h5' color='error' sx={{ mb: 4 }}>
+                  {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
+                </Typography>
+              </Box>
+              <Box display={'flex'} gap={'10px'} className='justify-end'>
+                <Button
+                  variant='contained'
+                  disabled={refreshing}
+                  onClick={() => {
+                    refreshCart();
+                  }}
+                >
+                  REFRESH GIÁ TAOBAO
+                </Button>
+                <Button variant='contained' disabled={isLoading || !cartIds.length} onClick={onSubmit}>
+                  {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
+                </Button>
+              </Box>
+            </SumaryInfo>
+          </Grid>
+        )}
+      </Grid>
+      {matchesSM && (
+        <SwipeableDrawer
+          container={undefined}
+          anchor='bottom'
+          open={open}
+          onClose={toggleDrawer(false)}
+          onOpen={toggleDrawer(true)}
+          swipeAreaWidth={drawerBleeding}
+          disableSwipeToOpen={false}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          <StyledBox
+            sx={{
+              position: 'absolute',
+              top: -drawerBleeding,
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              visibility: 'visible',
+              right: 0,
+              left: 0,
+            }}
+          >
+            <Puller />
+            <div className=' h-full flex justify-around p-3 mt-2'>
               <Button
                 variant='contained'
+                size='small'
                 disabled={refreshing}
                 onClick={() => {
                   refreshCart();
@@ -183,13 +267,58 @@ export const Step1 = () => {
               >
                 REFRESH GIÁ TAOBAO
               </Button>
-              <Button variant='contained' disabled={isLoading || !cartIds.length} onClick={onSubmit}>
+              <Button size='small' variant='contained' disabled={isLoading || !cartIds.length} onClick={onSubmit}>
                 {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
               </Button>
-            </Box>
-          </SumaryInfo>
-        </Grid>
-      </Grid>
+            </div>
+          </StyledBox>
+          <StyledBox
+            sx={{
+              px: 2,
+              pb: 2,
+              height: '100%',
+              overflow: 'auto',
+            }}
+          >
+            {/* <Skeleton variant='rectangular' height='100%' /> */}
+            <SumaryInfo variant='elevation'>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Tiền hàng:</span>
+                <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí mua hàng:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí kiểm đếm:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển nội địa TQ:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển TQ - VN:</span>
+                <span>_</span>
+              </Box>
+              <Box display={'flex'} className=' justify-between'>
+                <span>Phí vận chuyển nội địa VN:</span>
+                <span>_</span>
+              </Box>
+              <Divider />
+              <Box display={'flex'} className=' justify-between'>
+                <Typography variant='h6' sx={{ mb: 4 }}>
+                  Tổng tiền:
+                </Typography>
+                <Typography variant='h5' color='error' sx={{ mb: 4 }}>
+                  {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
+                </Typography>
+              </Box>
+            </SumaryInfo>
+          </StyledBox>
+        </SwipeableDrawer>
+      )}
     </>
   );
 };

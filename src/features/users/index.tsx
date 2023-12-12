@@ -1,4 +1,5 @@
 import {
+  Box,
   Chip,
   CircularProgress,
   Container,
@@ -24,7 +25,7 @@ import { useHistory } from 'react-router-dom';
 import { UserRoleOptions, UserStatusOptions } from './Users.const';
 import { useState } from 'react';
 import { IUserServerResponse, UserRole } from 'app/types/user';
-import { Item } from 'app/utils/Item';
+import { Item, TD } from 'app/utils/Item';
 import { useAdminIndexUsers } from './apis/useAdminIndexUsers';
 import { Search } from '@mui/icons-material';
 
@@ -77,12 +78,13 @@ export const UsersListing = () => {
         <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
           Quản lý người dùng
         </Typography>
-        <Grid container className='my-3' gap={2}>
-          <Grid item xs={12} sm={6}>
+        <Box className='grid grid-cols-2 sm:grid-cols-3 gap-2 my-3'>
+          <Box className='col-span-2 sm:col-span-1'>
             <FormControl fullWidth>
               <TextField
                 value={q}
                 fullWidth
+                size='small'
                 onKeyDown={(e) => handleKeyPress(e, 'search')}
                 onChange={(e) => handleInputChange(e, 'q')}
                 label='Email/sđt'
@@ -97,14 +99,17 @@ export const UsersListing = () => {
                 }}
               />
             </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={2}>
+          </Box>
+          <Box>
             <FormControl fullWidth>
-              <InputLabel id='role-select-label'>Vai trò</InputLabel>
+              <InputLabel size='small' id='role-select-label'>
+                Vai trò
+              </InputLabel>
               <Select
                 labelId='role-select-label'
                 id='role-select'
                 variant='outlined'
+                size='small'
                 value={role || ''}
                 label='Vai trò'
                 onChange={(e) => handleInputChange(e, 'role')}
@@ -118,12 +123,15 @@ export const UsersListing = () => {
                 })}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={3}>
+          </Box>
+          <Box>
             <FormControl fullWidth>
-              <InputLabel id='status-select-label'>Trạng thái</InputLabel>
+              <InputLabel size='small' id='status-select-label'>
+                Trạng thái
+              </InputLabel>
               <Select
                 labelId='status-select-label'
+                size='small'
                 id='status-select'
                 variant='outlined'
                 value={status?.toString()}
@@ -139,20 +147,20 @@ export const UsersListing = () => {
                 })}
               </Select>
             </FormControl>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         {!!ListUser && !!ListUser?.data.items.length && !isLoading && (
           <>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Họ tên</TableCell>
-                    <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
+                    <TD>Họ tên</TD>
+                    <TD sx={{ maxWidth: '150px' }} size='small' align='right'>
                       Vai trò
-                    </TableCell>
-                    <TableCell className=' min-w-[150px]'>Email</TableCell>
-                    <TableCell align='right'>Trạng thái</TableCell>
+                    </TD>
+                    <TD className=' min-w-[150px]'>Email</TD>
+                    <TD align='right'>Trạng thái</TD>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -187,13 +195,11 @@ const UserItem = ({ item }: { item: IUserServerResponse }) => {
       sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
       title='Xem chi tiết'
     >
-      <TableCell component='th' scope='row' className='sm:text-xs'>
-        {item.fullname || '_'}
-      </TableCell>
+      <TD>{item.fullname || '_'}</TD>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingRole(item.role)}
       </TableCell>
-      <TableCell className='break-words text-ellipsis'>{item.mail}</TableCell>
+      <TD className='break-words text-ellipsis'>{item.mail}</TD>
       <TableCell align='right'>{mappingStatus(item.isActive)}</TableCell>
     </TableRow>
   );

@@ -26,7 +26,7 @@ export const CartRow = ({
   return (
     <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
       <TableCell padding='none' width={'30px'} size='small' align='left'>
-        <Checkbox checked={checked} onChange={(e) => handleChecked(e.target.checked, row.id)} />
+        <Checkbox size='small' checked={checked} onChange={(e) => handleChecked(e.target.checked, row.id)} />
       </TableCell>
       <TableCell component='th' scope='row'>
         <Box display={'flex'} gap={'10px'}>
