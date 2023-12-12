@@ -55,8 +55,10 @@ interface IFormInput {
 const Label = ({ add }: { add: AddressRes }) => {
   return (
     <Box>
-      <p>{`${add.name || 'Chưa có thông tin'} - ${add.phone || 'Chưa có thông tin'}`}</p>
-      <p>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
+      <p className=' font-bold text-sm sm:text-xs'>{`${add.name || 'Chưa có thông tin'} - ${
+        add.phone || 'Chưa có thông tin'
+      }`}</p>
+      <p className='text-sm sm:text-xs'>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
     </Box>
   );
 };
@@ -188,7 +190,11 @@ export const Step2 = () => {
               >
                 <FormProvider {...formMethods}>
                   <CardContent>
-                    <FormControlLabel value='' control={<Radio ref={chooseAdress} />} label='Chọn địa chỉ nhận hàng' />
+                    <FormControlLabel
+                      value=''
+                      control={<Radio ref={chooseAdress} />}
+                      label={<div className='text-sm sm:text-xs'>Chọn địa chỉ nhận hàng</div>}
+                    />
                     {!addressId && (
                       <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
                         <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>

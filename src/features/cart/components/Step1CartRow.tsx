@@ -30,11 +30,11 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
   };
   return (
     <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
-      <TableCell component='th' scope='row'>
+      <TableCell>
         <Box display={'flex'} gap={'10px'}>
           <img className='max-w-16 max-h-16 overflow-clip' src={row.itemImage} alt='cart-item-image' />
           <a
-            className='text-cyan-700 max-w-xs break-words hover:text-cyan-500 text-ellipsis truncate'
+            className='text-cyan-700 max-w-[250px] md:max-w-md break-words hover:text-cyan-500 text-ellipsis truncate text-xs sm:text-sm'
             href={row.itemUrl}
             target='_blank'
             rel='noopener noreferrer'

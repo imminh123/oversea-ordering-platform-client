@@ -87,31 +87,37 @@ export const Search = () => {
       </Helmet>
       <Container className='mt-5'>
         <Box className='mb-5'>
-          <FormControl fullWidth>
-            <TextField
-              value={search}
-              fullWidth
-              onKeyDown={(e) => handleKeyPress(e, 'q')}
-              label='Tìm kiếm sản phẩm Taobao'
-              onChange={(e) => handleInputChange(e, 'q')}
-              InputProps={{
-                endAdornment: (
-                  <>
-                    <IconButton aria-label='search icon' edge='end' onClick={() => setQ(search)}>
-                      <SearchIcon color='primary' />
-                    </IconButton>
-                  </>
-                ),
-              }}
-            />
-          </FormControl>
-          <Grid container className='mt-3'>
-            <Grid item xs={6} sm={2}>
+          <Box className='mx-2'>
+            <FormControl fullWidth>
+              <TextField
+                value={search}
+                fullWidth
+                size='small'
+                onKeyDown={(e) => handleKeyPress(e, 'q')}
+                label='Tìm kiếm sản phẩm Taobao'
+                onChange={(e) => handleInputChange(e, 'q')}
+                InputProps={{
+                  endAdornment: (
+                    <>
+                      <IconButton aria-label='search icon' edge='end' onClick={() => setQ(search)}>
+                        <SearchIcon color='primary' />
+                      </IconButton>
+                    </>
+                  ),
+                }}
+              />
+            </FormControl>
+          </Box>
+          <Box className='grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3'>
+            <Box>
               <FormControl fullWidth>
-                <InputLabel id='target-lang-label'>Ngôn ngữ trả về</InputLabel>
+                <InputLabel size='small' id='target-lang-label'>
+                  Ngôn ngữ trả về
+                </InputLabel>
                 <Select
                   labelId='target-lang-label'
                   id='target-lang'
+                  size='small'
                   value={target_language}
                   label='Ngôn ngữ trả về'
                   onChange={(e) => handleInputChange(e, 'target_language')}
@@ -126,12 +132,15 @@ export const Search = () => {
                   })}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={6} sm={2}>
+            </Box>
+            <Box>
               <FormControl fullWidth>
-                <InputLabel id='query-lang-label'>Ngôn ngữ tìm kiếm</InputLabel>
+                <InputLabel size='small' id='query-lang-label'>
+                  Ngôn ngữ tìm kiếm
+                </InputLabel>
                 <Select
                   labelId='query-lang-label'
+                  size='small'
                   id='query-lang'
                   value={query_language}
                   label='Ngôn ngữ tìm kiếm'
@@ -147,13 +156,16 @@ export const Search = () => {
                   })}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={6} sm={2}>
+            </Box>
+            <Box>
               <FormControl fullWidth>
-                <InputLabel id='sort-label'>Sắp xếp</InputLabel>
+                <InputLabel size='small' id='sort-label'>
+                  Sắp xếp
+                </InputLabel>
                 <Select
                   labelId='sort-label'
                   id='sort'
+                  size='small'
                   value={sort}
                   label='Sắp xếp'
                   onChange={(e) => handleInputChange(e, 'sort')}
@@ -168,11 +180,12 @@ export const Search = () => {
                   })}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={6} sm={3}>
+            </Box>
+            <Box>
               <FormControl fullWidth>
                 <TextField
                   value={min}
+                  size='small'
                   type='number'
                   onKeyDown={(e) => handleKeyPress(e, 'min')}
                   label='Tối thiểu'
@@ -180,20 +193,21 @@ export const Search = () => {
                   sx={{ '& .MuiInputBase-formControl': { margin: '0 8px' } }}
                 />
               </FormControl>
-            </Grid>
-            <Grid item xs={6} sm={3}>
+            </Box>
+            <Box>
               <FormControl fullWidth>
                 <TextField
                   value={max}
                   type='number'
+                  size='small'
                   onKeyDown={(e) => handleKeyPress(e, 'max')}
                   label='Tối đa'
                   onChange={(e) => handleInputChange(e, 'max')}
                   sx={{ '& .MuiInputBase-formControl': { margin: '0 8px' } }}
                 />
               </FormControl>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
         {!!data && !isLoading && !!data?.data.length && (
           <>
