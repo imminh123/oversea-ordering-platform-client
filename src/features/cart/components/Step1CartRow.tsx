@@ -32,9 +32,9 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
     <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
       <TableCell>
         <Box display={'flex'} gap={'10px'}>
-          <img className='max-w-16 max-h-16 overflow-clip' src={row.itemImage} alt='cart-item-image' />
+          <img className='w-16 h-auto max-h-16 overflow-clip' src={row.itemImage} alt='cart-item-image' />
           <a
-            className='text-cyan-700 max-w-[250px] md:max-w-md break-words hover:text-cyan-500 text-ellipsis truncate text-xs sm:text-sm'
+            className='text-cyan-700 w-[300px] break-words hover:text-cyan-500 text-ellipsis text-xs sm:text-sm'
             href={row.itemUrl}
             target='_blank'
             rel='noopener noreferrer'
@@ -56,7 +56,13 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
           }}
         />
       </TableCell>
-      <TableCell align='right'>{row.price}</TableCell>
+      <TableCell>
+        <Box className='flex flex-col w-[250px]'>
+          {row.propName.split(';').map((e) => (
+            <span key={e}>{e}</span>
+          ))}
+        </Box>
+      </TableCell>
       <TableCell align='right'>
         <Box className='flex flex-col'>
           <span>{formatMoneyToVND(parseFloat(row.vnPrice) * Number(row.quantity))}</span>{' '}

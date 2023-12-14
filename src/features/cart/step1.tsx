@@ -156,10 +156,10 @@ export const Step1 = () => {
                       </tr>
                       <TableRow>
                         <TD sx={{ fontWeight: 'bold', padding: '8px' }}>Sản phẩm</TD>
-                        <TD sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>
+                        <TD sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
                           Số lượng
                         </TD>
-                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Thuộc tính</TD>
+                        <TD sx={{ fontWeight: 'bold', padding: '8px' }}>Thuộc tính</TD>
                         <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TD>
                         <TD sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TD>
                       </TableRow>

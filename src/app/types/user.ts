@@ -31,4 +31,5 @@ export interface IUserServerResponse {
   province: string;
   ward: string;
   avatar: string;
+  isBlock: boolean;
 }

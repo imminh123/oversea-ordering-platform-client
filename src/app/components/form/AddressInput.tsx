@@ -17,6 +17,7 @@ export interface AddressInputProps {
   size?: InputBaseProps['size'];
   sx?: StackProps['sx'];
   spacing?: StackProps['spacing'];
+  disabled?: boolean;
 }
 
 export const AddressInput: React.FC<AddressInputProps> = ({
@@ -27,6 +28,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
   size,
   sx,
   spacing,
+  disabled,
 }) => {
   const { provinces, districts, wards, loading } = useAddressDataQuery(value);
   const [provinceOpts, setProvinceOpts] = React.useState<OptionData[]>([]);
@@ -68,6 +70,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
         }}
         error={error}
         size={size}
+        disabled={disabled}
       />
       {districtOpts.length > 0 && (
         <InputSingleSelect
@@ -84,6 +87,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
           }}
           error={error}
           size={size}
+          disabled={disabled}
         />
       )}
       {wardOpts.length > 0 && (
@@ -98,6 +102,7 @@ export const AddressInput: React.FC<AddressInputProps> = ({
           }}
           error={error}
           size={size}
+          disabled={disabled}
         />
       )}
       {loading && <Typography variant={'body2'}>Loading</Typography>}

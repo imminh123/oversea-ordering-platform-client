@@ -1,25 +1,21 @@
 import * as React from 'react';
-import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { Helmet } from 'react-helmet-async';
 import { TLoginArgs } from 'app/api/authAPI';
-import { loginValidator } from 'app/utils/validators';
+import { adminLoginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
-import Google from '../../../assets/images/google.svg';
-import { useGoogleLogin } from '@react-oauth/google';
 import { useHistory } from 'react-router-dom';
-import { RoutePathsEnum } from 'configs/route.config';
-import { FacebookLoginButton } from './FacebookLoginButton';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
 import storage from 'app/utils/storage';
 
 interface Props {}
 
-export const LoginPage: React.FC<Props> = () => {
+export const AdminLoginPage: React.FC<Props> = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
   const theme = useTheme();
@@ -27,25 +23,15 @@ export const LoginPage: React.FC<Props> = () => {
   const formMethods = useForm<TLoginArgs>({
     mode: 'onChange',
     defaultValues: { userName: '', password: '' },
-    resolver: yupResolver(loginValidator),
+    resolver: yupResolver(adminLoginValidator),
   });
-  const { login, handleLoginSocial } = useAuth();
-  const loginWithGoogle = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      handleLoginSocial({ token: tokenResponse.code, base: 'google' });
-    },
-    flow: 'auth-code',
-    scope: 'https://www.googleapis.com/auth/cloud-platform',
-  });
-  const handleFacebookLogin = (accessToken: string) => {
-    handleLoginSocial({ token: accessToken, base: 'facebook' });
-  };
+  const { handleLoginAdmin } = useAuth();
 
   const onSubmit = async (data: TLoginArgs) => {
     setLoading(true);
 
     try {
-      await login(data.userName, data.password);
+      await handleLoginAdmin(data.userName, data.password);
     } catch (err) {
       console.log({ err });
     }
@@ -78,7 +64,7 @@ export const LoginPage: React.FC<Props> = () => {
           }}
         >
           <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-            ĐĂNG NHẬP
+            ĐĂNG NHẬP ADMIN
           </Typography>
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
@@ -96,33 +82,9 @@ export const LoginPage: React.FC<Props> = () => {
                 >
                   ĐĂNG NHẬP
                 </LoadingButton>
-                <Box className='flex justify-between gap-2'>
-                  <LoadingButton
-                    variant='outlined'
-                    startIcon={<img src={Google} alt='Google' />}
-                    loadingIndicator='Loading...'
-                    color='primary'
-                    size='large'
-                    fullWidth
-                    onClick={loginWithGoogle}
-                  >
-                    {'GOOGLE'}
-                  </LoadingButton>
-                  <FacebookLoginButton onLogin={handleFacebookLogin} />
-                </Box>
               </Stack>
             </form>
           </FormProvider>
-          <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-            <Button
-              variant='text'
-              onClick={() => {
-                history.push(RoutePathsEnum.SignupPage);
-              }}
-            >
-              Đăng ký
-            </Button>
-          </Box>
         </Box>
       </Box>
     </>

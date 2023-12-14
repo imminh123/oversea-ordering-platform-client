@@ -4,7 +4,7 @@ import { apiWrapper } from 'app/api/axiosClient';
 import { ApiGetMeRes } from 'app/api/authAPI';
 
 export const getUserDetail = async (id: string): Promise<ApiGetMeRes> => {
-  const url = `/authentication/${id}`;
+  const url = `/admin/authentication/${id}`;
 
   const res = await apiWrapper.get<{ data: ApiGetMeRes }>(url, {});
   return res.data;
@@ -12,9 +12,9 @@ export const getUserDetail = async (id: string): Promise<ApiGetMeRes> => {
 
 type QueryFnType = typeof getUserDetail;
 
-export const useAdminGetUerDetail = (id: string) => {
+export const useAdminGetUserDetail = (id: string) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useAdminGetUerDetail', id],
+    queryKey: ['useAdminGetUserDetail', id],
     queryFn: () => getUserDetail(id),
   });
 };

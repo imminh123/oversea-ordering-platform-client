@@ -5,10 +5,8 @@ import { useGetOrder } from '../api/useOrderDetail';
 import { mappingStatus } from '..';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
-import { Payments } from '@mui/icons-material';
-import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import Spinner from 'app/layout/async/Spinner';
-import { useRePay } from '../api/useRePay';
+import { AdminEditOrder } from './AdminEditOrder';
 
 const Card = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -22,15 +20,10 @@ const Card = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f2f2f2',
 }));
 
-export const OrderDetail = () => {
+export const OrderDetailAdmin = () => {
   const param: { id: string } = useParams();
   const { data, isLoading } = useGetOrder(param.id);
-  const { mutateAsync: rePay } = useRePay();
-  const handlePay = () => {
-    rePay({ orderId: param.id });
-  };
-  const payAgain =
-    !!data?.data.status && data?.data.status !== OrderStatus.SUCCEEDED && data?.data.status !== OrderStatus.DELIVERED;
+
   return (
     <>
       <Helmet>
@@ -43,11 +36,7 @@ export const OrderDetail = () => {
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
               </Typography>
-              {payAgain && (
-                <Button variant='outlined' startIcon={<Payments />} onClick={handlePay} size='small'>
-                  Thanh toán lại
-                </Button>
-              )}
+              <AdminEditOrder id={param.id} status={data.data.status} listItem={data.data.listItem} />
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Trạng thái:</span>
@@ -73,16 +62,21 @@ export const OrderDetail = () => {
             <Box display={'flex'} className=' justify-between'>
               <span>Sản phẩm:</span>
               <span>
-                {data?.data.listItem.map((e, index) => {
+                {data?.data.listItem.map((e) => {
                   return (
-                    <div key={index} className='flex justify-between'>
+                    <div key={e.id} className='flex justify-between'>
                       <div className='flex flex-col justify-start items-start'>
                         <span>
                           Tên: <span className='text-cyan-500'>{e.itemName}</span>
                         </span>
                         <span>
-                          Số lượng: <span className='text-cyan-500'>{e.quantity}</span> x Đơn giá:{' '}
-                          <span className='text-cyan-500'>{formatMoneyToVND(e.vnCost)}</span>
+                          Thuộc tính: <span className='text-cyan-500'>{e.propName}</span>
+                        </span>
+                        <span>
+                          Số lượng: <span className='text-cyan-500'>{e.quantity}</span>
+                        </span>
+                        <span>
+                          Đơn giá: <span className='text-cyan-500'>{formatMoneyToVND(e.vnCost)}</span>
                         </span>
                       </div>
                       <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>

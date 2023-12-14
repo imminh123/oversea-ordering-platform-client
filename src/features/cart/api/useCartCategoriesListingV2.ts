@@ -5,15 +5,17 @@ import { useQuery } from 'react-query';
 
 export interface CartItemV2 {
   id: string;
+  isActive: string;
   itemId: string;
   itemName: string;
   itemUrl: string;
   itemImage: string;
-  isActive: string;
   price: number;
   quantity: number;
   updatedAt: string;
   vnPrice: string;
+  propName: string;
+  skuId: string;
 }
 interface CartResponse {
   _id: string;

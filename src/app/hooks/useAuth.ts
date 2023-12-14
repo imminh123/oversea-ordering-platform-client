@@ -18,16 +18,23 @@ function useAuth() {
   const { mutateAsync: login } = useMutation<TLoginRes, TLoginError, TLoginArgs>((params) => {
     return authAPI.login(params);
   });
+  const { mutateAsync: loginAdmin } = useMutation<TLoginRes, TLoginError, TLoginArgs>((params) => {
+    return authAPI.loginAdmin(params);
+  });
   const { mutateAsync: getMe } = useMutation<TGetMeRes>(() => {
     return authAPI.getMe();
   });
 
   const logout = (): Promise<void> => {
+    if (context.user?.role === UserRole.Admin) {
+      history.push(RoutePathsEnum.AdminLoginPage);
+    } else {
+      history.push(RoutePathsEnum.LoginPage);
+    }
     storage.clearToken();
     context.setAuthenticated(false);
     context.setInitialized(true);
     context.setUser(null);
-    history.push(RoutePathsEnum.LoginPage);
     return Promise.resolve();
   };
 
@@ -46,18 +53,35 @@ function useAuth() {
     }
   };
 
-  const handleLogin = async (username: string, password: string) => {
+  const handleLogin = async (userName: string, password: string) => {
     try {
-      const { accessToken } = await login({ username, password });
+      const { accessToken } = await login({ userName, password });
       storage.setToken(accessToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
       alertSuccess(LanguageTranslate.alert.login.success);
-      if (user.role === UserRole.Admin) {
-        history.push(RoutePathsEnum.AdminHome);
-      } else {
+      if (user.role === UserRole.Client) {
         history.push(RoutePathsEnum.HomePage);
+      }
+    } catch (err) {
+      handleErrorResponse(err);
+      context.setAuthenticated(false);
+    } finally {
+      context.setInitialized(true);
+    }
+  };
+
+  const handleLoginAdmin = async (userName: string, password: string) => {
+    try {
+      const { accessToken } = await loginAdmin({ userName, password });
+      storage.setToken(accessToken);
+      const user = await getMe();
+      context.setUser(user);
+      context.setAuthenticated(true);
+      alertSuccess(LanguageTranslate.alert.login.success);
+      if (user.role === UserRole.Admin || user.role === UserRole.Root) {
+        history.push(RoutePathsEnum.AdminHome);
       }
     } catch (err) {
       handleErrorResponse(err);
@@ -99,8 +123,8 @@ function useAuth() {
     storage.clearToken();
     if (typeof err === 'string') {
       alertError(err);
-    } else if (err && err.message && typeof err.message === 'string') {
-      alertError(err.message);
+    } else if (err && err?.response && typeof err?.response?.data?.message === 'string') {
+      alertError(err?.response?.data?.message);
     } else {
       alertError(LanguageTranslate.alert.something_went_wrong);
     }
@@ -112,6 +136,7 @@ function useAuth() {
     getMe: handleGetMe,
     handleLoginSocial,
     logout,
+    handleLoginAdmin,
   };
 }
 
