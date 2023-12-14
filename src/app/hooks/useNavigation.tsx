@@ -16,6 +16,10 @@ const { Cart } = lazyImport(() => import('features/cart'), 'Cart');
 const { OrderListing } = lazyImport(() => import('features/order'), 'OrderListing');
 const { PersonalInfo } = lazyImport(() => import('features/personal-info'), 'PersonalInfo');
 const { OrderDetail } = lazyImport(() => import('features/order/components/OrderDetails'), 'OrderDetail');
+const { OrderDetailAdmin } = lazyImport(
+  () => import('features/order/components/OrderDetailsAdmin'),
+  'OrderDetailAdmin',
+);
 const { Search } = lazyImport(() => import('features/search'), 'Search');
 const { ItemDetail } = lazyImport(() => import('features/search/components/ItemDetail'), 'ItemDetail');
 const { AdminVariables } = lazyImport(() => import('features/variables/AdminVariables'), 'AdminVariables');
@@ -110,6 +114,12 @@ function useNavigation() {
         component: <AdminOrders />,
       },
       {
+        key: RouteKeysEnum.AdminOrderDetail,
+        exact: true,
+        path: RoutePathsEnum.AdminOrderDetail,
+        component: <OrderDetailAdmin />,
+      },
+      {
         key: RouteKeysEnum.AdminUsers,
         exact: true,
         path: RoutePathsEnum.AdminUsers,
@@ -200,7 +210,7 @@ function useNavigation() {
   }, []);
 
   const publicRoutes = React.useMemo(() => {
-    return [RoutePathsEnum.LoginPage, RoutePathsEnum.SignupPage, RoutePathsEnum.Active];
+    return [RoutePathsEnum.LoginPage, RoutePathsEnum.AdminLoginPage, RoutePathsEnum.SignupPage, RoutePathsEnum.Active];
   }, []);
 
   React.useEffect(() => {

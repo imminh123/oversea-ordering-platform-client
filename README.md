@@ -31,3 +31,15 @@ npm install
 
 npm run start
 ```
+
+Now client run on:
+
+```
+http://localhost:3000/login
+```
+
+Now admin run on:
+
+```
+http://localhost:3000/admin/login
+```

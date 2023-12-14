@@ -14,7 +14,7 @@ interface IUserListingParams {
 export const indexOrder = async (
   param: IUserListingParams,
 ): Promise<{ data: { items: IUserServerResponse[]; headers: IPaginationHeader } }> => {
-  return apiWrapper.get(`/authentication`, { ...param, perPage: 10 });
+  return apiWrapper.get(`/admin/authentication`, { ...param, perPage: 10 });
 };
 
 type QueryFnType = typeof indexOrder;

@@ -10,6 +10,33 @@ export enum OrderStatus {
   SUCCEEDED = 'succeeded',
   TIMEOUT = 'timeout',
   FAILED = 'failed',
+  PENDING_ORDER = 'pending_order',
+  PROCESSING = 'processing',
+  PLACED = 'placed',
+  IN_TRANSIT = 'in_transit',
+  OUT_OF_DELIVERY = 'out_of_delivery',
+  ON_HOLD = 'on_hold',
+  CANCELLED = 'cancelled',
+  REFUNDED = 'refunded',
+  PARTIALLY_SHIPPED = 'partially_shipped',
+  BACK_ORDERED = 'back_ordered',
+}
+
+export interface ItemDetail {
+  cartId: string;
+  currency: string;
+  id: string;
+  image: string;
+  itemId: number;
+  itemName: string;
+  itemUrl: string;
+  price: number;
+  propName: string;
+  quantity: number;
+  shopId: string;
+  shopName: string;
+  shopUrl: string;
+  vnCost: number;
 }
 
 export interface IOrderStatusRes {
@@ -19,7 +46,7 @@ export interface IOrderStatusRes {
   status: OrderStatus;
   userId: string;
   address: AddressRes;
-  listItem: Array<any>;
+  listItem: ItemDetail[];
   createdAt: string;
   updatedAt: string;
 }

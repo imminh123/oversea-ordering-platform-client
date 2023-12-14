@@ -52,6 +52,7 @@ const DrawerWrapper: React.FC<Props> = ({
             xs: '100vw',
             md: fullScreen ? '100vw' : drawerWidth || sidebarWidth,
           },
+          boxShadow: 'none',
         },
       }}
       anchor={position || 'left'}

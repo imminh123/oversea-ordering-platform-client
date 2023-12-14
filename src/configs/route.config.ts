@@ -17,6 +17,7 @@ export enum RouteKeysEnum {
   NotFoundPage = 'not-found-page',
 
   // admin
+  AdminLoginPage = 'admin-login',
   AdminHome = 'admin-home',
   AdminInfo = 'admin-tinfo',
   AdminVariables = 'admin-variables',
@@ -43,6 +44,7 @@ export enum RoutePathsEnum {
   HomePage = '/',
 
   // admin
+  AdminLoginPage = '/admin/login',
   AdminHome = '/admin',
   AdminInfo = '/admin/info',
   AdminVariables = '/admin/variables',

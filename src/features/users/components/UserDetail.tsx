@@ -1,4 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, CardActions, CardContent, Container, CssBaseline, Typography } from '@mui/material';
 import { AddressData } from 'app/components/form/AddressInput';
 import {
@@ -7,14 +6,13 @@ import {
   HooksFormInputSingleSelect,
   HooksFormInputAddress,
 } from 'app/components/libs/react-hooks-form';
-import { updateProfileValidator } from 'app/utils/validators';
-import { UpdateInfoDTO, useUpdateInfo } from 'features/personal-info/api/useUpdateInfo';
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useAdminGetUerDetail } from '../apis/useAdminGetInfo';
+import { useAdminGetUserDetail } from '../apis/useAdminGetInfo';
 import { useParams } from 'react-router-dom';
 import { UserRole } from 'app/types/user';
+import { BlockUserDto, useBlockUser } from '../apis/useBlockUser';
 
 interface IFormInput {
   fullname: string;
@@ -25,6 +23,7 @@ interface IFormInput {
   mail?: string;
   role?: UserRole;
   isActive?: string;
+  isBlock?: string;
   addressObjectData?: AddressData;
 }
 
@@ -54,10 +53,21 @@ const statusOptions = [
   },
 ];
 
+const blockOptions = [
+  {
+    value: 'true',
+    label: 'Đã bị chặn',
+  },
+  {
+    value: 'false',
+    label: 'Đang hoạt động',
+  },
+];
+
 export const UserDetail = () => {
   const param: { id: string } = useParams();
-  const { data, isLoading } = useAdminGetUerDetail(param.id);
-  const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
+  const { data, isLoading } = useAdminGetUserDetail(param.id);
+  const { mutateAsync: block, isLoading: isUpdating } = useBlockUser();
 
   const defaultValues = useMemo<IFormInput>(() => {
     return {
@@ -69,6 +79,7 @@ export const UserDetail = () => {
       mail: data?.mail || '',
       role: data?.role || UserRole.Client,
       isActive: data?.isActive.toString() || 'false',
+      isBlock: data?.isBlock.toString() || 'false',
       addressObjectData: {
         province: '',
         district: '',
@@ -79,7 +90,6 @@ export const UserDetail = () => {
 
   const formMethods = useForm<IFormInput>({
     defaultValues,
-    resolver: yupResolver(updateProfileValidator),
   });
 
   useEffect(() => {
@@ -87,6 +97,7 @@ export const UserDetail = () => {
       formMethods.reset({
         ...data,
         isActive: data.isActive.toString(),
+        isBlock: data.isBlock.toString(),
         addressObjectData: {
           province: data?.province || '',
           district: data?.city || '',
@@ -95,8 +106,11 @@ export const UserDetail = () => {
       });
   }, [data]);
 
-  const onSubmit = async (_data: IFormInput) => {
-    alert('waiting endpoit');
+  const onSubmit = async () => {
+    const body: BlockUserDto = {
+      isBlock: !data?.isBlock,
+    };
+    await block({ body, id: param.id });
   };
 
   return (
@@ -114,25 +128,41 @@ export const UserDetail = () => {
                   <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>
                     Thông tin tài khoản
                   </Typography>
-                  <HooksFormInputTextField size={'small'} fieldName={'fullname'} label={'Họ và tên'} />
-                  <HooksFormInputSingleDatePicker fieldName={'birthday'} label={'Ngày sinh'} />
-                  <HooksFormInputTextField size={'small'} fieldName={'phone'} label={'Sđt'} />
+                  <HooksFormInputTextField disabled size={'small'} fieldName={'fullname'} label={'Họ và tên'} />
+                  <HooksFormInputSingleDatePicker disabled fieldName={'birthday'} label={'Ngày sinh'} />
+                  <HooksFormInputTextField disabled size={'small'} fieldName={'phone'} label={'Sđt'} />
                   <HooksFormInputSingleSelect
+                    disabled
                     size={'small'}
                     fieldName={'gender'}
                     options={genderOptions}
                     label={'Giới tính'}
                   />
-                  <HooksFormInputTextField size={'small'} fieldName={'mail'} label={'Mail'} />
+                  <HooksFormInputTextField disabled size={'small'} fieldName={'mail'} label={'Mail'} />
+                  <HooksFormInputTextField disabled size={'small'} fieldName={'role'} label={'Vai trò'} />
                   <HooksFormInputSingleSelect
+                    disabled
                     size={'small'}
                     fieldName={'isActive'}
                     options={statusOptions}
                     label={'Trạng thái tài khoản'}
                   />
-                  <HooksFormInputTextField size={'small'} fieldName={'address'} label={'Địa chỉ'} />
-                  <HooksFormInputTextField size={'small'} fieldName={'role'} label={'Vai trò'} />
+                  <HooksFormInputSingleSelect
+                    disabled
+                    size={'small'}
+                    fieldName={'isBlock'}
+                    options={blockOptions}
+                    label={'Block'}
+                  />
+                  <HooksFormInputTextField
+                    sx={{ gridColumn: 'span 2' }}
+                    disabled
+                    size={'small'}
+                    fieldName={'address'}
+                    label={'Địa chỉ'}
+                  />
                   <HooksFormInputAddress
+                    disabled
                     fieldName={'addressObjectData'}
                     size={'small'}
                     sx={{ gridColumn: 'span 2' }}
@@ -149,7 +179,7 @@ export const UserDetail = () => {
                     variant={'contained'}
                     disabled={isUpdating}
                   >
-                    Lưu
+                    {data.isBlock ? 'Mở chặn người dùng này' : 'Chặn người dùng này'}
                   </Button>
                   <Button onClick={() => history.back()} variant={'outlined'}>
                     Quay lại

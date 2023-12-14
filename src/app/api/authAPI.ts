@@ -5,7 +5,7 @@ import { envConfig } from 'configs/env.config';
 /* Types export for outside */
 /* ==================== START ==================== */
 export type TLoginArgs = {
-  username: string;
+  userName: string;
   password: string;
 };
 export type TLoginRes = {
@@ -13,10 +13,7 @@ export type TLoginRes = {
   refreshToken: string;
 };
 export type TLoginGGRes = {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  data: TLoginRes;
 };
 export type TLoginError = {
   message: string;
@@ -33,12 +30,7 @@ type ApiLoginArgs = {
   password: string;
 };
 type ApiLoginRes = {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    expiresIn: number;
-    refreshExpiresIn: number;
-  };
+  data: TLoginRes;
 };
 type ApiLoginGGArgs = {
   token: string;
@@ -51,10 +43,19 @@ export type ApiGetMeRes = IUserServerResponse;
 
 const login = async (params: TLoginArgs): Promise<TLoginRes> => {
   const body: ApiLoginArgs = {
-    mail: params.username,
+    mail: params.userName,
     password: params.password,
   };
   const result = await apiWrapper.post<ApiLoginArgs, ApiLoginRes>(`/session/createClientSession`, body);
+
+  return {
+    accessToken: result.data.accessToken,
+    refreshToken: result.data.refreshToken,
+  };
+};
+
+const loginAdmin = async (params: TLoginArgs): Promise<TLoginRes> => {
+  const result = await apiWrapper.post<TLoginArgs, ApiLoginRes>(`/session/adminCreateSession`, params);
 
   return {
     accessToken: result.data.accessToken,
@@ -76,6 +77,6 @@ const getMe = async (): Promise<TGetMeRes> => {
   return userAPI.mappingServerDataUnderUserView(result.data);
 };
 
-const authAPI = { login, loginSocial, getMe };
+const authAPI = { login, loginSocial, loginAdmin, getMe };
 
 export default authAPI;

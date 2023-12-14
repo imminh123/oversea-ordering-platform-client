@@ -21,13 +21,14 @@ export const HooksFormInputTextField: React.FC<HooksFormInputTextFieldProps> = (
 
         let helperText = rest.helperText;
         let isError = rest.error;
+        let disabled = rest.disabled;
 
         if (fieldState.invalid) {
           isError = true;
           helperText = fieldState.error?.message?.toString();
         }
 
-        return <TextField {...rest} {...field} error={isError} helperText={helperText} />;
+        return <TextField {...rest} {...field} error={isError} helperText={helperText} disabled={disabled} />;
       }}
       name={fieldName}
       control={control}

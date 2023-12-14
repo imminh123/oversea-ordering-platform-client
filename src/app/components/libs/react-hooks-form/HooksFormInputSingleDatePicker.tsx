@@ -26,6 +26,7 @@ export const HooksFormInputSingleDatePicker: React.FC<HooksFormInputSingleDatePi
 
         let helperText = rest.helperText;
         let isError = rest.error;
+        let disabled = rest.disabled;
 
         if (fieldState.invalid) {
           isError = true;
@@ -39,6 +40,7 @@ export const HooksFormInputSingleDatePicker: React.FC<HooksFormInputSingleDatePi
             value={dayjs(field.value)}
             error={isError}
             helperText={helperText}
+            disabled={disabled}
             format={'DD/MM/YYYY'}
             sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}
           />

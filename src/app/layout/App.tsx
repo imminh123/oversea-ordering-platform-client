@@ -16,6 +16,7 @@ import storage from 'app/utils/storage';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
 import { AdminLayoutPage } from './AdminLayoutPage';
+import { AdminLoginPage } from 'features/auth/login/AdminLogin';
 
 function App() {
   const { routes, publicRoutes, adminRoutes } = useNavigation();
@@ -55,6 +56,8 @@ function App() {
       <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
       <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
       <Route exact path={RoutePathsEnum.Active} component={ActivePage} />
+      <Route exact path={RoutePathsEnum.AdminLoginPage} component={AdminLoginPage} />
+
       <Route
         key={'admin'}
         path={'/admin/:path?'}

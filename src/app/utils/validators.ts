@@ -1,7 +1,12 @@
 import * as yup from 'yup';
 
 export const loginValidator = yup.object({
-  username: yup.string().required('Vui lòng nhập email').email('Email chưa đúng định dạng'),
+  userName: yup.string().required('Vui lòng nhập email').email('Email chưa đúng định dạng'),
+  password: yup.string().required('Vui lòng nhập mật khẩu'),
+});
+
+export const adminLoginValidator = yup.object({
+  userName: yup.string().required('Vui lòng nhập tên tài khoản'),
   password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
