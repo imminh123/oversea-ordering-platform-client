@@ -161,6 +161,7 @@ export const UsersListing = () => {
                     </TD>
                     <TD className=' min-w-[150px]'>Email</TD>
                     <TD align='right'>Trạng thái</TD>
+                    <TD align='right'>Chặn</TD>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -201,6 +202,7 @@ const UserItem = ({ item }: { item: IUserServerResponse }) => {
       </TableCell>
       <TD className='break-words text-ellipsis'>{item.mail}</TD>
       <TableCell align='right'>{mappingStatus(item.isActive)}</TableCell>
+      <TableCell align='right'>{mappingBlock(item.isBlock)}</TableCell>
     </TableRow>
   );
 };
@@ -211,6 +213,15 @@ export const mappingStatus = (isActive: boolean) => {
       return <Chip label='Hoạt động' color='primary' variant='outlined' />;
     case false:
       return <Chip label='Ngưng hoạt động' color='error' variant='outlined' />;
+  }
+};
+
+export const mappingBlock = (isBlock: boolean) => {
+  switch (isBlock) {
+    case false:
+      return <Chip label='Hoạt động' color='primary' variant='outlined' />;
+    case true:
+      return <Chip label='Đã chặn ' color='error' variant='outlined' />;
   }
 };
 

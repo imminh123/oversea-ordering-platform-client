@@ -34,7 +34,7 @@ const PropItem = ({ props, selectedValue, setValue, IsImg }: Props) => {
         }`}
         onClick={handleSelected}
       >
-        <span title={props.name} className=' inline-block overflow-hidden whitespace-nowrap'>
+        <span title={props.name} className='mx-2 inline-block overflow-hidden whitespace-nowrap'>
           {props.name}
         </span>
       </div>

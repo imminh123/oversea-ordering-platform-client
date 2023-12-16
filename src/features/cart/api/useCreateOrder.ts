@@ -43,7 +43,7 @@ export const useCreateOrder = (config?: MutationConfig<QueryFnType>) => {
       alertSuccess('Tạo đơn hàng thành công');
     },
     onError(error) {
-      alertError(error.response?.data.message[0]);
+      alertError(error.response?.data.message);
     },
     ...config,
   });

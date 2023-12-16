@@ -12,6 +12,7 @@ export interface IAddAddressParams {
   province?: string;
   city?: string;
   ward?: string;
+  isDefault?: boolean;
 }
 
 export const addAddress = async (add: IAddAddressParams) => {

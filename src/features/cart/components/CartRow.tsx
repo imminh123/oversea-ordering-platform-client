@@ -35,6 +35,12 @@ export const CartRow = ({
           </a>
         </Box>
       </TableCell>
+      <TableCell size='small' align='left'>
+        {row.itemName}
+      </TableCell>
+      <TableCell size='small' align='left'>
+        {row.propName}
+      </TableCell>
       <TableCell width={'100px'} size='small' align='right'>
         {row.shopName}
       </TableCell>
