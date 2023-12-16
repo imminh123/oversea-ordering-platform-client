@@ -42,17 +42,6 @@ const genderOptions = [
   },
 ];
 
-const statusOptions = [
-  {
-    value: 'true',
-    label: 'Đang hoạt động',
-  },
-  {
-    value: 'false',
-    label: 'Ngưng hoạt động',
-  },
-];
-
 export const PersonalInfo = () => {
   const { data, isLoading } = useGetInfo();
   const { mutateAsync: updateUserInfo, isLoading: isUpdating } = useUpdateInfo();
@@ -128,14 +117,7 @@ export const PersonalInfo = () => {
                     label={'Giới tính'}
                   />
                   <HooksFormInputTextField size={'small'} fieldName={'mail'} label={'Mail'} />
-                  <HooksFormInputSingleSelect
-                    size={'small'}
-                    fieldName={'isActive'}
-                    options={statusOptions}
-                    label={'Trạng thái tài khoản'}
-                  />
                   <HooksFormInputTextField size={'small'} fieldName={'address'} label={'Địa chỉ'} />
-                  <HooksFormInputTextField size={'small'} fieldName={'role'} label={'Vai trò'} />
                   <HooksFormInputAddress
                     fieldName={'addressObjectData'}
                     size={'small'}

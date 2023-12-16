@@ -3,8 +3,8 @@ import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { Helmet } from 'react-helmet-async';
-import { useGetStat } from './api/useGetStat';
 import Spinner from 'app/layout/async/Spinner';
+import { useAdminGetStat } from './api/useAdminGetStat';
 
 interface Props {}
 interface DashboardStat {
@@ -12,7 +12,7 @@ interface DashboardStat {
 }
 
 export const AdminHome: React.FC<Props> = () => {
-  const { data, isLoading } = useGetStat();
+  const { data, isLoading } = useAdminGetStat();
   const [state, setState] = useState<DashboardStat>({
     series: [
       {
@@ -47,7 +47,7 @@ export const AdminHome: React.FC<Props> = () => {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Giỏ hàng', 'Tổng đơn hàng', 'Đơn mới', 'Chờ thanh toán', 'Đã thanh toán'],
+      categories: ['Giỏ hàng', 'Tổng đơn hàng', 'Đơn mới', 'Chờ thanh toán', 'Đã vận chuyển', 'Đang xử lý'],
       axisBorder: {
         show: false,
       },

@@ -47,29 +47,29 @@ export class ApiWrapper {
     );
   }
 
-  async get<T>(url: string, params?: any, withCredentials = false): Promise<T> {
-    const data: any = await this.axiosInstance.get(url, { params, withCredentials, timeout: REQUEST_TIMEOUT });
+  async get<T>(url: string, params?: any): Promise<T> {
+    const data: any = await this.axiosInstance.get(url, { params, timeout: REQUEST_TIMEOUT });
 
     return data;
   }
 
-  async post<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+  async post<T, U>(url: string, body: T, params?: any, headers: any = {}): Promise<U> {
     const data: any = await this.axiosInstance({
       method: 'POST',
       url,
       data: body,
+      params,
       headers: {
         ...this.axiosInstance.defaults.headers,
         ...headers,
       },
       timeout: REQUEST_TIMEOUT,
-      withCredentials,
     });
 
     return data;
   }
 
-  async put<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+  async put<T, U>(url: string, body: T, headers: any = {}): Promise<U> {
     const data: any = await this.axiosInstance({
       method: 'PUT',
       url,
@@ -79,13 +79,12 @@ export class ApiWrapper {
         ...headers,
       },
       timeout: REQUEST_TIMEOUT,
-      withCredentials,
     });
 
     return data;
   }
 
-  async _delete<T, U>(url: string, body: T, headers: any = {}, withCredentials = false): Promise<U> {
+  async _delete<T, U>(url: string, body: T, headers: any = {}): Promise<U> {
     const data: any = await this.axiosInstance({
       method: 'DELETE',
       url,
@@ -95,7 +94,6 @@ export class ApiWrapper {
         ...headers,
       },
       timeout: REQUEST_TIMEOUT,
-      withCredentials,
     });
 
     return data;

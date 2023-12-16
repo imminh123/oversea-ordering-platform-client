@@ -1,13 +1,14 @@
 import { Box, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SortOption, useSearchItem } from './api/useSearchItem';
-import { Search as SearchIcon, SearchOff } from '@mui/icons-material';
+import { ISearchRes, SortOption, useSearchItem } from './api/useSearchItem';
+import { ImageSearch, Search as SearchIcon, SearchOff } from '@mui/icons-material';
 import { TaobaoItem } from './components/TaobaoItem';
 import queryString from 'query-string';
 import { useHistory } from 'react-router-dom';
 import Spinner from 'app/layout/async/Spinner';
 import { Language, QueryLangOptions, SortOptions, TargetLangOptions } from './search.const';
+import { useSearchItemByImg } from './api/useSearchItemByImg';
 
 export const Search = () => {
   const history = useHistory();
@@ -23,7 +24,7 @@ export const Search = () => {
   const [max, setMax] = useState<number | undefined>(queryObject.maxPrice || '');
   const [target_language, setTarget_language] = useState<Language>(queryObject.target_language || Language.VI);
   const [query_language, setQuerylanguage] = useState<Language>(queryObject.query_language || Language.VI);
-
+  const [dataShow, setDataShow] = useState<ISearchRes[]>([]);
   const handleInputChange = (event: any, type: string) => {
     switch (type) {
       case 'q':
@@ -71,14 +72,39 @@ export const Search = () => {
       return newVal;
     });
   };
-  const { data, isLoading } = useSearchItem(
+  const { data: dataText, isLoading: loadingDataText } = useSearchItem(
     { q, page, sort, target_language, query_language, minPrice, maxPrice },
     { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
   );
+  const { mutateAsync: searchByImg, data: dataImg, isLoading: loadingDataImg } = useSearchItemByImg();
+  console.log(`🚀🚀🚀 ~ file: index.tsx:80 ~ Search ~ dataImg:`, dataImg);
+
+  const handleSearchByImage = ({ target }: { target: any }) => {
+    const file = target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    const param = {
+      page,
+      sort,
+      target_language,
+      query_language,
+      minPrice,
+      maxPrice,
+    };
+    searchByImg({ param, body: formData });
+  };
   useEffect(() => {
     const queryObject = { page, q, sort, target_language, query_language };
     history.push({ search: queryString.stringify(queryObject) });
   }, [page, q, sort, target_language, query_language]);
+  useEffect(() => {
+    if (!!dataText && !loadingDataText && !!dataText?.data.length) {
+      setDataShow(dataText.data);
+    }
+    if (!!dataImg && !loadingDataImg && !!dataImg?.items?.length) {
+      setDataShow(dataImg.items);
+    }
+  }, [dataImg, dataText]);
 
   return (
     <>
@@ -99,8 +125,20 @@ export const Search = () => {
                 InputProps={{
                   endAdornment: (
                     <>
-                      <IconButton aria-label='search icon' edge='end' onClick={() => setQ(search)}>
+                      <IconButton title='Tìm kiếm' aria-label='search by text' edge='end' onClick={() => setQ(search)}>
                         <SearchIcon color='primary' />
+                      </IconButton>
+                      <IconButton title='Tìm kiếm bằng hình ảnh' aria-label='search by image' edge='end'>
+                        <input
+                          accept='image/*'
+                          id='search-by-img'
+                          className='hidden'
+                          type='file'
+                          onChange={handleSearchByImage}
+                        />
+                        <label htmlFor='search-by-img'>
+                          <ImageSearch color='primary' />
+                        </label>
                       </IconButton>
                     </>
                   ),
@@ -209,10 +247,10 @@ export const Search = () => {
             </Box>
           </Box>
         </Box>
-        {!!data && !isLoading && !!data?.data.length && (
+        {!!dataShow.length && (
           <>
             <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 auto-rows-max'>
-              {data?.data.map((item) => (
+              {dataShow.map((item) => (
                 <TaobaoItem key={item.num_iid} item={item} />
               ))}
             </div>
@@ -275,7 +313,7 @@ export const Search = () => {
             </Box>
           </>
         )}
-        {isLoading && (
+        {(loadingDataText || loadingDataImg) && (
           <div className='h-full text-center flex justify-center items-center'>
             <span>
               <Spinner />
@@ -283,7 +321,7 @@ export const Search = () => {
             </span>
           </div>
         )}
-        {!isLoading && !data?.data.length && (
+        {!loadingDataText && !loadingDataImg && !dataShow.length && (
           <div className='h-full text-center flex justify-center items-center'>
             <span>
               <SearchOff />
