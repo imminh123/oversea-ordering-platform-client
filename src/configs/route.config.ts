@@ -8,6 +8,7 @@ export enum RouteKeysEnum {
   Search = 'search',
   SearchResult = 'search-result',
   HomePage = 'home-page',
+  UserTransaction = 'user-transaction',
 
   // auth
   LoginPage = 'login-page',
@@ -25,6 +26,7 @@ export enum RouteKeysEnum {
   AdminOrderDetail = 'admin-order-details',
   AdminUsers = 'admin-users',
   AdminUserDetail = 'admin-user-detail',
+  AdminUserTransactions = 'admin-transaction',
 }
 
 export enum RoutePathsEnum {
@@ -42,6 +44,7 @@ export enum RoutePathsEnum {
   Search = '/search',
   SearchResult = '/search/:id',
   HomePage = '/',
+  UserTransaction = '/transactions',
 
   // admin
   AdminLoginPage = '/admin/login',
@@ -52,4 +55,5 @@ export enum RoutePathsEnum {
   AdminOrderDetail = '/admin/orders/:id',
   AdminUsers = '/admin/users',
   AdminUserDetail = '/admin/users/:id',
+  AdminUserTransactions = '/admin/transactions',
 }

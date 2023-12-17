@@ -1,6 +1,13 @@
 import * as React from 'react';
 
-import { Home, TextSnippet, Search as SearchIcon, AttachMoney, ManageAccounts } from '@mui/icons-material';
+import {
+  Home,
+  TextSnippet,
+  Search as SearchIcon,
+  AttachMoney,
+  ManageAccounts,
+  AccountBalance,
+} from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
 import { ISidebarMenu } from 'app/types/sidebar';
@@ -26,6 +33,7 @@ const { AdminVariables } = lazyImport(() => import('features/variables/AdminVari
 const { AdminOrders } = lazyImport(() => import('features/order/AdminOrders'), 'AdminOrders');
 const { UsersListing } = lazyImport(() => import('features/users'), 'UsersListing');
 const { UserDetail } = lazyImport(() => import('features/users/components/UserDetail'), 'UserDetail');
+const { TransactionListing } = lazyImport(() => import('features/transactions'), 'TransactionListing');
 
 function useNavigation() {
   const history = useHistory();
@@ -81,6 +89,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.PersonalInfo,
         component: <PersonalInfo />,
+      },
+      {
+        key: RouteKeysEnum.UserTransaction,
+        exact: true,
+        path: RoutePathsEnum.UserTransaction,
+        component: <TransactionListing />,
       },
     ];
 
@@ -161,6 +175,13 @@ function useNavigation() {
             link: SidebarLinksEnum.Search,
             icon: <SearchIcon />,
             label: 'Tìm kiếm sản phẩm',
+          },
+          {
+            key: SidebarKeysEnum.UserTransactions,
+            parentKey: null,
+            link: SidebarLinksEnum.UserTransactions,
+            icon: <AccountBalance />,
+            label: 'Quản lý thanh toán',
           },
         ],
       },

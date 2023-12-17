@@ -119,7 +119,6 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
                 <ShoppingCart />
               </Badge>
             </IconButton>
-            <Notifications />
             <CurrentAccountBadge loading={false} />
           </Stack>
         </Toolbar>
