@@ -42,20 +42,10 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f2f2f2',
 }));
 
-const drawerBleeding = 85;
+const drawerBleeding = 100;
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : 'grey',
-}));
-
-const Puller = styled(Box)(({ theme }) => ({
-  width: 30,
-  height: 6,
-  backgroundColor: 'grey',
-  borderRadius: 3,
-  position: 'absolute',
-  top: 8,
-  left: 'calc(50% - 15px)',
 }));
 
 export const Step1 = () => {
@@ -120,7 +110,7 @@ export const Step1 = () => {
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
-            height: `calc(50% - ${drawerBleeding}px)`,
+            height: `calc(50)`,
             overflow: 'visible',
           },
           '.MuiDrawer-root > .MuiBackdrop-root': {
@@ -232,99 +222,96 @@ export const Step1 = () => {
         )}
       </Grid>
       {matchesSM && (
-        <SwipeableDrawer
-          container={undefined}
-          anchor='bottom'
-          open={open}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-          swipeAreaWidth={drawerBleeding}
-          disableSwipeToOpen={false}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-          <StyledBox
-            sx={{
-              position: 'absolute',
-              top: -drawerBleeding,
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              visibility: 'visible',
-              right: 0,
-              left: 0,
-              height: 85,
-            }}
+        <>
+          {!!cartIds.length && (
+            <Button
+              variant='text'
+              size='small'
+              sx={{ height: '50px' }}
+              disabled={refreshing}
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              Chi tiết đơn hàng
+            </Button>
+          )}
+          <Box className='grid grid-cols-2 gap-3 '>
+            <Button
+              variant='contained'
+              size='small'
+              sx={{ height: '40px', fontSize: '10px' }}
+              disabled={refreshing}
+              onClick={() => {
+                refreshCart();
+              }}
+            >
+              REFRESH GIÁ TAOBAO
+            </Button>
+            <Button
+              sx={{ height: '40px', fontSize: '10px' }}
+              size='small'
+              variant='contained'
+              disabled={isLoading || !cartIds.length}
+              onClick={onSubmit}
+            >
+              {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
+            </Button>
+          </Box>
+          <SwipeableDrawer
+            container={undefined}
+            anchor='bottom'
+            open={open}
+            onClose={toggleDrawer(false)}
+            onOpen={toggleDrawer(true)}
+            swipeAreaWidth={drawerBleeding}
+            disableSwipeToOpen={true}
           >
-            <Puller />
-            <Box className='grid grid-cols-2 gap-3 p-3 mt-2'>
-              <Button
-                variant='contained'
-                size='small'
-                sx={{ height: '50px' }}
-                disabled={refreshing}
-                onClick={() => {
-                  refreshCart();
-                }}
-              >
-                REFRESH GIÁ TAOBAO
-              </Button>
-              <Button
-                sx={{ height: '50px' }}
-                size='small'
-                variant='contained'
-                disabled={isLoading || !cartIds.length}
-                onClick={onSubmit}
-              >
-                {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
-              </Button>
-            </Box>
-          </StyledBox>
-          <StyledBox
-            sx={{
-              px: 2,
-              pb: 2,
-              height: '100%',
-              overflow: 'auto',
-            }}
-          >
-            <SumaryInfo variant='elevation'>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Tiền hàng:</span>
-                <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí mua hàng:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí kiểm đếm:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển nội địa TQ:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển TQ - VN:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển nội địa VN:</span>
-                <span>_</span>
-              </Box>
-              <Divider />
-              <Box display={'flex'} className=' justify-between'>
-                <Typography variant='h6' sx={{ mb: 4 }}>
-                  Tổng tiền:
-                </Typography>
-                <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-                  {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
-                </Typography>
-              </Box>
-            </SumaryInfo>
-          </StyledBox>
-        </SwipeableDrawer>
+            <StyledBox
+              sx={{
+                p: 2,
+                height: '100%',
+                overflow: 'auto',
+              }}
+            >
+              <SumaryInfo variant='elevation'>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Tiền hàng:</span>
+                  <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
+                </Box>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Phí mua hàng:</span>
+                  <span>_</span>
+                </Box>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Phí kiểm đếm:</span>
+                  <span>_</span>
+                </Box>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Phí vận chuyển nội địa TQ:</span>
+                  <span>_</span>
+                </Box>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Phí vận chuyển TQ - VN:</span>
+                  <span>_</span>
+                </Box>
+                <Box display={'flex'} className=' justify-between'>
+                  <span>Phí vận chuyển nội địa VN:</span>
+                  <span>_</span>
+                </Box>
+                <Divider />
+                <Box display={'flex'} className=' justify-between'>
+                  <Typography variant='h6' sx={{ mb: 4 }}>
+                    Tổng tiền:
+                  </Typography>
+                  <Typography variant='h5' color='error' sx={{ mb: 4 }}>
+                    {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
+                  </Typography>
+                </Box>
+              </SumaryInfo>
+            </StyledBox>
+          </SwipeableDrawer>
+        </>
       )}
     </>
   );

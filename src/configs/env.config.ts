@@ -1,5 +1,5 @@
 const nodeEnv = import.meta.env.VITE_NODE_ENV || 'development';
-const primaryColor = import.meta.env.VITE_PRIMARY_COLOR || '#0062A9';
+const primaryColor = import.meta.env.VITE_PRIMARY_COLOR || '#ff5000';
 const secondaryColor = import.meta.env.VITE_SECONDARY_COLOR || '#4a148c';
 const baseURL = import.meta.env.VITE_BASE_API_URL || 'http://localhost:84';
 const defaultPage = import.meta.env.VITE_DEFAULT_PAGE ? parseInt(import.meta.env.VITE_DEFAULT_PAGE) : 1;

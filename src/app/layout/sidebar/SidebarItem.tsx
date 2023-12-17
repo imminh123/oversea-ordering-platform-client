@@ -31,7 +31,7 @@ interface ListItemIconProps {
 const ListItem = styled(MUIListItem)(({ theme }) => {
   return {
     [`&.${listItemClasses.selected}`]: {
-      backgroundColor: `${theme.palette.secondary.main} !important`,
+      backgroundColor: `${theme.palette.primary.main} !important`,
       color: '#fff',
       boxShadow: 4,
       borderRadius: 4,
@@ -39,7 +39,7 @@ const ListItem = styled(MUIListItem)(({ theme }) => {
         color: '#fff',
       },
       '&:hover': {
-        backgroundColor: `${theme.palette.secondary.dark} !important`,
+        backgroundColor: `${theme.palette.primary.dark} !important`,
       },
     },
   };

@@ -45,7 +45,7 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
           />
           <a
             className={`${
-              row.isActive ? 'text-cyan-700 hover:text-cyan-500' : 'text-slate-500'
+              row.isActive ? 'text-amber-700 hover:text-amber-500' : 'text-slate-500'
             } w-[300px] break-words  text-ellipsis text-xs sm:text-sm`}
             href={row.itemUrl}
             target='_blank'
