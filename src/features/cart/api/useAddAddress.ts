@@ -31,7 +31,7 @@ export const useAddAddress = (config?: MutationConfig<QueryFnType>) => {
       queryClient.invalidateQueries('useListAddress');
     },
     onError(error) {
-      alertError(error.message);
+      alertError(error?.response?.data?.message);
     },
     ...config,
   });

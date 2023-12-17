@@ -13,6 +13,8 @@ import {
   Paper,
   Modal,
   Checkbox,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { HooksFormInputTextField, HooksFormInputAddress } from 'app/components/libs/react-hooks-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -25,20 +27,6 @@ import { useDeleteAddress } from '../api/useDeleteAddress';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { AddressData } from 'app/components/form/AddressInput';
 import { useUpdateAddress } from '../api/useUpdateAddress';
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  minWidth: '375px',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  borderRadius: '5px',
-  p: 4,
-  pt: 0,
-};
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -66,15 +54,37 @@ interface IFormInput {
 const Label = ({ add }: { add: AddressRes }) => {
   return (
     <Box>
-      <p className=' font-bold text-sm sm:text-xs'>{`${add.name || 'Chưa có thông tin'} - ${
+      <p className=' font-bold text-xs sm:text-sm'>{`${add.name || 'Chưa có thông tin'} - ${
         add.phone || 'Chưa có thông tin'
       }`}</p>
-      <p className='text-sm sm:text-xs'>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
+      <p className='text-xs sm:text-sm'>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
     </Box>
   );
 };
 
 export const SelectAddressModal = ({ addressList, setId }: { addressList: AddressRes[]; setId: any }) => {
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    minWidth: '375px',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    borderRadius: '5px',
+    p: 4,
+    pt: 0,
+    ...(matchesSM && {
+      overflow: 'scroll',
+      height: '100%',
+      display: 'block',
+    }),
+  };
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -178,7 +188,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
   };
   return (
     <div>
-      <Button variant='text' onClick={handleOpen}>
+      <Button size='small' variant='text' onClick={handleOpen}>
         Thay đổi
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby='select ship address' aria-describedby='choose address'>
@@ -203,16 +213,20 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                     <Box>
                       <Button
                         title='Sửa địa chỉ'
+                        size='small'
                         color='primary'
                         aria-label='delete'
+                        sx={{ fontSize: '12px' }}
                         onClick={() => handleEditAddress(add.id)}
                       >
                         Sửa địa chỉ
                       </Button>
                       <Button
                         title='Xóa địa chỉ'
+                        size='small'
                         color='error'
                         aria-label='delete'
+                        sx={{ fontSize: '12px' }}
                         onClick={() => handleDeleteAddress(add.id)}
                       >
                         Xóa địa chỉ
@@ -344,8 +358,8 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                               setIsDefault(e.target.checked);
                             }}
                             color='primary'
-                          />{' '}
-                          Đặt làm mặc định
+                          />
+                          Mặc định
                         </Box>
                       </Box>
                     </Box>
@@ -356,10 +370,11 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                 <CardActions>
                   <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
                     <Button
+                      size='small'
                       onClick={formMethods.handleSubmit(onCreateNewAddress, (err) => {
                         console.log(err);
                       })}
-                      variant={'contained'}
+                      variant={'text'}
                     >
                       Thêm địa chỉ
                     </Button>
@@ -371,8 +386,9 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
           <Box className='flex justify-end'>
             <Button
               variant='contained'
+              size='small'
               title='Sửa địa chỉ'
-              color='primary'
+              color='warning'
               aria-label='delete'
               onClick={() => onSave()}
             >

@@ -1,4 +1,4 @@
-import { Box, Button, CardContent, Container, Divider, Paper, Typography, styled } from '@mui/material';
+import { Box, Button, CardContent, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useParams } from 'react-router-dom';
 import { useGetOrder } from '../api/useOrderDetail';
@@ -9,25 +9,43 @@ import { Payments } from '@mui/icons-material';
 import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import Spinner from 'app/layout/async/Spinner';
 import { useRePay } from '../api/useRePay';
+import { usePayOrder } from 'features/cart/api/usePay';
 
-const Card = styled(Paper)(({ theme }) => ({
-  minHeight: '100%',
-  display: 'flex',
-  gap: '10px',
-  flexDirection: 'column',
-  padding: theme.spacing(5),
-  margin: theme.spacing(5),
-  ...theme.typography.body2,
-  textAlign: 'center',
-  backgroundColor: '#f2f2f2',
-}));
+const Card = styled(Paper)(({ theme }) => {
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
+  return {
+    minHeight: '100%',
+    display: 'flex',
+    gap: '10px',
+    flexDirection: 'column',
+    padding: theme.spacing(5),
+    margin: theme.spacing(5),
+    ...theme.typography.body2,
+    textAlign: 'center',
+    backgroundColor: '#f2f2f2',
+    ...(matchesSM && {
+      padding: theme.spacing(1),
+      margin: theme.spacing(1),
+      marginBottom: '35px',
+    }),
+  };
+});
 
 export const OrderDetail = () => {
   const param: { id: string } = useParams();
   const { data, isLoading } = useGetOrder(param.id);
   const { mutateAsync: rePay } = useRePay();
+  const { mutateAsync: pay } = usePayOrder();
+
   const handlePay = () => {
-    rePay({ orderId: param.id });
+    if (
+      !!data?.data.status &&
+      (data?.data.status === OrderStatus.CREATED || data?.data.status === OrderStatus.PENDING_PAYMENT)
+    ) {
+      pay({ referenceId: param.id });
+    } else {
+      rePay({ orderId: param.id });
+    }
   };
   const payAgain =
     !!data?.data.status && data?.data.status !== OrderStatus.SUCCEEDED && data?.data.status !== OrderStatus.DELIVERED;
@@ -39,7 +57,7 @@ export const OrderDetail = () => {
       <Container className='mt-5'>
         {!!data?.data && !isLoading && (
           <Card variant='elevation'>
-            <Box className='flex justify-between'>
+            <Box className='flex justify-between flex-col sm:flex-row'>
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
               </Typography>
@@ -70,23 +88,33 @@ export const OrderDetail = () => {
               <span>Kho hàng:</span>
               <span>{data?.data.wareHouseAddress || '-'}</span>
             </Box>
-            <Box display={'flex'} className=' justify-between'>
+            <Box display={'flex'} className='sm:justify-between flex-col sm:flex-row items-start'>
               <span>Sản phẩm:</span>
               <span>
-                {data?.data.listItem.map((e, index) => {
+                {data?.data.listItem.map((e) => {
                   return (
-                    <div key={index} className='flex justify-between'>
+                    <div key={e.id} className='flex flex-col sm:flex-row items-center'>
                       <div className='flex flex-col justify-start items-start'>
-                        <span>
-                          Tên: <span className='text-cyan-500'>{e.itemName}</span>
+                        <span className='w-full flex justify-between'>
+                          <span>Tên:</span> <span className='text-amber-500'>{e.itemName}</span>
                         </span>
-                        <span>
-                          Số lượng: <span className='text-cyan-500'>{e.quantity}</span> x Đơn giá:{' '}
-                          <span className='text-cyan-500'>{formatMoneyToVND(e.vnCost)}</span>
+                        <span className='w-full flex justify-between'>
+                          <span className='text-left'>Thuộc tính:</span>{' '}
+                          <span className='text-amber-500'>{e.propName}</span>
+                        </span>
+                        <span className='w-full flex justify-between'>
+                          <span>Số lượng:</span> <span className='text-amber-500'>{e.quantity}</span>
+                        </span>
+                        <span className='w-full flex justify-between'>
+                          <span>Đơn giá:</span> <span className='text-amber-500'>{formatMoneyToVND(e.vnCost)}</span>
                         </span>
                       </div>
                       <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
-                        <img className='max-w-16 max-h-16 overflow-clip mb-2 ml-2' src={e.image} alt={e.itemName} />
+                        <img
+                          className='sm:max-w-16 sm:max-h-16 overflow-clip mb-2 ml-2'
+                          src={e.image}
+                          alt={e.itemName}
+                        />
                       </a>
                     </div>
                   );
@@ -98,24 +126,24 @@ export const OrderDetail = () => {
               Địa chỉ nhận hàng
             </Typography>
             <Box display={'flex'} className=' justify-between'>
-              <span>Người nhận:</span>
-              <span>{data?.data.address.name}</span>
+              <span className='whitespace-nowrap'>Người nhận:</span>
+              <span className='text-right'>{data?.data.address.name}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
-              <span>Số điện thoại:</span>
-              <span>{data?.data.address.phone}</span>
+              <span className='whitespace-nowrap'>Số điện thoại:</span>
+              <span className='text-right'>{data?.data.address.phone}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Email:</span>
-              <span>{data?.data.address.mail}</span>
+              <span className='text-right'>{data?.data.address.mail}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
-              <span>Địa chỉ:</span>
-              <span>{`${data?.data.address.address}, ${data?.data.address.ward}, ${data?.data.address.city}, ${data?.data.address.province}`}</span>
+              <span className='whitespace-nowrap'>Địa chỉ:</span>
+              <span className='text-right'>{`${data?.data.address.address}, ${data?.data.address.ward}, ${data?.data.address.city}, ${data?.data.address.province}`}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
-              <span>Ghi chú:</span>
-              <span>{data?.data.address.note}</span>
+              <span className='whitespace-nowrap'>Ghi chú:</span>
+              <span className='text-right'>{data?.data.address.note}</span>
             </Box>
           </Card>
         )}

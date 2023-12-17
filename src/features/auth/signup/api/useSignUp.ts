@@ -39,7 +39,7 @@ export const useSignUp = (config?: MutationConfig<QueryFnType>) => {
       }, 1500);
     },
     onError(err) {
-      alertError(err.message);
+      alertError(err?.response?.data?.message);
     },
     ...config,
   });

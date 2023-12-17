@@ -24,6 +24,7 @@ export const Search = () => {
   const [max, setMax] = useState<number | undefined>(queryObject.maxPrice || '');
   const [target_language, setTarget_language] = useState<Language>(queryObject.target_language || Language.VI);
   const [query_language, setQuerylanguage] = useState<Language>(queryObject.query_language || Language.VI);
+  const [selectedImage, setSelectedImage] = useState<any>();
   const [dataShow, setDataShow] = useState<ISearchRes[]>([]);
   const handleInputChange = (event: any, type: string) => {
     switch (type) {
@@ -77,22 +78,26 @@ export const Search = () => {
     { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
   );
   const { mutateAsync: searchByImg, data: dataImg, isLoading: loadingDataImg } = useSearchItemByImg();
-  console.log(`🚀🚀🚀 ~ file: index.tsx:80 ~ Search ~ dataImg:`, dataImg);
 
   const handleSearchByImage = ({ target }: { target: any }) => {
     const file = target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    const param = {
-      page,
-      sort,
-      target_language,
-      query_language,
-      minPrice,
-      maxPrice,
-    };
-    searchByImg({ param, body: formData });
+    setSelectedImage(file);
   };
+  useEffect(() => {
+    if (selectedImage && !q) {
+      const formData = new FormData();
+      formData.append('file', selectedImage);
+      const param = {
+        page,
+        sort,
+        target_language,
+        query_language,
+        minPrice,
+        maxPrice,
+      };
+      searchByImg({ param, body: formData });
+    }
+  }, [selectedImage, page, sort, target_language, query_language, minPrice, maxPrice]);
   useEffect(() => {
     const queryObject = { page, q, sort, target_language, query_language };
     history.push({ search: queryString.stringify(queryObject) });
@@ -247,7 +252,7 @@ export const Search = () => {
             </Box>
           </Box>
         </Box>
-        {!!dataShow.length && (
+        {!!dataShow.length && !(loadingDataText || loadingDataImg) && (
           <>
             <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 auto-rows-max'>
               {dataShow.map((item) => (

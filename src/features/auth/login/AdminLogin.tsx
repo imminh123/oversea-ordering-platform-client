@@ -69,7 +69,7 @@ export const AdminLoginPage: React.FC<Props> = () => {
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
-                <HooksFormInputTextField type='email' name='email' fieldName={'userName'} label={'Email'} />
+                <HooksFormInputTextField name='email' fieldName={'userName'} label={'Email'} />
                 <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <LoadingButton
                   variant='contained'
