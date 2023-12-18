@@ -26,6 +26,12 @@ export const Search = () => {
   const [query_language, setQuerylanguage] = useState<Language>(queryObject.query_language || Language.VI);
   const [selectedImage, setSelectedImage] = useState<any>();
   const [dataShow, setDataShow] = useState<ISearchRes[]>([]);
+  const { data: dataText, isLoading: loadingDataText } = useSearchItem(
+    { q, page, sort, target_language, query_language, minPrice, maxPrice },
+    { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
+  );
+  const { mutateAsync: searchByImg, data: dataImg, isLoading: loadingDataImg } = useSearchItemByImg();
+
   const handleInputChange = (event: any, type: string) => {
     switch (type) {
       case 'q':
@@ -48,6 +54,7 @@ export const Search = () => {
         break;
     }
   };
+
   const handleKeyPress = (e: any, type: string) => {
     if (e.keyCode == 13) {
       switch (type) {
@@ -73,16 +80,12 @@ export const Search = () => {
       return newVal;
     });
   };
-  const { data: dataText, isLoading: loadingDataText } = useSearchItem(
-    { q, page, sort, target_language, query_language, minPrice, maxPrice },
-    { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
-  );
-  const { mutateAsync: searchByImg, data: dataImg, isLoading: loadingDataImg } = useSearchItemByImg();
 
   const handleSearchByImage = ({ target }: { target: any }) => {
     const file = target.files[0];
     setSelectedImage(file);
   };
+
   useEffect(() => {
     if (selectedImage && !q) {
       const formData = new FormData();
@@ -98,16 +101,19 @@ export const Search = () => {
       searchByImg({ param, body: formData });
     }
   }, [selectedImage, page, sort, target_language, query_language, minPrice, maxPrice]);
+
   useEffect(() => {
     const queryObject = { page, q, sort, target_language, query_language };
     history.push({ search: queryString.stringify(queryObject) });
   }, [page, q, sort, target_language, query_language]);
+
   useEffect(() => {
     if (!!dataText && !loadingDataText && !!dataText?.data.length) {
       setDataShow(dataText.data);
-    }
-    if (!!dataImg && !loadingDataImg && !!dataImg?.items?.length) {
+    } else if (!!dataImg && !loadingDataImg && !!dataImg?.items?.length) {
       setDataShow(dataImg.items);
+    } else {
+      setDataShow([]);
     }
   }, [dataImg, dataText]);
 

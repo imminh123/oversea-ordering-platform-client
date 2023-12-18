@@ -1,5 +1,6 @@
 import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
+import useAlert from 'app/hooks/useAlert';
 import { useQuery } from 'react-query';
 
 interface PriceRangeInfos {

@@ -1,12 +1,12 @@
-import { Box, Button, CardContent, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
+import { Box, CardContent, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useParams } from 'react-router-dom';
-import { useGetOrder } from '../api/useOrderDetail';
 import { mappingStatus } from '..';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import Spinner from 'app/layout/async/Spinner';
 import { AdminEditOrder } from './AdminEditOrder';
+import { useGetOrderByAdmin } from '../api/useOrderDetailAdmin';
 
 const Card = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -30,7 +30,7 @@ const Card = styled(Paper)(({ theme }) => {
 
 export const OrderDetailAdmin = () => {
   const param: { id: string } = useParams();
-  const { data, isLoading } = useGetOrder(param.id);
+  const { data, isLoading } = useGetOrderByAdmin(param.id);
 
   return (
     <>
