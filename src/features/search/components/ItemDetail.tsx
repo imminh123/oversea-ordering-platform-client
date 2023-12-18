@@ -9,6 +9,7 @@ import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
 import useAlert from 'app/hooks/useAlert';
 import Spinner from 'app/layout/async/Spinner';
 import { Item } from 'app/utils/Item';
+import { LoadingButton } from '@mui/lab';
 
 export const ItemDetail = () => {
   const param: { id: string } = useParams();
@@ -53,7 +54,7 @@ export const ItemDetail = () => {
           <div className='h-screen text-center flex justify-center items-center'>
             <span>
               <Spinner />
-              Loading...
+              Đang chờ...
             </span>
           </div>
         )}
@@ -160,14 +161,15 @@ export const ItemDetail = () => {
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
-                    <Button
+                    <LoadingButton
+                      loadingIndicator='Đang chờ...'
                       className=' !mt-4'
                       onClick={handleSubmit}
                       variant={'contained'}
-                      disabled={adding || !quantity || mapPVid.size === 0}
+                      loading={adding || !quantity || mapPVid.size === 0}
                     >
                       Thêm vào giỏ hàng
-                    </Button>
+                    </LoadingButton>
                   </Grid>
                 </Grid>
               </Box>

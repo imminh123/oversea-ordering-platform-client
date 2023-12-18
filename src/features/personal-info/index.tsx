@@ -14,6 +14,8 @@ import {
   HooksFormInputTextField,
 } from 'app/components/libs/react-hooks-form';
 import { UserRole } from 'app/types/user';
+import { LoadingButton } from '@mui/lab';
+import Spinner from 'app/layout/async/Spinner';
 
 interface IFormInput {
   fullname: string;
@@ -128,23 +130,33 @@ export const PersonalInfo = () => {
               </CardContent>
               <CardActions>
                 <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                  <Button
+                  <LoadingButton
+                    loadingIndicator='Đang chờ...'
                     onClick={formMethods.handleSubmit(onSubmit, (err) => {
                       console.log(err);
                     })}
                     variant={'contained'}
-                    disabled={isUpdating}
+                    loading={isUpdating}
                   >
                     Lưu
-                  </Button>
-                  <Button onClick={() => formMethods.reset()} variant={'outlined'}>
-                    Hủy
+                  </LoadingButton>
+                  <Button onClick={() => history.back()} variant={'outlined'}>
+                    Quay lại
                   </Button>
                 </Box>
               </CardActions>
             </Card>
           </Container>
         </FormProvider>
+      )}
+      {isLoading && (
+        <Card variant='elevation'>
+          <CardContent>
+            <Box>
+              <Spinner />
+            </Box>
+          </CardContent>
+        </Card>
       )}
     </React.Fragment>
   );

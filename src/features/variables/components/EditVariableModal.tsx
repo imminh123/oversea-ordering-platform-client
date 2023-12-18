@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { updateVariableValidator } from 'app/utils/validators';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
 import { UpdateVariableDto, useUpdateVariable } from '../api/useUpdateVariavle';
+import { LoadingButton } from '@mui/lab';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -67,15 +68,16 @@ export const EditVariableModal = ({ item }: { item: Variable }) => {
             <Box className='flex flex-col gap-3 mt-3'>
               <HooksFormInputTextField size={'small'} fieldName={'value'} label={'Giá trị'} />
               <HooksFormInputTextField size={'small'} fieldName={'description'} label={'Mô tả'} />
-              <Button
+              <LoadingButton
+                loadingIndicator='Đang chờ...'
                 onClick={formMethods.handleSubmit(onSubmit, (err) => {
                   console.log(err);
                 })}
                 variant={'contained'}
-                disabled={isUpdating}
+                loading={isUpdating}
               >
                 Lưu
-              </Button>
+              </LoadingButton>
             </Box>
           </FormProvider>
         </Box>

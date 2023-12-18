@@ -87,7 +87,7 @@ export const LoginPage: React.FC<Props> = () => {
                 <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <LoadingButton
                   variant='contained'
-                  loadingIndicator='Loading...'
+                  loadingIndicator='Đang chờ...'
                   fullWidth
                   color='primary'
                   size='large'
@@ -100,7 +100,7 @@ export const LoginPage: React.FC<Props> = () => {
                   <LoadingButton
                     variant='outlined'
                     startIcon={<img src={Google} alt='Google' />}
-                    loadingIndicator='Loading...'
+                    loadingIndicator='Đang chờ...'
                     color='primary'
                     size='large'
                     fullWidth
@@ -114,14 +114,14 @@ export const LoginPage: React.FC<Props> = () => {
             </form>
           </FormProvider>
           <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-            <Button
+            <LoadingButton
               variant='text'
               onClick={() => {
                 history.push(RoutePathsEnum.SignupPage);
               }}
             >
               Đăng ký
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       </Box>

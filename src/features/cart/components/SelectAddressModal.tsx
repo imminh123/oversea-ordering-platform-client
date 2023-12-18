@@ -27,6 +27,7 @@ import { useDeleteAddress } from '../api/useDeleteAddress';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { AddressData } from 'app/components/form/AddressInput';
 import { useUpdateAddress } from '../api/useUpdateAddress';
+import { LoadingButton } from '@mui/lab';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -98,7 +99,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
   const [editId, setEditId] = useState('');
   const { mutateAsync: deleteAddress } = useDeleteAddress();
   const { mutateAsync: addAddress } = useAddAddress();
-  const { mutateAsync: updateAddress } = useUpdateAddress();
+  const { mutateAsync: updateAddress, isLoading: updating } = useUpdateAddress();
   const { confirm } = useConfirmAlert();
   const [isSetDefault, setIsDefault] = useState(false);
 
@@ -235,7 +236,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                   </Box>
                   <Box>
                     {editId === add.id && addressId && (
-                      <Box>
+                      <Box className='mt-3'>
                         <FormProvider {...formEditMethods}>
                           <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
                             <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
@@ -281,12 +282,14 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                                     setIsDefault(e.target.checked);
                                   }}
                                   color='primary'
-                                />{' '}
-                                Đặt làm mặc định
+                                />
+                                Mặc định
                               </Box>
                             </Box>
                             <Box className='flex justify-end'>
-                              <Button
+                              <LoadingButton
+                                loadingIndicator='Đang chờ...'
+                                loading={updating}
                                 title='Cập nhật'
                                 color='primary'
                                 aria-label='delete'
@@ -295,8 +298,13 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                                 })}
                               >
                                 Cập nhật
-                              </Button>
-                              <Button title='Hủy thay đổi' color='error' aria-label='delete'>
+                              </LoadingButton>
+                              <Button
+                                title='Hủy thay đổi'
+                                color='error'
+                                aria-label='delete'
+                                onClick={() => setEditId('')}
+                              >
                                 Hủy thay đổi
                               </Button>
                             </Box>

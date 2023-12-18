@@ -13,6 +13,7 @@ import { useAdminGetUserDetail } from '../apis/useAdminGetInfo';
 import { useParams } from 'react-router-dom';
 import { UserRole } from 'app/types/user';
 import { BlockUserDto, useBlockUser } from '../apis/useBlockUser';
+import { LoadingButton } from '@mui/lab';
 
 interface IFormInput {
   fullname: string;
@@ -172,15 +173,16 @@ export const UserDetail = () => {
               </CardContent>
               <CardActions>
                 <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                  <Button
+                  <LoadingButton
+                    loadingIndicator='Đang chờ...'
                     onClick={formMethods.handleSubmit(onSubmit, (err) => {
                       console.log(err);
                     })}
                     variant={'contained'}
-                    disabled={isUpdating}
+                    loading={isUpdating}
                   >
                     {data.isBlock ? 'Mở chặn người dùng này' : 'Chặn người dùng này'}
-                  </Button>
+                  </LoadingButton>
                   <Button onClick={() => history.back()} variant={'outlined'}>
                     Quay lại
                   </Button>

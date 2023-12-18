@@ -10,6 +10,7 @@ import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import Spinner from 'app/layout/async/Spinner';
 import { useRePay } from '../api/useRePay';
 import { usePayOrder } from 'features/cart/api/usePay';
+import { LoadingButton } from '@mui/lab';
 
 const Card = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -34,8 +35,8 @@ const Card = styled(Paper)(({ theme }) => {
 export const OrderDetail = () => {
   const param: { id: string } = useParams();
   const { data, isLoading } = useGetOrder(param.id);
-  const { mutateAsync: rePay } = useRePay();
-  const { mutateAsync: pay } = usePayOrder();
+  const { mutateAsync: rePay, isLoading: repaying } = useRePay();
+  const { mutateAsync: pay, isLoading: paying } = usePayOrder();
 
   const handlePay = () => {
     if (
@@ -61,9 +62,16 @@ export const OrderDetail = () => {
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
               </Typography>
-              <Button variant='outlined' startIcon={<Payments />} onClick={handlePay} size='small'>
+              <LoadingButton
+                loadingIndicator='Đang chờ...'
+                variant='outlined'
+                startIcon={<Payments />}
+                onClick={handlePay}
+                loading={paying || repaying}
+                size='small'
+              >
                 {payAgain ? 'Thanh toán lại' : 'Đặt lại đơn hàng'}
-              </Button>
+              </LoadingButton>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Trạng thái:</span>
