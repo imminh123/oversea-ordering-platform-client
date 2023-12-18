@@ -120,3 +120,39 @@ export const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: 
     });
   }
 };
+
+export const fileToDataUri = (file: any) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      resolve(event.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
+export const base64ToFile = (base64String: string, fileName: string) => {
+  const contentType = base64String.split(';')[0].split(':')[1];
+  const byteCharacters = atob(base64String.split(',')[1]);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType });
+  const file = new File([blob], fileName, { type: contentType });
+
+  return file;
+};
+
+export const removeNullProperties = (obj: object) => {
+  return Object.fromEntries(Object.entries(obj).filter(([key, value]) => value !== null && value !== ''));
+};
