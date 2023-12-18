@@ -8,6 +8,7 @@ import { SkuList } from './SkuList';
 import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
 import useAlert from 'app/hooks/useAlert';
 import Spinner from 'app/layout/async/Spinner';
+import { Item } from 'app/utils/Item';
 
 export const ItemDetail = () => {
   const param: { id: string } = useParams();
@@ -19,7 +20,13 @@ export const ItemDetail = () => {
     setMapPVid(updatedMap);
   };
   const { alertError } = useAlert();
-  const { data, isLoading } = useGetSearchItemDetail(param.id);
+
+  const { data, isLoading } = useGetSearchItemDetail(param.id, {
+    retry: false,
+    onError(err) {
+      alertError('Không thể tìm thấy hàng hóa trên taobao');
+    },
+  });
   const { mutateAsync: addToCart, isLoading: adding } = useAddToCart();
   const [currentImg, setCurrentImg] = useState(0);
   const handleSubmit = () => {
@@ -167,6 +174,7 @@ export const ItemDetail = () => {
             </Grid>
           </Grid>
         )}
+        {!isLoading && !data?.data && <Item elevation={3}>Không thể tìm thấy hàng hóa trên taobao</Item>}
       </Container>
     </>
   );
