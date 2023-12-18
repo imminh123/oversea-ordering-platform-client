@@ -30,7 +30,7 @@ export const ItemDetail = () => {
   const { mutateAsync: addToCart, isLoading: adding } = useAddToCart();
   const [currentImg, setCurrentImg] = useState(0);
   const handleSubmit = () => {
-    if (!quantity || mapPVid.size === 0) {
+    if (!quantity || mapPVid.size !== data?.data.SkuProps.length) {
       alertError('Vui lòng chọn đủ thuộc tính');
       return;
     }
