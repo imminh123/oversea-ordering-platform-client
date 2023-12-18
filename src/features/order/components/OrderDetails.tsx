@@ -61,11 +61,9 @@ export const OrderDetail = () => {
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
               </Typography>
-              {payAgain && (
-                <Button variant='outlined' startIcon={<Payments />} onClick={handlePay} size='small'>
-                  Thanh toán lại
-                </Button>
-              )}
+              <Button variant='outlined' startIcon={<Payments />} onClick={handlePay} size='small'>
+                {payAgain ? 'Thanh toán lại' : 'Đặt lại đơn hàng'}
+              </Button>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Trạng thái:</span>
