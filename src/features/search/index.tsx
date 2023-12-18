@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import Spinner from 'app/layout/async/Spinner';
 import { Language, QueryLangOptions, SortOptions, TargetLangOptions } from './search.const';
 import { useSearchItemByImg } from './api/useSearchItemByImg';
+import { base64ToFile, fileToDataUri, removeNullProperties } from 'app/utils/helper';
 
 export const Search = () => {
   const history = useHistory();
@@ -24,7 +25,7 @@ export const Search = () => {
   const [max, setMax] = useState<number | undefined>(queryObject.maxPrice || '');
   const [target_language, setTarget_language] = useState<Language>(queryObject.target_language || Language.VI);
   const [query_language, setQuerylanguage] = useState<Language>(queryObject.query_language || Language.VI);
-  const [selectedImage, setSelectedImage] = useState<any>();
+  const [selectedImage, setSelectedImage] = useState<any>(queryObject.selectedImage || null);
   const [dataShow, setDataShow] = useState<ISearchRes[]>([]);
   const { data: dataText, isLoading: loadingDataText } = useSearchItem(
     { q, page, sort, target_language, query_language, minPrice, maxPrice },
@@ -60,6 +61,7 @@ export const Search = () => {
       switch (type) {
         case 'q':
           setQ(e.target.value);
+          setSelectedImage(null);
           break;
         case 'min':
           setMinPrice(e.target.value);
@@ -83,29 +85,39 @@ export const Search = () => {
 
   const handleSearchByImage = ({ target }: { target: any }) => {
     const file = target.files[0];
-    setSelectedImage(file);
+    fileToDataUri(file).then((data: any) => {
+      setQ('');
+      setSelectedImage(file.name);
+      sessionStorage.clear();
+      sessionStorage.setItem(file.name, data);
+    });
   };
 
   useEffect(() => {
     if (selectedImage && !q) {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-      const param = {
-        page,
-        sort,
-        target_language,
-        query_language,
-        minPrice,
-        maxPrice,
-      };
-      searchByImg({ param, body: formData });
+      const cachedDataUrl = sessionStorage.getItem(selectedImage);
+      if (cachedDataUrl) {
+        const file = base64ToFile(cachedDataUrl, selectedImage);
+        const formData = new FormData();
+        formData.append('file', file);
+        const param = {
+          page,
+          sort,
+          target_language,
+          query_language,
+          minPrice,
+          maxPrice,
+        };
+        searchByImg({ param, body: formData });
+      }
     }
   }, [selectedImage, page, sort, target_language, query_language, minPrice, maxPrice]);
 
   useEffect(() => {
-    const queryObject = { page, q, sort, target_language, query_language };
+    const queryObject = removeNullProperties({ page, q, sort, target_language, query_language, selectedImage });
+
     history.push({ search: queryString.stringify(queryObject) });
-  }, [page, q, sort, target_language, query_language]);
+  }, [page, q, sort, target_language, query_language, selectedImage]);
 
   useEffect(() => {
     if (!!dataText && !loadingDataText && !!dataText?.data.length) {

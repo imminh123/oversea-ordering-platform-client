@@ -1,14 +1,13 @@
 import { createTheme } from '@mui/material';
-import { envConfig } from 'configs/env.config';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: envConfig.primaryColor,
+      main: '#ff5000',
       contrastText: '#fff',
     },
     secondary: {
-      main: envConfig.secondaryColor,
+      main: '#4a148c',
       contrastText: '#fff',
     },
   },

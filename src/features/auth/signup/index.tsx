@@ -63,7 +63,7 @@ export const SignupPage: React.FC<Props> = () => {
                 <HooksFormInputTextField fieldName={'wareHouseAddress'} label={'Kho nhận hàng'} />
                 <LoadingButton
                   variant='contained'
-                  loadingIndicator='Loading...'
+                  loadingIndicator='Đang chờ...'
                   fullWidth
                   color='primary'
                   size='large'
@@ -76,14 +76,14 @@ export const SignupPage: React.FC<Props> = () => {
             </form>
           </FormProvider>
           <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-            <Button
+            <LoadingButton
               variant='text'
               onClick={() => {
                 history.push(RoutePathsEnum.LoginPage);
               }}
             >
               Đăng nhập
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       </Box>

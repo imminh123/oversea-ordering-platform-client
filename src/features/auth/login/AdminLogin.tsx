@@ -73,7 +73,7 @@ export const AdminLoginPage: React.FC<Props> = () => {
                 <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <LoadingButton
                   variant='contained'
-                  loadingIndicator='Loading...'
+                  loadingIndicator='Đang chờ...'
                   fullWidth
                   color='primary'
                   size='large'

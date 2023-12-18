@@ -24,7 +24,7 @@ export const FacebookLoginButton = ({ onLogin }: { onLogin: any }) => {
     <LoadingButton
       variant='outlined'
       startIcon={<img height={'25px'} width={'25px'} src={Facebook} alt='Facebook' />}
-      loadingIndicator='Loading...'
+      loadingIndicator='Đang chờ...'
       fullWidth
       color='primary'
       size='large'

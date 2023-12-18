@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useActiveAccount } from './useActiveAccount';
+import { LoadingButton } from '@mui/lab';
 
 interface Props {}
 export const ActivePage: React.FC<Props> = () => {
@@ -27,15 +28,16 @@ export const ActivePage: React.FC<Props> = () => {
           MBY Logistics
         </Typography>
         <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-          <Button
+          <LoadingButton
+            loadingIndicator='Đang chờ...'
             variant='text'
             onClick={() => {
               active(param.token);
             }}
-            disabled={isLoading}
+            loading={isLoading}
           >
             Xác thực
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
     </Box>

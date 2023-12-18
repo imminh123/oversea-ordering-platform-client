@@ -30,6 +30,7 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Item, TD } from 'app/utils/Item';
 import { Global } from '@emotion/react';
+import { LoadingButton } from '@mui/lab';
 
 const SumaryInfo = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -204,18 +205,25 @@ export const Step1 = () => {
                 </Typography>
               </Box>
               <Box display={'flex'} gap={'10px'} className='justify-end'>
-                <Button
+                <LoadingButton
+                  loadingIndicator='Đang chờ...'
                   variant='contained'
-                  disabled={refreshing}
+                  loading={refreshing}
                   onClick={() => {
                     refreshCart();
                   }}
                 >
                   REFRESH GIÁ TAOBAO
-                </Button>
-                <Button variant='contained' disabled={isLoading || !cartIds.length} onClick={onSubmit}>
+                </LoadingButton>
+                <LoadingButton
+                  loadingIndicator='Đang chờ...'
+                  variant='contained'
+                  disabled={!cartIds.length}
+                  loading={isLoading}
+                  onClick={onSubmit}
+                >
                   {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
-                </Button>
+                </LoadingButton>
               </Box>
             </SumaryInfo>
           </Grid>
@@ -224,39 +232,41 @@ export const Step1 = () => {
       {matchesSM && (
         <>
           {!!cartIds.length && (
-            <Button
+            <LoadingButton
               variant='text'
               size='small'
               sx={{ height: '50px' }}
-              disabled={refreshing}
               onClick={() => {
                 setOpen(true);
               }}
             >
               Chi tiết đơn hàng
-            </Button>
+            </LoadingButton>
           )}
           <Box className='grid grid-cols-2 gap-3 '>
-            <Button
+            <LoadingButton
+              loadingIndicator='Đang chờ...'
               variant='contained'
               size='small'
               sx={{ height: '40px', fontSize: '10px' }}
-              disabled={refreshing}
+              loading={refreshing}
               onClick={() => {
                 refreshCart();
               }}
             >
               REFRESH GIÁ TAOBAO
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
+              loadingIndicator='Đang chờ...'
               sx={{ height: '40px', fontSize: '10px' }}
               size='small'
               variant='contained'
-              disabled={isLoading || !cartIds.length}
+              disabled={!cartIds.length}
+              loading={isLoading}
               onClick={onSubmit}
             >
               {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
-            </Button>
+            </LoadingButton>
           </Box>
           <SwipeableDrawer
             container={undefined}

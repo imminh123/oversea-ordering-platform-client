@@ -80,7 +80,7 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
     { refetchInterval: REFETCH_INTERVAL },
   );
   const exchange = exchangeRes?.data[0].value;
-  const { data: numberInCart } = useCountCart({ refetchInterval: 10000 });
+  const { data: numberInCart } = useCountCart({ refetchInterval: 15 * 1000 });
   const number = React.useMemo(() => {
     return numberInCart?.data || 0;
   }, [numberInCart?.data]);

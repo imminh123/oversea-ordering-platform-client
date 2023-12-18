@@ -16,7 +16,7 @@ const Spinner: React.FC<Partial<Props>> = ({ size = 24, thickness = 4, color = '
         alignItems: 'center',
       }}
     >
-      <CircularProgress color='success' />
+      <CircularProgress color='primary' />
     </Box>
   );
 };

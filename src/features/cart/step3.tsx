@@ -8,6 +8,7 @@ import { formatMoneyToVND } from 'app/utils/helper';
 import { usePayOrder } from './api/usePay';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 export const Step3 = () => {
   const { search } = useLocation();
@@ -80,14 +81,15 @@ export const Step3 = () => {
                 <li>Mã giao dịch: {data?.id}</li>
               </ul>
               <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-                <Button
-                  disabled={checkDisable(data?.status)}
+                <LoadingButton
+                  loadingIndicator='Đang chờ...'
+                  loading={checkDisable(data?.status)}
                   variant='outlined'
                   startIcon={<Payments />}
                   onClick={handlePay}
                 >
                   Thanh toán
-                </Button>
+                </LoadingButton>
               </Box>
             </CardContent>
           </CardActionArea>
