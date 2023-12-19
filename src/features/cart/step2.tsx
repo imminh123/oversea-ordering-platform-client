@@ -71,7 +71,7 @@ export const Step2 = () => {
         sx={{
           minWidth: 275,
           '&:hover': {
-            background: '#f2f2f2',
+            background: '#fff',
           },
           marginBottom: '10px',
         }}

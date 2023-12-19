@@ -44,7 +44,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   marginBottom: '10px',
   '&:hover': {
-    background: '#f2f2f2',
+    background: '#fff',
   },
 }));
 

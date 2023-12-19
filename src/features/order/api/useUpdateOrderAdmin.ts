@@ -16,14 +16,14 @@ export const adminUpdateOrder = ({ body, id }: { body: UpdateOrderDto; id: strin
 
 type QueryFnType = typeof adminUpdateOrder;
 
-export const useUpdateOrderAdmin = (config?: MutationConfig<QueryFnType>) => {
+export const useUpdateOrderAdmin = (orderId?: string, config?: MutationConfig<QueryFnType>) => {
   const queryClient = useQueryClient();
   const { alertSuccess, alertError } = useAlert();
 
   return useMutation({
     mutationFn: adminUpdateOrder,
     onSuccess() {
-      queryClient.invalidateQueries('useGetOrder');
+      queryClient.invalidateQueries(['useGetOrderByAdmin', orderId]);
       alertSuccess('Chỉnh sửa thành công');
     },
     onError(error) {

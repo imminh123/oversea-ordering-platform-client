@@ -53,7 +53,7 @@ export const AdminEditOrder = ({
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState<OrderStatus>(oldStatus);
   const [itemProps, setItemProps] = useState(defaultMap);
-  const { mutateAsync: updateOrder, isLoading } = useUpdateOrderAdmin();
+  const { mutateAsync: updateOrder, isLoading } = useUpdateOrderAdmin(id);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
