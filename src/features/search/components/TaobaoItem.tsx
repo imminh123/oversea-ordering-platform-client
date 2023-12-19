@@ -7,11 +7,22 @@ import Typography from '@mui/material/Typography';
 import { ISearchRes } from '../api/useSearchItem';
 import { formatMoneyToCN } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
+import { useTheme } from '@mui/material';
 
 export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
+  const theme = useTheme();
   const history = useHistory();
   return (
-    <Card sx={{ maxWidth: 345 }} className='flex flex-col justify-between'>
+    <Card
+      className='flex flex-col justify-between cursor-pointer'
+      sx={{
+        maxWidth: 345,
+        '&:hover': {
+          outline: `1px solid ${theme.palette.primary.main}`,
+          transition: '.1s all',
+        },
+      }}
+    >
       <CardMedia
         sx={{
           height: 140,
@@ -34,8 +45,15 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         }}
         image={`${item.pic_url}`}
         title={item.title}
+        onClick={() => {
+          history.push(`/search/${item.num_iid}`);
+        }}
       />
-      <CardContent>
+      <CardContent
+        onClick={() => {
+          history.push(`/search/${item.num_iid}`);
+        }}
+      >
         <Typography variant='body2' color='text.secondary'>
           {item.title}
         </Typography>
@@ -49,18 +67,9 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
           Số lượng: {item.quantity}
         </Typography>
       </CardContent>
-      <CardActions className='flex justify-between'>
-        <Button
-          size='small'
-          variant='contained'
-          onClick={() => {
-            history.push(`/search/${item.num_iid}`);
-          }}
-        >
-          Chi tiết
-        </Button>
+      <CardActions className='flex justify-center'>
         <a href={`${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
-          <Button variant='contained' size='small'>
+          <Button variant='text' size='small'>
             Mở trên Taobao
           </Button>
         </a>

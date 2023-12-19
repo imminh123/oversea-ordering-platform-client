@@ -15,6 +15,12 @@ import {
   Checkbox,
   useMediaQuery,
   useTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from '@mui/material';
 import { HooksFormInputTextField, HooksFormInputAddress } from 'app/components/libs/react-hooks-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -102,7 +108,15 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
   const { mutateAsync: updateAddress, isLoading: updating } = useUpdateAddress();
   const { confirm } = useConfirmAlert();
   const [isSetDefault, setIsDefault] = useState(false);
+  const [addAdressOpen, setAddAdressOpen] = useState(false);
 
+  const handleClickOpenAddress = () => {
+    setAddAdressOpen(true);
+  };
+
+  const handleCloseAddAddress = () => {
+    setAddAdressOpen(false);
+  };
   const handleEditAddress = (id: string) => {
     setAddressId(id);
     const editAddress = addressList.find((e) => e.id === id);
@@ -150,6 +164,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
       ward: data?.addressObjectData?.ward,
     };
     addAddress(body);
+    handleCloseAddAddress();
   };
 
   const formMethods = useForm<IFormInput>({
@@ -316,82 +331,70 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                 </Item>
               );
             })}
-            <Card
-              sx={{
-                minWidth: 275,
-                '&:hover': {
-                  background: '#f2f2f2',
-                },
-              }}
-            >
-              <FormProvider {...formMethods}>
-                <CardContent>
-                  <FormControlLabel
-                    value=''
-                    control={<Radio ref={chooseAdress} />}
-                    label={<div className='text-sm sm:text-xs'>Chọn địa chỉ nhận hàng</div>}
-                  />
-                  {!addressId && (
-                    <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
-                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                        <Box flex={1}>
-                          <HooksFormInputTextField fullWidth size={'small'} fieldName={'name'} label={'Họ và tên'} />
-                        </Box>
-                        <Box flex={1}>
-                          <HooksFormInputTextField fullWidth size={'small'} fieldName={'phone'} label={'Sđt'} />
-                        </Box>
-                      </Box>
-                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                        <Box flex={1}>
-                          <HooksFormInputTextField fullWidth size={'small'} fieldName={'address'} label={'Địa chỉ'} />
-                        </Box>
-                        <Box flex={1}>
-                          <HooksFormInputTextField fullWidth size={'small'} fieldName={'mail'} label={'Email'} />
-                        </Box>
-                      </Box>
-                      <HooksFormInputAddress
-                        fieldName={'addressObjectData'}
-                        size={'small'}
-                        sx={{ gridColumn: 'span 2' }}
-                        spacing={'10px'}
-                      />
-                      <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                        <Box flex={1}>
-                          <HooksFormInputTextField size={'small'} fieldName={'note'} label={'Ghi chú'} />
-                        </Box>
-                        <Box flex={1}>
-                          <Checkbox
-                            checked={isSetDefault}
-                            onChange={(e) => {
-                              setIsDefault(e.target.checked);
-                            }}
-                            color='primary'
-                          />
-                          Mặc định
-                        </Box>
-                      </Box>
-                    </Box>
-                  )}
-                </CardContent>
-              </FormProvider>
-              {!addressId && (
-                <CardActions>
-                  <Box width={'100%'} display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
-                    <Button
-                      size='small'
-                      onClick={formMethods.handleSubmit(onCreateNewAddress, (err) => {
-                        console.log(err);
-                      })}
-                      variant={'text'}
-                    >
-                      Thêm địa chỉ
-                    </Button>
-                  </Box>
-                </CardActions>
-              )}
-            </Card>
           </RadioGroup>
+
+          <Dialog open={addAdressOpen} onClose={handleCloseAddAddress}>
+            <DialogTitle>Thêm địa chỉ giao hàng</DialogTitle>
+            <DialogContent>
+              <FormProvider {...formMethods}>
+                <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
+                  <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                    <Box flex={1}>
+                      <HooksFormInputTextField fullWidth size={'small'} fieldName={'name'} label={'Họ và tên'} />
+                    </Box>
+                    <Box flex={1}>
+                      <HooksFormInputTextField fullWidth size={'small'} fieldName={'phone'} label={'Sđt'} />
+                    </Box>
+                  </Box>
+                  <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                    <Box flex={1}>
+                      <HooksFormInputTextField fullWidth size={'small'} fieldName={'address'} label={'Địa chỉ'} />
+                    </Box>
+                    <Box flex={1}>
+                      <HooksFormInputTextField fullWidth size={'small'} fieldName={'mail'} label={'Email'} />
+                    </Box>
+                  </Box>
+                  <HooksFormInputAddress
+                    fieldName={'addressObjectData'}
+                    size={'small'}
+                    sx={{ gridColumn: 'span 2' }}
+                    spacing={'10px'}
+                  />
+                  <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
+                    <Box flex={1}>
+                      <HooksFormInputTextField size={'small'} fieldName={'note'} label={'Ghi chú'} />
+                    </Box>
+                    <Box flex={1}>
+                      <Checkbox
+                        checked={isSetDefault}
+                        onChange={(e) => {
+                          setIsDefault(e.target.checked);
+                        }}
+                        color='primary'
+                      />
+                      Mặc định
+                    </Box>
+                  </Box>
+                </Box>
+              </FormProvider>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseAddAddress}>Hủy</Button>
+              <Button
+                size='small'
+                onClick={formMethods.handleSubmit(onCreateNewAddress, (err) => {
+                  console.log(err);
+                })}
+                variant={'contained'}
+              >
+                Thêm địa chỉ
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Box className='flex justify-end'>
+            <Button variant='text' sx={{ marginRight: 1 }} onClick={handleClickOpenAddress}>
+              Thêm địa chỉ
+            </Button>
             <Button
               variant='contained'
               size='small'

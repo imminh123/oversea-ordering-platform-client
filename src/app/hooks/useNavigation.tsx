@@ -153,7 +153,7 @@ function useNavigation() {
   const menus: ISidebarMenu[] = React.useMemo(() => {
     const result: ISidebarMenu[] = [
       {
-        name: 'Client Menu',
+        name: 'Đặt hàng',
         sidebars: [
           {
             key: SidebarKeysEnum.HomePage,
