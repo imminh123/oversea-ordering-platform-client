@@ -163,10 +163,11 @@ export const ItemDetail = () => {
                     />
                     <LoadingButton
                       loadingIndicator='Đang chờ...'
-                      className=' !mt-4'
+                      className='!mt-4'
                       onClick={handleSubmit}
                       variant={'contained'}
-                      loading={adding || !quantity || mapPVid.size === 0}
+                      loading={adding}
+                      disabled={!quantity || mapPVid.size === 0}
                     >
                       Thêm vào giỏ hàng
                     </LoadingButton>
