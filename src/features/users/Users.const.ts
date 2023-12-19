@@ -22,6 +22,6 @@ export const UserStatusOptions: { value: string; label: string }[] = [
   },
   {
     value: 'false',
-    label: 'Ngừng hoạt động',
+    label: 'Chưa kích hoạt',
   },
 ];

@@ -207,13 +207,13 @@ export const Step1 = () => {
               <Box display={'flex'} gap={'10px'} className='justify-end'>
                 <LoadingButton
                   loadingIndicator='Đang chờ...'
-                  variant='contained'
+                  variant='text'
                   loading={refreshing}
                   onClick={() => {
                     refreshCart();
                   }}
                 >
-                  REFRESH GIÁ TAOBAO
+                  Update Giá Taobao
                 </LoadingButton>
                 <LoadingButton
                   loadingIndicator='Đang chờ...'
@@ -222,7 +222,7 @@ export const Step1 = () => {
                   loading={isLoading}
                   onClick={onSubmit}
                 >
-                  {!cartIds.length ? 'CHỌN SẢN PHẨM ĐỂ ĐẶT' : 'BẮT ĐẦU ĐẶT HÀNG'}
+                  {!cartIds.length ? 'CHỌN SẢN PHẨM' : 'ĐẶT HÀNG'}
                 </LoadingButton>
               </Box>
             </SumaryInfo>
@@ -254,7 +254,7 @@ export const Step1 = () => {
                 refreshCart();
               }}
             >
-              REFRESH GIÁ TAOBAO
+              Update Giá Taobao
             </LoadingButton>
             <LoadingButton
               loadingIndicator='Đang chờ...'

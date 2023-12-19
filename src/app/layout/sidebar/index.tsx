@@ -2,6 +2,7 @@ import { Divider, Drawer } from '@mui/material';
 import { sidebarWidth } from 'configs/sidebar.config';
 import { lazy } from 'react';
 import { HeaderPlaceHolder } from '../header-placeholder';
+import { Link } from 'react-router-dom';
 
 const SidebarList = lazy(() => import('./SidebarList'));
 const SidebarDrawer = lazy(() => import('./SidebarDrawer'));
@@ -28,7 +29,9 @@ export const Sidebar: React.FC<Props> = ({ open, loading, type }) => {
       anchor='left'
       open={open}
     >
-      <HeaderPlaceHolder bg='/myb.png' />
+      <Link to={'/'}>
+        <HeaderPlaceHolder bg='/myb.png' />
+      </Link>
       <Divider />
       {loading ? <SidebarLoading /> : <SidebarList sidebarOpen={open} type={type} />}
 
