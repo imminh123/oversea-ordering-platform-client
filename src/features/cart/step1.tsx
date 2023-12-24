@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   Checkbox,
+  CircularProgress,
   CssBaseline,
   Divider,
   Grid,
@@ -9,7 +11,6 @@ import {
   SwipeableDrawer,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -27,9 +28,9 @@ import { Step1CartRow } from './components/Step1CartRow';
 import queryString from 'query-string';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Item, TD } from 'app/utils/Item';
 import { Global } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
-import { LoadingCard, NoItemFound } from 'app/components/Item';
 
 const SumaryInfo = styled(Paper)(({ theme }) => ({
   minHeight: '100%',
@@ -71,6 +72,20 @@ export const Step1 = () => {
         .join(',') || ''
     );
   }, [cartIds, cartItems?.data]);
+
+  // TODO: use to calculate money of cart from client (call BE endpoint to calculate now)
+  // const totalMoneyClient = useMemo(() => {
+  //   return (
+  //     cartItems?.data
+  //       .filter((e) => cartIds.includes(e._id))
+  //       .reduce((accumulator: any, currentValue) => {
+  //         const temp = currentValue.listItem.reduce((a: any, c) => {
+  //           return a + parseFloat(c.vnPrice) * c.quantity;
+  //         }, 0);
+  //         return accumulator + temp;
+  //       }, 0)
+  //   );
+  // }, [cartIds, cartItems?.data]);
 
   const { data: totalPrice } = useCalculatePrice(calculatePriceParam);
   const handleCheckCart = (value: boolean, id: string) => {
@@ -121,30 +136,20 @@ export const Step1 = () => {
                         <th>
                           <Checkbox
                             size='small'
-                            disabled={item.listItem.some((e) => !e.isActive)}
                             value={cartIds.includes(item._id)}
                             onChange={(e) => handleCheckCart(e.target.checked, item._id)}
                           />
                           <Link href={item.shopUrl}> Shop: {item.shopName}</Link>
-                          {item.listItem.some((e) => !e.isActive) && (
-                            <Typography
-                              variant='subtitle2'
-                              sx={{ marginLeft: '10px' }}
-                              color={theme.palette.error.main}
-                            >
-                              (Vui lòng loại bỏ những sản phẩm không tồn tại)
-                            </Typography>
-                          )}
                         </th>
                       </tr>
                       <TableRow>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '8px' }}>Sản phẩm</TableCell>
-                        <TableCell sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
+                        <TD sx={{ fontWeight: 'bold', padding: '8px' }}>Sản phẩm</TD>
+                        <TD sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
                           Số lượng
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '8px' }}>Thuộc tính</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TableCell>
+                        </TD>
+                        <TD sx={{ fontWeight: 'bold', padding: '8px' }}>Thuộc tính</TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TD>
+                        <TD sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TD>
                       </TableRow>
                     </TableHead>
                     <TableBody sx={{ marginBottom: '20px' }}>
@@ -156,8 +161,12 @@ export const Step1 = () => {
                 </TableContainer>
               );
             })}
-          {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
-          {isLoading && <LoadingCard />}
+          {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
+          {isLoading && (
+            <Item elevation={3}>
+              <CircularProgress className='m-5' />
+            </Item>
+          )}
         </Grid>
         {!matchesSM && (
           <Grid item md={12} lg={4} width={'100%'} className='pb-3'>

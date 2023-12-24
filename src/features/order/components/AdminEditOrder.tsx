@@ -2,11 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import { Close, Edit } from '@mui/icons-material';
+import { Close, Edit, MoreVert } from '@mui/icons-material';
 import {
-  Autocomplete,
   Button,
-  Divider,
   FormControl,
   IconButton,
   InputLabel,
@@ -20,8 +18,7 @@ import { ItemDetail, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { OrderStatusOptions } from '../order.const';
 import { useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
-import { useUpdateOrderStatusAdmin } from '../api/useUpdateOrderStatusAdmin';
-import { useUpdateOrderDetailAdmin } from '../api/useUpdateOrderDetailAdmin';
+import { useUpdateOrderAdmin } from '../api/useUpdateOrderAdmin';
 
 export const AdminEditOrder = ({
   status: oldStatus,
@@ -50,17 +47,13 @@ export const AdminEditOrder = ({
       overflow: 'scroll',
       height: '100%',
       display: 'block',
-      fontSize: '12px',
     }),
   };
   const defaultMap = new Map(listItem.map((i) => [i.id, i.quantity]));
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState<OrderStatus>(oldStatus);
   const [itemProps, setItemProps] = useState(defaultMap);
-  const [statusMeta, setStatusMeta] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-  const { mutateAsync: updateOrderStatus, isLoading: updatingStatus } = useUpdateOrderStatusAdmin();
-  const { mutateAsync: updateOrderDetail, isLoading: updatingDetail } = useUpdateOrderDetailAdmin();
+  const { mutateAsync: updateOrder, isLoading } = useUpdateOrderAdmin();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -79,15 +72,12 @@ export const AdminEditOrder = ({
     const updatedMap = new Map([...itemProps, ...newMap]);
     setItemProps(updatedMap);
   };
-  const onSubmitChangeStatus = async () => {
-    updateOrderStatus({ id, body: { status, meta: { description: statusMeta } } });
-  };
-  const onSubmitChangeDetail = async () => {
+  const onSubmit = async () => {
     const updatedItems = Array.from(itemProps, ([key, value]) => {
       return { id: key, quantity: value };
     });
-    const taobaoDeliveryId = tags.join(',');
-    updateOrderDetail({ id, body: { listItem: updatedItems, taobaoDeliveryId } });
+    updateOrder({ id, body: { status, listItem: updatedItems } });
+    handleClose();
   };
   return (
     <React.Fragment>
@@ -101,12 +91,12 @@ export const AdminEditOrder = ({
               <Close />
             </IconButton>
           </Box>
-
+          <Typography id='keep-mounted-modal-title' variant='h6' component='h2'>
+            Cập nhật đơn hàng
+          </Typography>
           <Box className='flex flex-col gap-3 mt-3'>
-            <Typography variant='h6' component='h2'>
-              Cập nhật trạng thái
-            </Typography>
-            <Box display={'flex'} className='gap-2 justify-between'>
+            <Box display={'flex'} className=' justify-between'>
+              <span className='flex-1'>Trạng thái:</span>
               <span className='flex-1'>
                 <FormControl fullWidth>
                   <InputLabel size='small' id='status-select-label'>
@@ -131,48 +121,17 @@ export const AdminEditOrder = ({
                   </Select>
                 </FormControl>
               </span>
-              <span className='flex-1'>
-                <TextField
-                  label='Mô tả'
-                  size='small'
-                  fullWidth
-                  value={statusMeta}
-                  onChange={(e) => {
-                    setStatusMeta(e.target.value);
-                  }}
-                />
-              </span>
             </Box>
-            <Box className='flex justify-end'>
-              <Button
-                sx={{ width: 'fit-content' }}
-                variant={'contained'}
-                onClick={onSubmitChangeStatus}
-                disabled={updatingStatus}
-              >
-                Lưu
-              </Button>
-            </Box>
-            <Divider />
-            <Typography variant='h6' component='h2'>
-              Cập nhật số lượng/Mã vận đơn
-            </Typography>
-            <Autocomplete
-              style={{ margin: '10px 0' }}
-              multiple
-              options={tags}
-              freeSolo
-              onChange={(e: any) => setTags([...tags, e.target.value])}
-              renderInput={(params) => (
-                <TextField {...params} label='Mã vận đơn' placeholder='Gõ và Enter để nhập' value={tags} />
-              )}
-            />
+
             {listItem.map((e) => {
               return (
-                <div key={e.id} className='w-full flex flex-col sm:flex-row items-center justify-between gap-6'>
-                  <div className='flex flex-col justify-start items-start gap-1 flex-1'>
+                <div
+                  key={e.id}
+                  className='w-full flex flex-col sm:flex-row items-center justify-between border-b-[1px] border-b-slate-500 pb-3'
+                >
+                  <div className='flex flex-col justify-start items-start gap-1'>
                     <span className='w-full flex justify-between'>
-                      <span>Tên: </span> <span className='text-amber-500 text-right'>{e.itemName}</span>
+                      <span>Tên:</span> <span className='text-amber-500 text-right'>{e.itemName}</span>
                     </span>
                     <span className='w-full flex justify-between'>
                       <span>Thuộc tính:</span> <span className='text-amber-500 text-right'>{e.propName}</span>
@@ -195,18 +154,13 @@ export const AdminEditOrder = ({
                     </span>
                   </div>
                   <a key={e.id} href={e.itemUrl} target='_blank' rel='noopener noreferrer'>
-                    <img className='sm:max-w-32 sm:max-h-32 overflow-clip my-2 ml-2' src={e.image} alt={e.itemName} />
+                    <img className='sm:max-w-40 sm:max-h-40 overflow-clip my-2 ml-2' src={e.image} alt={e.itemName} />
                   </a>
                 </div>
               );
             })}
             <Box className='flex justify-end'>
-              <Button
-                sx={{ width: 'fit-content' }}
-                variant={'contained'}
-                onClick={onSubmitChangeDetail}
-                disabled={updatingDetail}
-              >
+              <Button sx={{ width: 'fit-content' }} variant={'contained'} onClick={onSubmit} disabled={isLoading}>
                 Lưu
               </Button>
             </Box>

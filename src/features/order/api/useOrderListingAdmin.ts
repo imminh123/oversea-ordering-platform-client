@@ -1,7 +1,7 @@
 import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
-import { IOrderDetailRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
+import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { useQuery } from 'react-query';
 
 interface IOrderListingParams {
@@ -15,7 +15,7 @@ interface IOrderListingParams {
 
 export const indexOrderAdmin = async (
   param: IOrderListingParams,
-): Promise<{ data: IOrderDetailRes[]; headers: IPaginationHeader }> => {
+): Promise<{ data: IOrderStatusRes[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/order/admin`, { ...param, perPage: 10 });
 };
 

@@ -9,7 +9,6 @@ interface IUserListingParams {
   role?: UserRole;
   search?: string;
   isActive?: boolean;
-  isBlock?: boolean;
 }
 
 export const indexOrder = async (
@@ -21,9 +20,9 @@ export const indexOrder = async (
 type QueryFnType = typeof indexOrder;
 
 export const useAdminIndexUsers = (param: IUserListingParams, config?: QueryConfig<QueryFnType>) => {
-  const { page, role, search, isActive, isBlock } = param;
+  const { page, role, search, isActive } = param;
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useAdminIndexUsers', page, role, search, isActive, isBlock],
+    queryKey: ['useAdminIndexUsers', page, role, search, isActive],
     queryFn: () => indexOrder(param),
     ...config,
   });

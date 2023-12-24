@@ -5,14 +5,14 @@ import {
   TableHead,
   TableRow,
   TableBody,
+  CircularProgress,
   Paper,
   Pagination,
   TableCell,
   Chip,
   Typography,
-  Card,
 } from '@mui/material';
-import { LoadingCard, NoItemFound } from 'app/components/Item';
+import { Item, TD } from 'app/utils/Item';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { IPaymentTransaction, PaymentStatus, useIndexTransactions } from './apis/useIndexPayment';
@@ -34,14 +34,14 @@ export const mappingPaymentStatus = (status?: PaymentStatus) => {
 
 const TransactionRow = ({ item }: { item: IPaymentTransaction }) => {
   return (
-    <TableRow hover className='cursor-pointer'>
-      <TableCell component='th' scope='row' className='sm:text-xs'>
+    <TableRow className=' cursor-pointer' sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
+      <TD component='th' scope='row' className='sm:text-xs'>
         {item.orderInfo}
-      </TableCell>
+      </TD>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingPaymentStatus(item.status)}
       </TableCell>
-      <TableCell align='right'>{formatMoneyToVND(item.amount)}</TableCell>
+      <TD align='right'>{formatMoneyToVND(item.amount)}</TD>
       <TableCell width={'100px'} size='small' align='right'>
         {moment(item.createdAt).format('DD/MM/YYYY')}
       </TableCell>
@@ -68,19 +68,19 @@ export const TransactionListing = () => {
           Quản lý thanh toán
         </Typography>
         {!!listTransactions && !!listTransactions?.data.length && !isLoading && (
-          <Card>
+          <>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Thông tin</TableCell>
-                    <TableCell sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
+                    <TD sx={{ fontWeight: 'bold' }}>Thông tin</TD>
+                    <TD sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
                       Trạng thái
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className=' min-w-[150px]'>
+                    </TD>
+                    <TD sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TD>
+                    <TD sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
                       Ngày thanh toán
-                    </TableCell>
+                    </TD>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -90,11 +90,17 @@ export const TransactionListing = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChange} />
-          </Card>
+            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
+          </>
         )}
-        {(!listTransactions || !listTransactions?.data.length) && !isLoading && <NoItemFound />}
-        {isLoading && <LoadingCard />}
+        {(!listTransactions || !listTransactions?.data.length) && !isLoading && (
+          <Item elevation={3}>Không có bản ghi</Item>
+        )}
+        {isLoading && (
+          <Item elevation={3}>
+            <CircularProgress />
+          </Item>
+        )}
       </Container>
     </>
   );

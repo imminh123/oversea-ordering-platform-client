@@ -18,10 +18,10 @@ export const UserRoleOptions: { value: UserRole; label: string }[] = [
 export const UserStatusOptions: { value: string; label: string }[] = [
   {
     value: 'true',
-    label: 'Đã chặn',
+    label: 'Hoạt động',
   },
   {
     value: 'false',
-    label: 'Đang hoạt động',
+    label: 'Chưa kích hoạt',
   },
 ];

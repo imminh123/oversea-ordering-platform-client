@@ -123,13 +123,11 @@ export const sendTokenToChromeExtension = ({ extensionId, jwt }: { extensionId: 
 
 export const fileToDataUri = (file: any) =>
   new Promise((resolve, reject) => {
-    if (file && file.type.match('image.*')) {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        resolve(event.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      resolve(event.target.result);
+    };
+    reader.readAsDataURL(file);
   });
 
 export const base64ToFile = (base64String: string, fileName: string) => {

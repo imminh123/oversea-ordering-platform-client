@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Checkbox,
+  CircularProgress,
   Paper,
   Radio,
   Table,
@@ -12,6 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  styled,
 } from '@mui/material';
 import { CartResponse, useListCartCategories } from '../api/useCartCategoriesListing';
 import { CartRow } from './CartRow';
@@ -19,7 +21,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
-import { LoadingCard, NoItemFound } from 'app/components/Item';
+import { Item } from 'app/utils/Item';
 
 export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
   const history = useHistory();
@@ -231,8 +233,12 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
           </Card>
         </>
       )}
-      {(!cartItems || !cartItems?.data.length) && !loadingCart && <NoItemFound />}
-      {loadingCart && <LoadingCard />}
+      {(!cartItems || !cartItems?.data.length) && !loadingCart && <Item elevation={3}>Không có bản ghi</Item>}
+      {loadingCart && (
+        <Item elevation={3}>
+          <CircularProgress />
+        </Item>
+      )}
     </>
   );
 };

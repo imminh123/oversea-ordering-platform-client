@@ -7,27 +7,28 @@ import {
   TableCell,
   TableBody,
   Pagination,
+  CircularProgress,
   Box,
   Container,
+  Grid,
   FormControl,
   TextField,
   InputLabel,
   Select,
   MenuItem,
-  Card,
 } from '@mui/material';
 import React, { useState } from 'react';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { useIndexOrders } from './api/useOrderListing';
-import { IOrderDetailRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
+import { IOrderStatusRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { OrderStatusOptions } from './order.const';
-import { LoadingCard, NoItemFound } from 'app/components/Item';
+import { Item, TD } from 'app/utils/Item';
 
 export const mappingStatus = (status?: OrderStatus) => {
   switch (status) {
@@ -68,24 +69,24 @@ export const mappingStatus = (status?: OrderStatus) => {
   }
 };
 
-const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
+const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
   const history = useHistory();
   return (
     <TableRow
-      hover
       onClick={() => {
         history.push(`/orders/${item.id}`);
       }}
       className=' cursor-pointer'
+      sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
     >
-      <TableCell component='th' scope='row' className='sm:text-xs'>
+      <TD component='th' scope='row' className='sm:text-xs'>
         {item.listItem[0].itemName}
-      </TableCell>
+      </TD>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingStatus(item.status)}
       </TableCell>
-      <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
-      <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>
+      <TD className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TD>
+      <TD align='right'>{formatMoneyToVND(item?.total)}</TD>
     </TableRow>
   );
 };
@@ -102,7 +103,7 @@ export const OrderListing = () => {
   });
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
@@ -119,101 +120,85 @@ export const OrderListing = () => {
         <title>Đơn hàng</title>
       </Helmet>
       <Container className='mt-5'>
-        <Card sx={{ p: 2, marginBottom: '10px' }}>
-          <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
-            <Box>
-              <FormControl fullWidth>
-                <InputLabel size='small' id='status-select-label'>
-                  Trạng thái đơn hàng
-                </InputLabel>
-                <Select
-                  labelId='status-select-label'
-                  id='status-select'
-                  size='small'
-                  variant='outlined'
-                  value={status || ''}
-                  label='Trạng thái đơn hàng'
-                  onChange={(e) => handleInputChange(e, 'status')}
-                >
-                  {OrderStatusOptions.map((lang, index) => {
-                    return (
-                      <MenuItem key={index} value={lang.value}>
-                        {lang.label}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box className='flex justify-end'>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DateRangePicker
-                  startText='Bắt đầu'
-                  endText='Kết thúc'
-                  value={value}
-                  disableFuture
-                  inputFormat='dd/MM/yyyy'
-                  onChange={(newValue) => {
-                    setValue(newValue);
-                  }}
-                  renderInput={(startProps, endProps) => (
-                    <React.Fragment>
-                      <TextField
-                        size='small'
-                        {...startProps}
-                        sx={{
-                          height: '100%',
-                          '& .MuiOutlinedInput-root': {
-                            height: '100%',
-                          },
-                        }}
-                      />
-                      <Box sx={{ mx: 2 }}> tới </Box>
-                      <TextField
-                        size='small'
-                        {...endProps}
-                        sx={{
-                          height: '100%',
-                          '& .MuiOutlinedInput-root': {
-                            height: '100%',
-                          },
-                        }}
-                      />
-                    </React.Fragment>
-                  )}
-                />
-              </LocalizationProvider>
-            </Box>
+        <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+          <Box>
+            <FormControl fullWidth>
+              <InputLabel size='small' id='status-select-label'>
+                Trạng thái đơn hàng
+              </InputLabel>
+              <Select
+                labelId='status-select-label'
+                id='status-select'
+                size='small'
+                variant='outlined'
+                value={status || ''}
+                label='Trạng thái đơn hàng'
+                onChange={(e) => handleInputChange(e, 'status')}
+              >
+                {OrderStatusOptions.map((lang, index) => {
+                  return (
+                    <MenuItem key={index} value={lang.value}>
+                      {lang.label}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Box>
-        </Card>
+          <Box className='flex justify-end'>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateRangePicker
+                startText='Bắt đầu'
+                endText='Kết thúc'
+                value={value}
+                disableFuture
+                inputFormat='dd/MM/yyyy'
+                onChange={(newValue) => {
+                  setValue(newValue);
+                }}
+                renderInput={(startProps, endProps) => (
+                  <React.Fragment>
+                    <TextField size='small' {...startProps} />
+                    <Box sx={{ mx: 2 }}> tới </Box>
+                    <TextField size='small' {...endProps} />
+                  </React.Fragment>
+                )}
+              />
+            </LocalizationProvider>
+          </Box>
+        </Box>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
-          <Card>
+          <>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Sản phẩm</TableCell>
-                    <TableCell sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
+                    <TD sx={{ fontWeight: 'bold' }}>Sản phẩm</TD>
+                    <TD sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
                       Trạng thái
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
+                    </TD>
+                    <TD sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
                       Người nhận
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
+                    </TD>
+                    <TD sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TD>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderDetailRes) => (
+                  {cartItems?.data.map((row: IOrderStatusRes) => (
                     <OrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChangePage} />
-          </Card>
+            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
+          </>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
-        {isLoading && <LoadingCard />}
+        {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
+        {isLoading && (
+          <Item elevation={3}>
+            <CircularProgress />
+          </Item>
+        )}
       </Container>
     </>
   );

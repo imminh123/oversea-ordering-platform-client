@@ -5,6 +5,9 @@ import {
   Radio,
   Box,
   IconButton,
+  Card,
+  CardContent,
+  CardActions,
   Button,
   styled,
   Paper,
@@ -15,15 +18,16 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
-  Card,
+  TextField,
 } from '@mui/material';
 import { HooksFormInputTextField, HooksFormInputAddress } from 'app/components/libs/react-hooks-form';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddressRes } from '../api/useGetAddressListing';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { chooseAddessValidator } from 'app/utils/validators';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAddAddress, IAddAddressParams } from '../api/useAddAddress';
 import { useDeleteAddress } from '../api/useDeleteAddress';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
@@ -150,6 +154,8 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
     setAddressId((event.target as HTMLInputElement).value);
   };
 
+  const chooseAdress = useRef<any>();
+
   const onCreateNewAddress = (data: any) => {
     const body: IAddAddressParams = {
       ...data,
@@ -218,10 +224,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
           >
             {addressList.map((add: AddressRes) => {
               return (
-                <Card
-                  key={add.id}
-                  sx={{ flexDirection: 'column', borderRadius: '10px', padding: '5px', marginBottom: '8px' }}
-                >
+                <Item key={add.id} sx={{ flexDirection: 'column' }}>
                   <Box className='flex justify-between'>
                     <FormControlLabel value={add.id} control={<Radio />} label={<Label add={add} />} />
                     <Box>
@@ -326,7 +329,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                       </Box>
                     )}
                   </Box>
-                </Card>
+                </Item>
               );
             })}
           </RadioGroup>
@@ -335,7 +338,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
             <DialogTitle>Thêm địa chỉ giao hàng</DialogTitle>
             <DialogContent>
               <FormProvider {...formMethods}>
-                <Box display={'flex'} flexDirection={'column'} gap={'10px'} sx={{ marginTop: '5px' }}>
+                <Box display={'flex'} flexDirection={'column'} gap={'10px'}>
                   <Box display={'flex'} justifyContent={'flex-end'} gap={'10px'}>
                     <Box flex={1}>
                       <HooksFormInputTextField fullWidth size={'small'} fieldName={'name'} label={'Họ và tên'} />

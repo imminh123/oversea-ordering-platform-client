@@ -2,34 +2,28 @@ import { useMutation, useQueryClient } from 'react-query';
 import { MutationConfig } from 'app/api/react-query';
 import { apiWrapper } from 'app/api/axiosClient';
 import useAlert from 'app/hooks/useAlert';
-import { IOrderDetailRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
+import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 
-export interface UpdateOrderStatusDto {
+export interface UpdateOrderDto {
   status: OrderStatus;
+  listItem: Array<{ id: string; quantity: number }>;
   meta?: any;
 }
 
-export const adminUpdateOrderStatus = ({
-  body,
-  id,
-}: {
-  body: UpdateOrderStatusDto;
-  id: string;
-}): Promise<{ data: IOrderDetailRes }> => {
+export const adminUpdateOrder = ({ body, id }: { body: UpdateOrderDto; id: string }): Promise<any> => {
   return apiWrapper.put(`/order/updateStatus/${id}`, body);
 };
 
-type QueryFnType = typeof adminUpdateOrderStatus;
+type QueryFnType = typeof adminUpdateOrder;
 
-export const useUpdateOrderStatusAdmin = (config?: MutationConfig<QueryFnType>) => {
+export const useUpdateOrderAdmin = (config?: MutationConfig<QueryFnType>) => {
   const queryClient = useQueryClient();
   const { alertSuccess, alertError } = useAlert();
 
   return useMutation({
-    mutationFn: adminUpdateOrderStatus,
+    mutationFn: adminUpdateOrder,
     onSuccess() {
       queryClient.invalidateQueries('useGetOrder');
-      queryClient.invalidateQueries('useGetOrderByAdmin');
       alertSuccess('Chỉnh sửa thành công');
     },
     onError(error) {

@@ -8,10 +8,9 @@ import Spinner from 'app/layout/async/Spinner';
 import { AdminEditOrder } from './AdminEditOrder';
 import { useGetOrderByAdmin } from '../api/useOrderDetailAdmin';
 
-const CustomCard = styled(Paper)(({ theme }) => {
+const Card = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   return {
-    ...theme.components?.MuiCard,
     minHeight: '100%',
     display: 'flex',
     gap: '10px',
@@ -20,7 +19,7 @@ const CustomCard = styled(Paper)(({ theme }) => {
     margin: theme.spacing(5),
     ...theme.typography.body2,
     textAlign: 'center',
-    boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    backgroundColor: '#f2f2f2',
     ...(matchesSM && {
       padding: theme.spacing(1),
       margin: theme.spacing(1),
@@ -40,7 +39,7 @@ export const OrderDetailAdmin = () => {
       </Helmet>
       <Container className='mt-5'>
         {!!data?.data && !isLoading && (
-          <CustomCard variant='elevation'>
+          <Card variant='elevation'>
             <Box className='flex justify-between flex-col sm:flex-row'>
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
@@ -73,10 +72,7 @@ export const OrderDetailAdmin = () => {
               <span>
                 {data?.data.listItem.map((e) => {
                   return (
-                    <div
-                      key={e.id}
-                      className='flex flex-col sm:flex-row items-center mb-2 pb-1 border-b-[1px] border-b-slate-400'
-                    >
+                    <div key={e.id} className='flex flex-col sm:flex-row items-center'>
                       <div className='flex flex-col justify-start items-start'>
                         <span className='w-full flex justify-between'>
                           <span>Tên:</span> <span className='text-amber-500'>{e.itemName}</span>
@@ -128,16 +124,16 @@ export const OrderDetailAdmin = () => {
               <span>Ghi chú:</span>
               <span>{data?.data.address.note}</span>
             </Box>
-          </CustomCard>
+          </Card>
         )}
         {isLoading && (
-          <CustomCard variant='elevation'>
+          <Card variant='elevation'>
             <CardContent>
               <Box>
                 <Spinner />
               </Box>
             </CardContent>
-          </CustomCard>
+          </Card>
         )}
       </Container>
     </>

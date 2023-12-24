@@ -109,14 +109,20 @@ export const PersonalInfo = () => {
                   <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
                     Chỉnh sửa thông tin tài khoản
                   </Typography>
-                  <HooksFormInputTextField fieldName={'fullname'} label={'Họ và tên'} />
+                  <HooksFormInputTextField size={'small'} fieldName={'fullname'} label={'Họ và tên'} />
                   <HooksFormInputSingleDatePicker fieldName={'birthday'} label={'Ngày sinh'} />
-                  <HooksFormInputTextField fieldName={'phone'} label={'Sđt'} />
-                  <HooksFormInputSingleSelect fieldName={'gender'} options={genderOptions} label={'Giới tính'} />
-                  <HooksFormInputTextField fieldName={'mail'} label={'Mail'} />
-                  <HooksFormInputTextField fieldName={'address'} label={'Địa chỉ'} />
+                  <HooksFormInputTextField size={'small'} fieldName={'phone'} label={'Sđt'} />
+                  <HooksFormInputSingleSelect
+                    size={'small'}
+                    fieldName={'gender'}
+                    options={genderOptions}
+                    label={'Giới tính'}
+                  />
+                  <HooksFormInputTextField size={'small'} fieldName={'mail'} label={'Mail'} />
+                  <HooksFormInputTextField size={'small'} fieldName={'address'} label={'Địa chỉ'} />
                   <HooksFormInputAddress
                     fieldName={'addressObjectData'}
+                    size={'small'}
                     sx={{ gridColumn: 'span 2' }}
                     spacing={'10px'}
                   />

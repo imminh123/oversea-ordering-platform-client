@@ -1,10 +1,24 @@
 import * as React from 'react';
+
 import { Menu as MenuIcon } from '@mui/icons-material';
-import { CssBaseline, IconButton, Stack, Toolbar, useMediaQuery, useTheme, Typography, Badge } from '@mui/material';
+import {
+  AppBar as MUIAppBar,
+  AppBarProps as MUIAppBarProps,
+  CssBaseline,
+  IconButton,
+  Stack,
+  styled,
+  Toolbar,
+  useMediaQuery,
+  useTheme,
+  Typography,
+  Badge,
+} from '@mui/material';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
+import { sidebarWidth } from 'configs/sidebar.config';
 import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
-import { ShoppingCart } from '@mui/icons-material';
+import { ShoppingCart, Notifications } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 import { useHistory } from 'react-router-dom';
 import { REFETCH_INTERVAL } from 'app/utils/constants';
@@ -12,11 +26,31 @@ import { formatMoneyToVND } from 'app/utils/helper';
 import { useCountCart } from 'features/cart/api/useCountCart';
 import { useListVariables } from 'features/variables/api/useGetVariables';
 import { VariableType } from 'features/variables/variables.const';
-import { AppBar } from './AppBar';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
+
+interface AppBarProps extends MUIAppBarProps {
+  open?: boolean;
+}
+
+const AppBar = styled(MUIAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${sidebarWidth}px)`,
+    marginLeft: `${sidebarWidth}px`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
 
 export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
   const theme = useTheme();

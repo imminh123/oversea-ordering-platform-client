@@ -1,16 +1,16 @@
-import { TableRow, TableCell, Box, Input } from '@mui/material';
+import { Save, Delete } from '@mui/icons-material';
+import { TableRow, TableCell, Box, IconButton, Input } from '@mui/material';
 import useConfirmAlert from 'app/hooks/useConfirmAlert';
 import { formatMoneyToCN, formatMoneyToVND } from 'app/utils/helper';
 import { useState } from 'react';
 import { CartItemV2 } from '../api/useCartCategoriesListingV2';
 import { useDeleteCartItem } from '../api/useDeleteCategory';
 import { useUpdateQuantity } from '../api/useUpdateQuantity';
-import { LoadingButton } from '@mui/lab';
 
 export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
   const [quantity, setQuantity] = useState<number>(row.quantity);
-  const { mutateAsync: deleteItem, isLoading: deleting } = useDeleteCartItem();
-  const { mutateAsync: updateQuantity, isLoading: saving } = useUpdateQuantity();
+  const { mutateAsync: deleteItem } = useDeleteCartItem();
+  const { mutateAsync: updateQuantity } = useUpdateQuantity();
   const { confirm } = useConfirmAlert();
   const handleDelete = () => {
     confirm({
@@ -84,13 +84,13 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
       </TableCell>
       <TableCell align='center' width={'120px'}>
         {row.isActive && (
-          <LoadingButton loadingIndicator='Đang chờ...' variant='text' loading={saving} onClick={handleSave}>
-            Lưu
-          </LoadingButton>
+          <IconButton title='Lưu thay đổi' color='primary' aria-label='save' onClick={handleSave}>
+            <Save color='primary' />
+          </IconButton>
         )}
-        <LoadingButton loadingIndicator='Đang chờ...' variant='text' loading={deleting} onClick={handleDelete}>
-          Xóa
-        </LoadingButton>
+        <IconButton title='Xóa sản phẩm' color='error' aria-label='delete' onClick={handleDelete}>
+          <Delete color='error' />
+        </IconButton>
       </TableCell>
     </TableRow>
   );
