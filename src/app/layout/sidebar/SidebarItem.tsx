@@ -30,25 +30,22 @@ interface ListItemIconProps {
 
 const ListItem = styled(MUIListItem)(({ theme }) => {
   return {
+    borderRadius: '16px',
+    marginBottom: '8px',
     [`&.${listItemClasses.selected}`]: {
-      backgroundColor: `${theme.palette.primary.main} !important`,
-      color: '#fff',
-      boxShadow: 4,
-      borderRadius: 4,
       '& .MuiListItemIcon-root': {
         color: '#fff',
       },
-      '&:hover': {
-        backgroundColor: `${theme.palette.primary.dark} !important`,
-      },
+    },
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+      transitionDelay: '.25s',
     },
   };
 });
 
 const ListItemButton = styled(MUIListItemButton)(({ theme }) => ({
-  '&:hover': {
-    backgroundColor: 'transparent',
-  },
+  width: '100%',
 }));
 
 const ListItemIcon = styled(MUIListItemIcon, {
@@ -56,7 +53,7 @@ const ListItemIcon = styled(MUIListItemIcon, {
 })<ListItemIconProps>(({ theme, active }) => ({
   [`&.${listItemIconClasses.root}`]: active && {
     '& > svg': {
-      color: '#fff !important',
+      color: `${theme.palette.primary.main} !important`,
     },
   },
 }));

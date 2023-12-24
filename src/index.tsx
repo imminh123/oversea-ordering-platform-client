@@ -14,7 +14,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthProvider } from './app/context/auth';
 import './app/languages';
 import App from './app/layout/App';
-import theme from './app/utils/theme';
+import theme from './app/theme/theme';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { envConfig } from 'configs/env.config';

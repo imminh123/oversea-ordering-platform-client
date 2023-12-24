@@ -38,8 +38,12 @@ export interface ItemDetail {
   shopUrl: string;
   vnCost: number;
 }
-
-export interface IOrderStatusRes {
+interface IOrderHistories {
+  id: string;
+  status: string;
+  updatedBy: string;
+}
+export interface IOrderDetailRes {
   id: string;
   total: number;
   wareHouseAddress: string;
@@ -49,10 +53,12 @@ export interface IOrderStatusRes {
   listItem: ItemDetail[];
   createdAt: string;
   updatedAt: string;
+  userName: string;
+  orderHistories: IOrderHistories[];
 }
 
-export const getOrderStatus = async (id: string): Promise<IOrderStatusRes> => {
-  const res = await apiWrapper.get<{ data: IOrderStatusRes }>(`/order/${id}`, {});
+export const getOrderStatus = async (id: string): Promise<IOrderDetailRes> => {
+  const res = await apiWrapper.get<{ data: IOrderDetailRes }>(`/order/${id}`, {});
   return res.data;
 };
 

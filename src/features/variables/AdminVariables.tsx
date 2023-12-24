@@ -1,8 +1,7 @@
 import {
+  Card,
   Chip,
-  CircularProgress,
   Container,
-  IconButton,
   Pagination,
   Paper,
   Table,
@@ -12,20 +11,19 @@ import {
   TableHead,
   TableRow,
   Typography,
-  styled,
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { Variable, useListVariables } from './api/useGetVariables';
 import { useState } from 'react';
 import { EditVariableModal } from './components/EditVariableModal';
-import { Item } from 'app/utils/Item';
+import { LoadingCard, NoItemFound } from 'app/components/Item';
 
 const VariableRow = ({ item }: { item: Variable }) => {
   return (
     <TableRow
       className='cursor-pointer transition hover:transition-all delay-150'
       title={`Sửa giá trị cho ${item.name}`}
-      sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
+      hover
     >
       <TableCell>{item.name}</TableCell>
       <TableCell align='right'>
@@ -58,7 +56,7 @@ export const AdminVariables = () => {
           Quản lý tỉ giá
         </Typography>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
-          <>
+          <Card>
             <TableContainer className='mt-2' component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='variable table'>
                 <TableHead>
@@ -76,15 +74,11 @@ export const AdminVariables = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-          </>
+            <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChange} />
+          </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
-        {isLoading && (
-          <Item elevation={3}>
-            <CircularProgress />
-          </Item>
-        )}
+        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
+        {isLoading && <LoadingCard />}
       </Container>
     </>
   );

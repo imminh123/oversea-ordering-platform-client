@@ -11,6 +11,7 @@ export type HooksFormInputSingleDatePickerProps = BaseHooksFormInputProps &
 
 export const HooksFormInputSingleDatePicker: React.FC<HooksFormInputSingleDatePickerProps> = ({
   fieldName,
+  isSmall,
   ...rest
 }) => {
   const {
@@ -42,7 +43,11 @@ export const HooksFormInputSingleDatePicker: React.FC<HooksFormInputSingleDatePi
             helperText={helperText}
             disabled={disabled}
             format={'DD/MM/YYYY'}
-            sx={{ '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }}
+            sx={
+              isSmall
+                ? { '& .MuiInputBase-root': { '& .MuiInputBase-input': { padding: '8.5px 0 8.5px 14px' } } }
+                : undefined
+            }
           />
         );
       }}

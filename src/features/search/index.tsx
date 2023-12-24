@@ -1,4 +1,16 @@
-import { Box, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  TextField,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ISearchRes, SortOption, useSearchItem } from './api/useSearchItem';
@@ -10,12 +22,14 @@ import Spinner from 'app/layout/async/Spinner';
 import { Language, QueryLangOptions, SortOptions, TargetLangOptions } from './search.const';
 import { useSearchItemByImg } from './api/useSearchItemByImg';
 import { base64ToFile, fileToDataUri, removeNullProperties } from 'app/utils/helper';
+import { LoadingCard, NoItemFound } from 'app/components/Item';
 
 export const Search = () => {
   const history = useHistory();
   const locationSearch = history.location.search;
   const queryObject: any = queryString.parse(locationSearch);
   const [page, setPage] = useState<number>(parseInt(queryObject.page) || 1);
+  const [count, setCount] = useState<number>(0);
   const [q, setQ] = useState(queryObject.q || '');
   const [minPrice, setMinPrice] = useState<number | undefined>(queryObject.minPrice || '');
   const [maxPrice, setMaxPrice] = useState<number | undefined>(queryObject.maxPrice || '');
@@ -73,14 +87,8 @@ export const Search = () => {
     }
   };
 
-  const handleChangePage = (p: number) => {
-    setPage((prev) => {
-      const newVal = p + prev;
-      if (!newVal) {
-        return 1;
-      }
-      return newVal;
-    });
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   const handleSearchByImage = ({ target }: { target: any }) => {
@@ -122,10 +130,13 @@ export const Search = () => {
   useEffect(() => {
     if (!!dataText && !loadingDataText && !!dataText?.data.length) {
       setDataShow(dataText.data);
+      setCount(parseInt(dataText?.headers['x-pages-count'].toString() || '0'));
     } else if (!!dataImg && !loadingDataImg && !!dataImg?.items?.length) {
       setDataShow(dataImg.items);
+      setCount(parseInt(dataText?.headers['x-pages-count'].toString() || '0'));
     } else {
       setDataShow([]);
+      setCount(0);
     }
   }, [dataImg, dataText]);
 
@@ -135,8 +146,8 @@ export const Search = () => {
         <title>Tìm kiếm</title>
       </Helmet>
       <Container className='mt-5'>
-        <Box className='mb-5'>
-          <Box className='mx-2'>
+        <Card sx={{ p: 2, marginBottom: '10px' }}>
+          <Box>
             <FormControl fullWidth>
               <TextField
                 value={search}
@@ -172,7 +183,7 @@ export const Search = () => {
           <Box className='grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3'>
             <Box>
               <FormControl fullWidth>
-                <InputLabel size='small' id='target-lang-label'>
+                <InputLabel size='small' id='target-lang-label' sx={{ left: '5px' }}>
                   Ngôn ngữ trả về
                 </InputLabel>
                 <Select
@@ -182,7 +193,6 @@ export const Search = () => {
                   value={target_language}
                   label='Ngôn ngữ trả về'
                   onChange={(e) => handleInputChange(e, 'target_language')}
-                  className='mx-2 mb-1'
                 >
                   {TargetLangOptions.map((lang, index) => {
                     return (
@@ -196,7 +206,7 @@ export const Search = () => {
             </Box>
             <Box>
               <FormControl fullWidth>
-                <InputLabel size='small' id='query-lang-label'>
+                <InputLabel size='small' id='query-lang-label' sx={{ left: '5px' }}>
                   Ngôn ngữ tìm kiếm
                 </InputLabel>
                 <Select
@@ -206,7 +216,6 @@ export const Search = () => {
                   value={query_language}
                   label='Ngôn ngữ tìm kiếm'
                   onChange={(e) => handleInputChange(e, 'query_language')}
-                  className='mx-2 mb-1'
                 >
                   {QueryLangOptions.map((lang, index) => {
                     return (
@@ -220,7 +229,7 @@ export const Search = () => {
             </Box>
             <Box>
               <FormControl fullWidth>
-                <InputLabel size='small' id='sort-label'>
+                <InputLabel size='small' id='sort-label' sx={{ left: '5px' }}>
                   Sắp xếp
                 </InputLabel>
                 <Select
@@ -230,7 +239,6 @@ export const Search = () => {
                   value={sort}
                   label='Sắp xếp'
                   onChange={(e) => handleInputChange(e, 'sort')}
-                  className='mx-2 mb-1'
                 >
                   {SortOptions.map((lang, index) => {
                     return (
@@ -251,7 +259,6 @@ export const Search = () => {
                   onKeyDown={(e) => handleKeyPress(e, 'min')}
                   label='Tối thiểu'
                   onChange={(e) => handleInputChange(e, 'min')}
-                  sx={{ '& .MuiInputBase-formControl': { margin: '0 8px' } }}
                 />
               </FormControl>
             </Box>
@@ -264,12 +271,11 @@ export const Search = () => {
                   onKeyDown={(e) => handleKeyPress(e, 'max')}
                   label='Tối đa'
                   onChange={(e) => handleInputChange(e, 'max')}
-                  sx={{ '& .MuiInputBase-formControl': { margin: '0 8px' } }}
                 />
               </FormControl>
             </Box>
           </Box>
-        </Box>
+        </Card>
         {!!dataShow.length && !(loadingDataText || loadingDataImg) && (
           <>
             <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 auto-rows-max'>
@@ -278,80 +284,12 @@ export const Search = () => {
               ))}
             </div>
             <Box className='flex justify-center my-5'>
-              <nav aria-label='Taobao search item'>
-                <ul className='flex items-center -space-x-px h-8 text-sm'>
-                  <li>
-                    <div
-                      onClick={() => handleChangePage(-1)}
-                      className='cursor-pointer flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                    >
-                      <span className='sr-only'>Previous</span>
-                      <svg
-                        className='w-2.5 h-2.5 rtl:rotate-180'
-                        aria-hidden='true'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 6 10'
-                      >
-                        <path
-                          stroke='currentColor'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='M5 1 1 5l4 4'
-                        />
-                      </svg>
-                    </div>
-                  </li>
-                  <li>
-                    <span className='flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>
-                      {page}
-                    </span>
-                  </li>
-                  <li>
-                    <div
-                      onClick={() => handleChangePage(1)}
-                      className='cursor-pointer flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                    >
-                      <span className='sr-only'>Next</span>
-                      <svg
-                        className='w-2.5 h-2.5 rtl:rotate-180'
-                        aria-hidden='true'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 6 10'
-                      >
-                        <path
-                          stroke='currentColor'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='m1 9 4-4-4-4'
-                        />
-                      </svg>
-                    </div>
-                  </li>
-                </ul>
-              </nav>
+              <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChangePage} />
             </Box>
           </>
         )}
-        {(loadingDataText || loadingDataImg) && (
-          <div className='h-full text-center flex justify-center items-center'>
-            <span>
-              <Spinner />
-              Đang tải...
-            </span>
-          </div>
-        )}
-        {!loadingDataText && !loadingDataImg && !dataShow.length && (
-          <div className='h-full text-center flex justify-center items-center'>
-            <span>
-              <SearchOff />
-              Không có sản phẩm
-            </span>
-          </div>
-        )}
+        {(loadingDataText || loadingDataImg) && <LoadingCard />}
+        {!loadingDataText && !loadingDataImg && !dataShow.length && <NoItemFound />}
       </Container>
     </>
   );

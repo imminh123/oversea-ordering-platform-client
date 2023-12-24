@@ -31,7 +31,6 @@ const SidebarList: React.FC<Props> = ({ sidebarOpen, type }) => {
                 return <SidebarItem key={item.label} item={item} />;
               })}
             </List>
-            <Divider />
           </React.Fragment>
         ))}
       {type === 'admin' &&
@@ -45,7 +44,6 @@ const SidebarList: React.FC<Props> = ({ sidebarOpen, type }) => {
                 return <SidebarItem key={item.label} item={item} />;
               })}
             </List>
-            <Divider />
           </React.Fragment>
         ))}
     </>
