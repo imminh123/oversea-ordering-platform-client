@@ -5,6 +5,7 @@ import { FormControl, FormHelperText } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export type InputSingleDatePickerProps = DatePickerProps<any> & {
+  isSmall?: boolean;
   error?: boolean;
   helperText?: string;
 };

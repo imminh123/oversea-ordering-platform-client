@@ -12,9 +12,10 @@ import { useRePay } from '../api/useRePay';
 import { usePayOrder } from 'features/cart/api/usePay';
 import { LoadingButton } from '@mui/lab';
 
-const Card = styled(Paper)(({ theme }) => {
+const CustomCard = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   return {
+    ...theme.components?.MuiCard,
     minHeight: '100%',
     display: 'flex',
     gap: '10px',
@@ -23,7 +24,8 @@ const Card = styled(Paper)(({ theme }) => {
     margin: theme.spacing(5),
     ...theme.typography.body2,
     textAlign: 'center',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
+    boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     ...(matchesSM && {
       padding: theme.spacing(1),
       margin: theme.spacing(1),
@@ -57,7 +59,7 @@ export const OrderDetail = () => {
       </Helmet>
       <Container className='mt-5'>
         {!!data?.data && !isLoading && (
-          <Card variant='elevation'>
+          <CustomCard variant='elevation'>
             <Box className='flex justify-between flex-col sm:flex-row'>
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
@@ -99,7 +101,10 @@ export const OrderDetail = () => {
               <span>
                 {data?.data.listItem.map((e) => {
                   return (
-                    <div key={e.id} className='flex flex-col sm:flex-row items-center'>
+                    <div
+                      key={e.id}
+                      className='flex flex-col sm:flex-row items-center mb-2 pb-1 border-b-[1px] border-b-slate-400'
+                    >
                       <div className='flex flex-col justify-start items-start'>
                         <span className='w-full flex justify-between'>
                           <span>Tên:</span> <span className='text-amber-500'>{e.itemName}</span>
@@ -151,16 +156,16 @@ export const OrderDetail = () => {
               <span className='whitespace-nowrap'>Ghi chú:</span>
               <span className='text-right'>{data?.data.address.note}</span>
             </Box>
-          </Card>
+          </CustomCard>
         )}
         {isLoading && (
-          <Card variant='elevation'>
+          <CustomCard variant='elevation'>
             <CardContent>
               <Box>
                 <Spinner />
               </Box>
             </CardContent>
-          </Card>
+          </CustomCard>
         )}
       </Container>
     </>

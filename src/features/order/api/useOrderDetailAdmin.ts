@@ -1,9 +1,9 @@
 import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
-import { IOrderStatusRes } from 'features/cart/api/useGetOrderDetail';
+import { IOrderDetailRes } from 'features/cart/api/useGetOrderDetail';
 import { useQuery } from 'react-query';
 
-export const getOrderAdmin = async (id: string): Promise<{ data: IOrderStatusRes }> => {
+export const getOrderAdmin = async (id: string): Promise<{ data: IOrderDetailRes }> => {
   return apiWrapper.get(`/order/admin/${id}`, {});
 };
 

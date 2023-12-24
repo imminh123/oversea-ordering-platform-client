@@ -17,7 +17,7 @@ const TabPanel: React.FC<Props> = (props) => {
     <div
       style={{
         width: '100%',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         boxShadow: theme.shadows[2],
       }}
       role='tabpanel'

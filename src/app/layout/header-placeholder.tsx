@@ -17,6 +17,6 @@ export const HeaderPlaceHolder = styled('div')<DivProps>(({ theme, bg }) => ({
     backgroundSize: '75%',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#1C2536',
   }),
 }));

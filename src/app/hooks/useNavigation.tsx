@@ -237,11 +237,11 @@ function useNavigation() {
   React.useEffect(() => {
     if (history && history.location) {
       setSidebarActive(() => {
-        return initSidebarActive(menus, history.location.pathname);
+        return initSidebarActive([...menus, ...adminMenus], history.location.pathname);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history, routes, menus]);
+  }, [history, routes, menus, adminMenus]);
 
   React.useEffect(() => {
     if (history && history.location && !sidebarExpandKey) {

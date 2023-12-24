@@ -19,7 +19,7 @@ export const GlobalLoading: React.FC<Props> = ({ loading }) => {
         height: '100vh',
       }}
     >
-      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#fff' }} open={loading}>
+      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
         <HashLoader color={theme.palette.primary.main} loading={loading} size={50} />
       </Backdrop>
     </Box>
