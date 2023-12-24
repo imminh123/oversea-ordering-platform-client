@@ -24,7 +24,7 @@ export const CartRow = ({
     }
   }, [isChecked]);
   return (
-    <TableRow sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}>
+    <TableRow hover>
       <TableCell padding='none' width={'30px'} size='small' align='left'>
         <Checkbox size='small' checked={checked} onChange={(e) => handleChecked(e.target.checked, row.id)} />
       </TableCell>
@@ -35,10 +35,10 @@ export const CartRow = ({
           </a>
         </Box>
       </TableCell>
-      <TableCell size='small' align='left'>
+      <TableCell size='small' align='left' sx={{ minWidth: '200px' }}>
         {row.itemName}
       </TableCell>
-      <TableCell size='small' align='left'>
+      <TableCell size='small' align='left' sx={{ minWidth: '150px' }}>
         {row.propName}
       </TableCell>
       <TableCell width={'100px'} size='small' align='right'>

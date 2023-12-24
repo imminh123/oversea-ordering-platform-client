@@ -1,4 +1,4 @@
-import { Box, Button, CardMedia, Container, Grid, TextField, Typography, styled } from '@mui/material';
+import { Box, CardMedia, Container, Grid, TextField, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useGetSearchItemDetail } from '../api/useGetSearchDetail';
 import { useParams } from 'react-router-dom';
@@ -7,8 +7,8 @@ import { formatMoneyToCN } from 'app/utils/helper';
 import { SkuList } from './SkuList';
 import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
 import useAlert from 'app/hooks/useAlert';
-import Spinner from 'app/layout/async/Spinner';
-import { Item } from 'app/utils/Item';
+import { LoadingCard, NoItemFound } from 'app/components/Item';
+
 import { LoadingButton } from '@mui/lab';
 
 export const ItemDetail = () => {
@@ -50,14 +50,7 @@ export const ItemDetail = () => {
         <title>Chi tiết sản phẩm</title>
       </Helmet>
       <Container maxWidth='lg' className='mt-5'>
-        {isLoading && (
-          <div className='h-screen text-center flex justify-center items-center'>
-            <span>
-              <Spinner />
-              Đang chờ...
-            </span>
-          </div>
-        )}
+        {isLoading && <LoadingCard />}
         {!isLoading && !!data?.data && (
           <Grid container spacing={2}>
             <Grid item sm={12} md={4} width={'100%'}>
@@ -177,7 +170,7 @@ export const ItemDetail = () => {
             </Grid>
           </Grid>
         )}
-        {!isLoading && !data?.data && <Item elevation={3}>Không thể tìm thấy hàng hóa trên taobao</Item>}
+        {!isLoading && !data?.data && <NoItemFound text='Không thể tìm thấy hàng hóa trên taobao' />}
       </Container>
     </>
   );

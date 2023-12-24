@@ -2,7 +2,7 @@ import { LocalizationProvider, DateRangePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Box,
-  CircularProgress,
+  Card,
   Container,
   FormControl,
   InputLabel,
@@ -19,8 +19,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { TD, Item } from 'app/utils/Item';
-import { OrderStatus, IOrderStatusRes } from 'features/cart/api/useGetOrderDetail';
+import { LoadingCard, NoItemFound } from 'app/components/Item';
+import { OrderStatus, IOrderDetailRes } from 'features/cart/api/useGetOrderDetail';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { OrderStatusOptions } from './order.const';
@@ -81,117 +81,115 @@ export const AdminOrders = () => {
       <Helmet>
         <title>Đơn hàng</title>
       </Helmet>
-      <Container className='mt-5'>
+      <Container className='mt-5 mb-10'>
         <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
           Quản lý đơn hàng
         </Typography>
-        <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
-          <Box>
-            <FormControl fullWidth>
-              <InputLabel size='small' id='status-select-label'>
-                Trạng thái đơn hàng
-              </InputLabel>
-              <Select
-                labelId='status-select-label'
-                id='status-select'
+        <Card sx={{ p: 2, marginBottom: '10px' }}>
+          <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+            <Box>
+              <FormControl fullWidth>
+                <InputLabel size='small' id='status-select-label'>
+                  Trạng thái đơn hàng
+                </InputLabel>
+                <Select
+                  labelId='status-select-label'
+                  id='status-select'
+                  size='small'
+                  variant='outlined'
+                  value={status || ''}
+                  label='Trạng thái đơn hàng'
+                  onChange={(e) => handleInputChange(e, 'status')}
+                >
+                  {OrderStatusOptions.map((status, index) => {
+                    return (
+                      <MenuItem key={index} value={status.value}>
+                        {status.label}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box className='flex justify-end' sx={{ '& div': { width: '100%' } }}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateRangePicker
+                  startText='Bắt đầu'
+                  endText='Kết thúc'
+                  value={value}
+                  disableFuture
+                  inputFormat='dd/MM/yyyy'
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(startProps, endProps) => (
+                    <React.Fragment>
+                      <TextField fullWidth size='small' {...startProps} />
+                      <Box sx={{ mx: 2, width: '50px !important' }}> tới </Box>
+                      <TextField fullWidth size='small' {...endProps} />
+                    </React.Fragment>
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Box>
+          <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+            <Box>
+              <TextField
+                fullWidth
+                label='Tên người dùng'
                 size='small'
-                variant='outlined'
-                value={status || ''}
-                label='Trạng thái đơn hàng'
-                onChange={(e) => handleInputChange(e, 'status')}
-              >
-                {OrderStatusOptions.map((status, index) => {
-                  return (
-                    <MenuItem key={index} value={status.value}>
-                      {status.label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box className='flex justify-end' sx={{ '& div': { width: '100%' } }}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateRangePicker
-                startText='Bắt đầu'
-                endText='Kết thúc'
-                value={value}
-                disableFuture
-                inputFormat='dd/MM/yyyy'
-                onChange={(newValue) => {
-                  setValue(newValue);
-                }}
-                renderInput={(startProps, endProps) => (
-                  <React.Fragment>
-                    <TextField fullWidth size='small' {...startProps} />
-                    <Box sx={{ mx: 2, width: '50px !important' }}> tới </Box>
-                    <TextField fullWidth size='small' {...endProps} />
-                  </React.Fragment>
-                )}
+                value={userFilter}
+                onChange={(e) => handleInputChange(e, 'userName')}
+                onKeyDown={(e) => handleKeyPress(e, 'userName')}
               />
-            </LocalizationProvider>
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label='Tên mặt hàng'
+                size='small'
+                value={itemFilter}
+                onChange={(e) => handleInputChange(e, 'itemName')}
+                onKeyDown={(e) => handleKeyPress(e, 'itemName')}
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
-          <Box>
-            <TextField
-              fullWidth
-              label='Tên người dùng'
-              size='small'
-              value={userFilter}
-              onChange={(e) => handleInputChange(e, 'userName')}
-              onKeyDown={(e) => handleKeyPress(e, 'userName')}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label='Tên mặt hàng'
-              size='small'
-              value={itemFilter}
-              onChange={(e) => handleInputChange(e, 'itemName')}
-              onKeyDown={(e) => handleKeyPress(e, 'itemName')}
-            />
-          </Box>
-        </Box>
+        </Card>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
-          <>
+          <Card>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TD sx={{ fontWeight: 'bold' }}>Sản phẩm</TD>
-                    <TD sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Sản phẩm</TableCell>
+                    <TableCell sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
                       Trạng thái
-                    </TD>
-                    <TD sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
                       Người nhận
-                    </TD>
-                    <TD sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TD>
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderStatusRes) => (
+                  {cartItems?.data.map((row: IOrderDetailRes) => (
                     <OrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination className='flex justify-center my-2' count={count} page={page} onChange={handleChange} />
-          </>
+            <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChange} />
+          </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <Item elevation={3}>Không có bản ghi</Item>}
-        {isLoading && (
-          <Item elevation={3}>
-            <CircularProgress />
-          </Item>
-        )}
+        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
+        {isLoading && <LoadingCard />}
       </Container>
     </>
   );
 };
 
-const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
+const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
   const history = useHistory();
   return (
     <TableRow
@@ -199,16 +197,16 @@ const OrderRow = ({ item }: { item: IOrderStatusRes }) => {
         history.push(`/admin/orders/${item.id}`);
       }}
       className=' cursor-pointer'
-      sx={{ '&:hover': { backgroundColor: '#e6e6e6' } }}
+      hover
     >
-      <TD component='th' scope='row' className='sm:text-xs'>
+      <TableCell component='th' scope='row' className='sm:text-xs'>
         {item.listItem[0].itemName}
-      </TD>
+      </TableCell>
       <TableCell width={'100px'} size='small' align='right'>
         {mappingStatus(item.status)}
       </TableCell>
-      <TD className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TD>
-      <TD align='right'>{formatMoneyToVND(item?.total)}</TD>
+      <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
+      <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>
     </TableRow>
   );
 };
