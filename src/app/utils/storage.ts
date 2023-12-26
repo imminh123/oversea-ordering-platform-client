@@ -1,14 +1,21 @@
-const storagePrefix = 'bulletproof_react_';
+const storagePrefixClient = 'bulletproof_react_client_';
 
 const storage = {
-  getToken: () => {
-    return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`) as string);
+  getAccessTokenClient: () => {
+    return JSON.parse(window.localStorage.getItem(`${storagePrefixClient}_access_token`) as string);
   },
-  setToken: (token: string) => {
-    window.localStorage.setItem(`${storagePrefix}token`, JSON.stringify(token));
+  getRefreshTokenClient: () => {
+    return JSON.parse(window.localStorage.getItem(`${storagePrefixClient}_refresh_token`) as string);
   },
-  clearToken: () => {
-    window.localStorage.removeItem(`${storagePrefix}token`);
+  setAccessTokenClient: (token: string) => {
+    window.localStorage.setItem(`${storagePrefixClient}_access_token`, JSON.stringify(token));
+  },
+  setRefreshTokenClient: (token: string) => {
+    window.localStorage.setItem(`${storagePrefixClient}_refresh_token`, JSON.stringify(token));
+  },
+  clearTokensClient: () => {
+    window.localStorage.removeItem(`${storagePrefixClient}_access_token`);
+    window.localStorage.removeItem(`${storagePrefixClient}_refresh_token`);
   },
 };
 

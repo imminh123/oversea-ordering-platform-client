@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { CssBaseline, IconButton, Stack, Toolbar, useMediaQuery, useTheme, Typography } from '@mui/material';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
@@ -10,6 +10,7 @@ import { formatMoneyToVND } from 'app/utils/helper';
 import { useListVariables } from 'features/variables/api/useGetVariables';
 import { VariableType } from 'features/variables/variables.const';
 import { AppBar } from './AppBar';
+import { NotificationBox } from '../../../features/notifications/NotificationBox';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -51,7 +52,7 @@ export const AdminHeader: React.FC<Props> = ({ open, setOpen }) => {
             <IconButton
               size='large'
               color='inherit'
-              aria-label='open drawer'
+              aria-label='Menu'
               onClick={handleDrawerToggle}
               edge='start'
               sx={{ mr: 2 }}
@@ -64,7 +65,8 @@ export const AdminHeader: React.FC<Props> = ({ open, setOpen }) => {
           </Stack>
 
           <Stack direction={'row'} alignItems={'center'} spacing={1} sx={{ ml: 'auto' }}>
-            <CurrentAccountBadge loading={false} isAdmin={true} />
+            <NotificationBox />
+            <CurrentAccountBadge isAdmin={true} />
           </Stack>
         </Toolbar>
       </AppBar>

@@ -3,6 +3,7 @@ import queryString from 'query-string';
 
 import { envConfig } from 'configs/env.config';
 import storage from 'app/utils/storage';
+import { RoutePathsEnum } from 'configs/route.config';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
 
@@ -21,7 +22,7 @@ export class ApiWrapper {
     });
 
     this.axiosInstance.interceptors.request.use(async (config) => {
-      const token = storage.getToken();
+      const token = storage.getAccessTokenClient();
 
       if (token) {
         config.headers['access-token'] = `${token}`;
@@ -35,14 +36,29 @@ export class ApiWrapper {
         return response;
       },
       async (error) => {
-        // TODO: add refresh token here
-        if (error && error.response && error.response.data) {
-          if (error.response.data.statusCode === 401 || error.response.data.statusCode === 403) {
-            window.location.href = '/login';
+        const refreshToken = storage.getRefreshTokenClient();
+        const originalConfig = error.config;
+        if (
+          originalConfig.url !== '/session/createClientSession' &&
+          originalConfig.url !== '/session/adminCreateSession'
+        ) {
+          if (error.response.data.statusCode === 401) {
+            try {
+              const rs = await this.axiosInstance.post('/session/refreshSession', {
+                token: refreshToken,
+              });
+              const { accessToken } = rs.data;
+              storage.setAccessTokenClient(accessToken);
+              originalConfig.headers['access-token'] = `${accessToken}`;
+              return this.axiosInstance(originalConfig);
+            } catch (error) {
+              console.log(`🚀🚀🚀 ~ file: axiosClient.ts:54 ~ ApiWrapper ~ error:`, error);
+              window.location.href = RoutePathsEnum.LoginPage;
+            }
           }
         }
 
-        throw error;
+        return Promise.reject(error);
       },
     );
   }

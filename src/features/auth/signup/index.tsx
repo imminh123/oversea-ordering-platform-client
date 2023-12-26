@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Link, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -7,13 +7,11 @@ import { LoadingButton } from '@mui/lab';
 import { signupValidator } from 'app/utils/validators';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
 import { SignUpDto, TSignUpDto, useSignUp } from './api/useSignUp';
-import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
 
 interface Props {}
 export const SignupPage: React.FC<Props> = () => {
   const { mutateAsync: signup, isLoading } = useSignUp();
-  const history = useHistory();
 
   const formMethods = useForm<TSignUpDto>({
     mode: 'onChange',
@@ -42,17 +40,22 @@ export const SignupPage: React.FC<Props> = () => {
       >
         <Box
           sx={{
-            maxWidth: 500,
             m: 'auto',
-            px: 2,
-            py: 4,
-            mt: 10,
-            boxShadow: (theme) => theme.shadows[3],
+            maxWidth: 550,
+            px: 3,
+            py: '150px',
+            width: '100%',
           }}
         >
-          <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-            ĐĂNG KÝ TÀI KHOẢN
-          </Typography>
+          <Stack spacing={1} sx={{ mb: 3 }}>
+            <Typography variant='h4'>Đăng ký</Typography>
+            <Typography color='text.secondary' variant='body2'>
+              Bạn đã có tài khoản? &nbsp;
+              <Link href={RoutePathsEnum.LoginPage} color={'success'} underline='hover' variant='subtitle2'>
+                Đăng nhập
+              </Link>
+            </Typography>
+          </Stack>
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
@@ -65,7 +68,7 @@ export const SignupPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='primary'
+                  color='success'
                   size='large'
                   type='submit'
                   loading={isLoading}
@@ -75,16 +78,6 @@ export const SignupPage: React.FC<Props> = () => {
               </Stack>
             </form>
           </FormProvider>
-          <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-            <LoadingButton
-              variant='text'
-              onClick={() => {
-                history.push(RoutePathsEnum.LoginPage);
-              }}
-            >
-              Đăng nhập
-            </LoadingButton>
-          </Box>
         </Box>
       </Box>
     </>

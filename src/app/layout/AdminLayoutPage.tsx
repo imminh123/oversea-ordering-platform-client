@@ -21,7 +21,7 @@ interface TokenEntity {
 export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
   const history = useHistory();
-  const token = storage.getToken();
+  const token = storage.getAccessTokenClient();
   const user: TokenEntity = jwtDecode(token);
   const context = React.useContext(AuthContext);
 
@@ -29,7 +29,7 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
 
   if (user?.role !== UserRole.Admin) {
     history.push(RoutePathsEnum.LoginPage);
-    storage.clearToken();
+    storage.clearTokensClient();
     context.setAuthenticated(false);
     context.setUser(null);
   }

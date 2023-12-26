@@ -1,6 +1,10 @@
 import { UserRole } from 'app/types/user';
 
-export const UserRoleOptions: { value: UserRole; label: string }[] = [
+export const UserRoleOptions: { value: UserRole | ''; label: string }[] = [
+  {
+    value: '',
+    label: 'Tất cả',
+  },
   {
     value: UserRole.Admin,
     label: 'Admin',
@@ -16,6 +20,10 @@ export const UserRoleOptions: { value: UserRole; label: string }[] = [
 ];
 
 export const UserStatusOptions: { value: string; label: string }[] = [
+  {
+    value: '',
+    label: 'Tất cả',
+  },
   {
     value: 'true',
     label: 'Đã chặn',

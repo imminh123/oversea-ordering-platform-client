@@ -1,56 +1,84 @@
-import { LocalizationProvider, DateRangePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-  Box,
-  Card,
   Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Pagination,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
   TableContainer,
+  Table,
   TableHead,
   TableRow,
-  TextField,
+  TableBody,
+  Paper,
+  Pagination,
+  TableCell,
   Typography,
+  Card,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
 } from '@mui/material';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
-import { OrderStatus, IOrderDetailRes } from 'features/cart/api/useGetOrderDetail';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { OrderStatusOptions } from './order.const';
-import { useHistory } from 'react-router-dom';
-import { mappingOrderStatus } from './components';
 import { formatMoneyToVND } from 'app/utils/helper';
-import { useIndexOrdersAdmin } from './api/useOrderListingAdmin';
+import moment from 'moment';
+import { mappingPaymentStatus } from './components';
+import { IPaymentTransaction } from './Transaction.interface';
+import { useIndexTransactionsAdmin } from './apis/useIndexPaymentAdmin';
+import { DateRangePicker, LocalizationProvider } from '@mui/lab';
+import React from 'react';
+import { PaymentStatus, PaymentsStatusOptions } from './Transactions.const';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { useHistory } from 'react-router-dom';
 
-export const AdminOrders = () => {
+const TransactionRow = ({ item }: { item: IPaymentTransaction }) => {
+  const history = useHistory();
+  return (
+    <TableRow
+      hover
+      className='cursor-pointer'
+      onClick={() => {
+        history.push(`/admin/transactions/${item.id}`);
+      }}
+    >
+      <TableCell component='th' scope='row' className='sm:text-xs'>
+        {item.userName}
+      </TableCell>
+      <TableCell component='th' scope='row' className='sm:text-xs'>
+        {item.referenceId}
+      </TableCell>
+      <TableCell width={'100px'} size='small' align='right'>
+        {mappingPaymentStatus(item.status)}
+      </TableCell>
+      <TableCell align='right'>{formatMoneyToVND(item.amount)}</TableCell>
+      <TableCell width={'100px'} size='small' align='right'>
+        {moment(item.createdAt).format('DD/MM/YYYY')}
+      </TableCell>
+    </TableRow>
+  );
+};
+
+export const TransactionListingAdmin = () => {
   const [page, setPage] = useState<number>(1);
-  const [status, setStatus] = useState<OrderStatus>();
-  const [value, setValue] = useState<any>([null, null]);
+  const [status, setStatus] = useState<PaymentStatus>();
+  const [timeRange, setTimeRange] = useState<any>([null, null]);
   const [userFilter, setUserFilter] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [itemFilter, setItemFilter] = useState<string>('');
-  const [itemName, setItemName] = useState<string>('');
-  const { data: cartItems, isLoading } = useIndexOrdersAdmin({
+  const [userId, setUserId] = useState<string>('');
+  const { data: listTransactions, isLoading } = useIndexTransactionsAdmin({
     page,
     status,
     userName,
-    itemName,
-    ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
-    ...(value[1] && { timeTo: new Date(value[1]).toISOString() }),
+    userId,
+    ...(timeRange[0] && { timeFrom: new Date(timeRange[0]).toISOString() }),
+    ...(timeRange[1] && { timeTo: new Date(timeRange[1]).toISOString() }),
   });
-  const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
+  const count = parseInt(listTransactions?.headers['x-pages-count'].toString() || '0');
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
   const handleInputChange = (event: any, type: string) => {
     switch (type) {
       case 'status':
@@ -59,7 +87,7 @@ export const AdminOrders = () => {
       case 'userName':
         setUserFilter(event.target.value);
         break;
-      case 'itemName':
+      case 'userId':
         setItemFilter(event.target.value);
         break;
     }
@@ -70,8 +98,8 @@ export const AdminOrders = () => {
         case 'userName':
           setUserName(e.target.value);
           break;
-        case 'itemName':
-          setItemName(e.target.value);
+        case 'userId':
+          setUserId(e.target.value);
           break;
       }
     }
@@ -79,18 +107,18 @@ export const AdminOrders = () => {
   return (
     <>
       <Helmet>
-        <title>Đơn hàng</title>
+        <title>Thanh toán</title>
       </Helmet>
-      <Container className='mt-5 mb-10'>
+      <Container className='mt-5'>
         <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý đơn hàng
+          Quản lý thanh toán
         </Typography>
         <Card sx={{ p: 2, marginBottom: '10px' }}>
           <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
             <Box>
               <FormControl fullWidth>
                 <InputLabel size='small' id='status-select-label'>
-                  Trạng thái đơn hàng
+                  Trạng thái thanh toán
                 </InputLabel>
                 <Select
                   labelId='status-select-label'
@@ -98,10 +126,10 @@ export const AdminOrders = () => {
                   size='small'
                   variant='outlined'
                   value={status || ''}
-                  label='Trạng thái đơn hàng'
+                  label='Trạng thái thanh toán'
                   onChange={(e) => handleInputChange(e, 'status')}
                 >
-                  {OrderStatusOptions.map((status, index) => {
+                  {PaymentsStatusOptions.map((status, index) => {
                     return (
                       <MenuItem key={index} value={status.value}>
                         {status.label}
@@ -116,11 +144,11 @@ export const AdminOrders = () => {
                 <DateRangePicker
                   startText='Bắt đầu'
                   endText='Kết thúc'
-                  value={value}
+                  value={timeRange}
                   disableFuture
                   inputFormat='dd/MM/yyyy'
                   onChange={(newValue) => {
-                    setValue(newValue);
+                    setTimeRange(newValue);
                   }}
                   renderInput={(startProps, endProps) => (
                     <React.Fragment>
@@ -147,34 +175,35 @@ export const AdminOrders = () => {
             <Box>
               <TextField
                 fullWidth
-                label='Tên mặt hàng'
+                label='ID người dùng'
                 size='small'
                 value={itemFilter}
-                onChange={(e) => handleInputChange(e, 'itemName')}
-                onKeyDown={(e) => handleKeyPress(e, 'itemName')}
+                onChange={(e) => handleInputChange(e, 'userId')}
+                onKeyDown={(e) => handleKeyPress(e, 'userId')}
               />
             </Box>
           </Box>
         </Card>
-        {!!cartItems && !!cartItems?.data.length && !isLoading && (
+        {!!listTransactions && !!listTransactions?.data.length && !isLoading && (
           <Card>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Sản phẩm</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align='right'>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Người dùng</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Mã đơn hàng</TableCell>
+                    <TableCell sx={{ maxWidth: '150px', fontWeight: 'bold' }} align='right'>
                       Trạng thái
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
-                      Người nhận
-                    </TableCell>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className=' min-w-[150px]'>
+                      Ngày thanh toán
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderDetailRes) => (
-                    <OrderRow key={row.id} item={row} />
+                  {listTransactions?.data.map((row: IPaymentTransaction) => (
+                    <TransactionRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
@@ -182,29 +211,9 @@ export const AdminOrders = () => {
             <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChange} />
           </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
+        {(!listTransactions || !listTransactions?.data.length) && !isLoading && <NoItemFound />}
         {isLoading && <LoadingCard />}
       </Container>
     </>
-  );
-};
-
-const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
-  const history = useHistory();
-  return (
-    <TableRow
-      onClick={() => {
-        history.push(`/admin/orders/${item.id}`);
-      }}
-      className=' cursor-pointer'
-      hover
-    >
-      <TableCell component='th' scope='row' className='sm:text-xs'>
-        {item.listItem[0].itemName}
-      </TableCell>
-      <TableCell align='right'>{mappingOrderStatus(item.status)}</TableCell>
-      <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
-      <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>
-    </TableRow>
   );
 };

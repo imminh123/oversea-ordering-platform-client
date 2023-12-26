@@ -23,50 +23,11 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { useIndexOrders } from './api/useOrderListing';
 import { IOrderDetailRes, OrderStatus } from 'features/cart/api/useGetOrderDetail';
 import { formatMoneyToVND } from 'app/utils/helper';
-import { Chip } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { OrderStatusOptions } from './order.const';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
-
-export const mappingStatus = (status?: OrderStatus) => {
-  switch (status) {
-    case OrderStatus.CREATED:
-      return <Chip label='Đã tạo đơn hàng' color='primary' variant='outlined' />;
-    case OrderStatus.PENDING_PAYMENT:
-      return <Chip label='Đang chờ' color='warning' variant='outlined' />;
-    case OrderStatus.DELIVERED:
-      return <Chip label='Đã giao hàng' color='success' variant='outlined' />;
-    case OrderStatus.SUCCEEDED:
-      return <Chip label='Thành công' color='success' variant='outlined' />;
-    case OrderStatus.TIMEOUT:
-      return <Chip label='Hết hạn' color='error' variant='outlined' />;
-    case OrderStatus.FAILED:
-      return <Chip label='Thất bại' color='error' variant='outlined' />;
-    case OrderStatus.PENDING_ORDER:
-      return <Chip label='Đang chờ xử lý' color='warning' variant='outlined' />;
-    case OrderStatus.PROCESSING:
-      return <Chip label='Đang xử lý' color='warning' variant='outlined' />;
-    case OrderStatus.PLACED:
-      return <Chip label='Đã đặt hàng' color='primary' variant='outlined' />;
-    case OrderStatus.IN_TRANSIT:
-      return <Chip label='Đang vận chuyển' color='warning' variant='outlined' />;
-    case OrderStatus.OUT_OF_DELIVERY:
-      return <Chip label='Đã rời kho' color='primary' variant='outlined' />;
-    case OrderStatus.ON_HOLD:
-      return <Chip label='Tạm dừng' color='warning' variant='outlined' />;
-    case OrderStatus.CANCELLED:
-      return <Chip label='Đã hủy' color='error' variant='outlined' />;
-    case OrderStatus.REFUNDED:
-      return <Chip label='Đã hoàn tiền' color='success' variant='outlined' />;
-    case OrderStatus.PARTIALLY_SHIPPED:
-      return <Chip label='Giao hàng một phần' color='warning' variant='outlined' />;
-    case OrderStatus.BACK_ORDERED:
-      return <Chip label='Sản phẩm đặt trước' color='warning' variant='outlined' />;
-    default:
-      return <Chip label={status} color='error' variant='outlined' />;
-  }
-};
+import { mappingOrderStatus } from './components';
 
 const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
   const history = useHistory();
@@ -82,7 +43,7 @@ const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
         {item.listItem[0].itemName}
       </TableCell>
       <TableCell width={'100px'} size='small' align='right'>
-        {mappingStatus(item.status)}
+        {mappingOrderStatus(item.status)}
       </TableCell>
       <TableCell className='break-words text-ellipsis'>{`${item.address.name} - ${item.address.phone}`}</TableCell>
       <TableCell align='right'>{formatMoneyToVND(item?.total)}</TableCell>

@@ -26,11 +26,11 @@ export const FacebookLoginButton = ({ onLogin }: { onLogin: any }) => {
       startIcon={<img height={'25px'} width={'25px'} src={Facebook} alt='Facebook' />}
       loadingIndicator='Đang chờ...'
       fullWidth
-      color='primary'
+      color='success'
       size='large'
       onClick={handleLogin}
     >
-      {'Facebook'}
+      <span className='text-slate-600'>Facebook</span>
     </LoadingButton>
   );
 };
