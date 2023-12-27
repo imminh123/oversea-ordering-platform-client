@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { CartResponse, useListCartCategories } from '../api/useCartCategoriesListing';
 import { CartRow } from './CartRow';
@@ -128,9 +129,12 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
               <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3 w-full'>
                 <Box display={'flex'} className='justify-start gap-1'>
                   <span>Tổng tiền hàng:</span>
-                  <span>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
+                  <span className='text-lg font-semibold'>{formatMoneyToVND(calculateToTalMoney || 0)}</span>
                 </Box>
-                <Box className='w-full flex flex-col items-center gap-3'>
+                <Box className='w-full flex flex-col gap-3'>
+                  <Typography align='left' variant='subtitle1'>
+                    Phương thức thanh toán
+                  </Typography>
                   <input
                     type='radio'
                     id='vn-pay'
@@ -150,14 +154,14 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                         <img
                           src='https://www.ppro.com/wp-content/uploads/2021/06/VNPAYQR-logo.png'
                           alt='vn-pay'
-                          className='w-auto h-8 bg-cover object-cover sm:h-10'
+                          className='w-auto h-8 bg-cover object-cover sm:h-8'
                         />
                       </div>
-                      <span className='text-sm sm:text-base text-right'>Ví điện tử VNPAY</span>
+                      <span className='text-right'>Ví điện tử VNPAY</span>
                     </div>
                   </label>
 
-                  <input
+                  {/* <input
                     type='radio'
                     id='momo'
                     disabled
@@ -187,8 +191,8 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                       </div>
                       <span className='text-sm sm:text-base text-right'>Thanh toán MoMo</span>
                     </div>
-                  </label>
-
+                  </label> */}
+                  {/* 
                   <input
                     type='radio'
                     id='zalopay'
@@ -219,7 +223,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                       </div>
                       <span className='text-sm sm:text-base text-right'>Ví điện tử ZaloPay</span>
                     </div>
-                  </label>
+                  </label> */}
                 </Box>
               </Box>
               <Box className='flex justify-end'>

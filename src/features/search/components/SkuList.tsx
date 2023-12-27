@@ -17,20 +17,21 @@ const PropItem = ({ props, selectedValue, setValue, IsImg }: Props) => {
   };
   if (IsImg) {
     return (
-      <img
-        src={props.imageUrl}
-        alt={props.name}
-        className={`border-2 border-solid h-10 w-10 bg-cover hover:bg-slate-100 cursor-pointer mb-1 mx-1 ${
-          selected === selectedValue ? 'border-sky-500' : ''
+      <div
+        className={`flex items-center border-2 border-solid bg-cover hover:bg-slate-100 cursor-pointer mb-1 mx-1 ${
+          selected === selectedValue ? 'border-primary' : ''
         }`}
         onClick={handleSelected}
-      />
+      >
+        <img className='h-10 w-10 mr-2' src={props.imageUrl} alt={props.name} />
+        <span className='text-sm'>{props.name}</span>
+      </div>
     );
   } else {
     return (
       <div
         className={`h-10 w-auto border-2 border-solid hover:bg-slate-100 justify-center items-center flex text-slate-500 cursor-pointer mb-1 mx-1 ${
-          selected === selectedValue ? 'border-sky-500' : ''
+          selected === selectedValue ? 'border-primary' : ''
         }`}
         onClick={handleSelected}
       >

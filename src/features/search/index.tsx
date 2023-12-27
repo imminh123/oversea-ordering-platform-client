@@ -168,7 +168,7 @@ export const Search = () => {
                           type='file'
                           onChange={handleSearchByImage}
                         />
-                        <label htmlFor='search-by-img'>
+                        <label htmlFor='search-by-img' style={{ cursor: 'pointer' }}>
                           <ImageSearch color='primary' />
                         </label>
                       </IconButton>

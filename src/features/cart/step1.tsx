@@ -188,7 +188,7 @@ export const Step1 = () => {
                     refreshCart();
                   }}
                 >
-                  Update Giá Taobao
+                  Cập nhật giá Taobao
                 </LoadingButton>
                 <LoadingButton
                   loadingIndicator='Đang chờ...'
@@ -229,7 +229,7 @@ export const Step1 = () => {
                 refreshCart();
               }}
             >
-              Update Giá Taobao
+              Cập nhật giá Taobao
             </LoadingButton>
             <LoadingButton
               loadingIndicator='Đang chờ...'

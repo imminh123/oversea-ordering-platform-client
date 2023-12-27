@@ -18,23 +18,47 @@ export const AuthLayout: React.FC<Props> = ({ children }) => {
         </Box>
         <Box
           sx={{
-            alignItems: 'center',
-            background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
+            background: 'url("/warehouse.webp")',
+            backgroundRepeat: 'none',
+            position: 'relative',
+            backgroundSize: 'cover',
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
+            paddingTop: 20,
             '& img': {
               maxWidth: '100%',
             },
+            ':before': {
+              content: "''",
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            },
           }}
         >
-          <Box sx={{ p: 3 }}>
+          <Box
+            sx={{
+              p: 3,
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '100%',
+              transform: 'translate(-50%, -50%)',
+              color: '#fff',
+              textAlign: 'center',
+              zIndex: 1,
+            }}
+          >
             <Typography
               align='center'
               color='inherit'
               sx={{
-                fontSize: '24px',
-                lineHeight: '32px',
+                fontSize: '28px',
+                lineHeight: '36px',
                 mb: 1,
               }}
               variant='h1'
@@ -47,7 +71,6 @@ export const AuthLayout: React.FC<Props> = ({ children }) => {
             <Typography align='center' sx={{ mb: 3 }} variant='subtitle1'>
               Nhập Hàng Trung Quốc Tận Gốc, Tối Ưu Chi Phí, Vận Chuyển Nhanh Chóng.
             </Typography>
-            <img alt='' src='/auth-illustration.svg' />
           </Box>
         </Box>
       </Box>

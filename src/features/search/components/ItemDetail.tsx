@@ -1,7 +1,8 @@
-import { Box, Card, CardMedia, Container, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardMedia, Container, Grid, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useGetSearchItemDetail } from '../api/useGetSearchDetail';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import queryString from 'query-string';
 import { useState } from 'react';
 import { formatMoneyToCN } from 'app/utils/helper';
 import { SkuList } from './SkuList';
@@ -15,6 +16,11 @@ export const ItemDetail = () => {
   const [mapPVid, setMapPVid] = useState(new Map());
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState<number>(1);
+  const [tabValue, setTabValue] = useState('one');
+  const { search } = useLocation();
+  const values = queryString.parse(search);
+  const url: string = values.url && typeof values.url === 'string' ? values.url : '';
+
   const handleMapChange = (newMap: any) => {
     const updatedMap = new Map([...mapPVid, ...newMap]);
     setMapPVid(updatedMap);
@@ -27,6 +33,7 @@ export const ItemDetail = () => {
       alertError('Không thể tìm thấy hàng hóa trên taobao');
     },
   });
+  console.log('🚀 ~ file: ItemDetail.tsx:36 ~ ItemDetail ~ data:', data);
   const { mutateAsync: addToCart, isLoading: adding } = useAddToCart();
   const [currentImg, setCurrentImg] = useState(0);
   const handleSubmit = () => {
@@ -43,6 +50,11 @@ export const ItemDetail = () => {
       addToCart(body);
     }
   };
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
   return (
     <>
       <Helmet>
@@ -196,27 +208,43 @@ export const ItemDetail = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
-                      <LoadingButton
-                        loadingIndicator='Đang chờ...'
-                        className='!mt-4'
-                        onClick={handleSubmit}
-                        variant={'contained'}
-                        loading={adding}
-                        disabled={!quantity || mapPVid.size === 0}
-                      >
-                        Thêm vào giỏ hàng
-                      </LoadingButton>
+
+                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 3 }}>
+                        <LoadingButton
+                          loadingIndicator='Đang chờ...'
+                          onClick={handleSubmit}
+                          variant={'contained'}
+                          loading={adding}
+                          disabled={!quantity || mapPVid.size === 0}
+                        >
+                          Thêm vào giỏ hàng
+                        </LoadingButton>
+                        <a href={`${url}`} target='_blank' rel='noopener noreferrer'>
+                          <Button variant='text' size='small'>
+                            Mở trên Taobao
+                          </Button>
+                        </a>
+                      </Box>
                     </Grid>
                   </Grid>
                 </Box>
               </Grid>
             </Grid>
-            <Grid container spacing={2} sx={{ mb: 5 }}>
-              <Grid item sm={12} md={4} width={'100%'}>
-                <Card sx={{ p: 3, mt: 4 }}>
-                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
-                    Thông tin sản phẩm
-                  </Typography>
+            <Box sx={{ width: '100%', marginTop: 5 }}>
+              <Tabs
+                value={tabValue}
+                onChange={handleChangeTab}
+                textColor='primary'
+                indicatorColor='primary'
+                aria-label='primary tabs example'
+              >
+                <Tab value='one' label='Thông tin sản phẩm' />
+                <Tab value='two' label='Thông tin vận chuyển' />
+                <Tab value='three' label='Thông tin shop' />
+              </Tabs>
+
+              {tabValue === 'one' && (
+                <Card sx={{ p: 3, mt: 2 }}>
                   <ul>
                     {Object.entries(data.data.ProductFeatures).map(([key, value]) => (
                       <li key={key}>
@@ -225,12 +253,10 @@ export const ItemDetail = () => {
                     ))}
                   </ul>
                 </Card>
-              </Grid>
-              <Grid item sm={12} md={4} width={'100%'}>
-                <Card sx={{ p: 3, mt: 4 }}>
-                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
-                    Thông tin vận chuyển
-                  </Typography>
+              )}
+
+              {tabValue === 'two' && (
+                <Card sx={{ p: 3, mt: 2 }}>
                   <ul>
                     {Object.entries(data.data.Delivery).map(([key, value]) => (
                       <li key={key}>
@@ -239,12 +265,10 @@ export const ItemDetail = () => {
                     ))}
                   </ul>
                 </Card>
-              </Grid>
-              <Grid item sm={12} md={4} width={'100%'}>
-                <Card sx={{ p: 3, mt: 4 }}>
-                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
-                    Thông tin shop
-                  </Typography>
+              )}
+
+              {tabValue === 'three' && (
+                <Card sx={{ p: 3, mt: 2 }}>
                   <ul>
                     {Object.entries(data.data.ShopInfo).map(([key, value]) => (
                       <li key={key}>
@@ -253,8 +277,8 @@ export const ItemDetail = () => {
                     ))}
                   </ul>
                 </Card>
-              </Grid>
-            </Grid>
+              )}
+            </Box>
           </>
         )}
         {!isLoading && !data?.data && <NoItemFound text='Không thể tìm thấy hàng hóa trên taobao' />}

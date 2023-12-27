@@ -51,7 +51,7 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
       />
       <CardContent
         onClick={() => {
-          history.push(`/search/${item.num_iid}`);
+          history.push(`/search/${item.num_iid}?url=${item.detail_url}`);
         }}
       >
         <Typography variant='body2' color='text.secondary'>

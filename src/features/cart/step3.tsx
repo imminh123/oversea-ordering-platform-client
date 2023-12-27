@@ -43,13 +43,13 @@ export const Step3 = () => {
   const iconMapping = (status: OrderStatus | undefined) => {
     switch (status) {
       case OrderStatus.DELIVERED:
-        return <LocalShipping color='success' sx={{ height: '160px', width: '160px' }} />;
+        return <LocalShipping color='success' sx={{ height: '80px', width: '80px' }} />;
       case OrderStatus.PENDING_PAYMENT:
-        return <Pending color='warning' sx={{ height: '160px', width: '160px' }} />;
+        return <Pending color='warning' sx={{ height: '80px', width: '80px' }} />;
       case OrderStatus.SUCCEEDED:
-        return <CheckCircleOutline color='success' sx={{ height: '160px', width: '160px' }} />;
+        return <CheckCircleOutline color='success' sx={{ height: '80px', width: '80px' }} />;
       default:
-        return <Assignment color='primary' sx={{ height: '160px', width: '160px' }} />;
+        return <Assignment color='primary' sx={{ height: '80px', width: '80px' }} />;
     }
   };
   useEffect(() => {
@@ -63,36 +63,35 @@ export const Step3 = () => {
         <title>Thanh toán</title>
       </Helmet>
       <Box display={'flex'} justifyContent={'center'}>
-        <Card className='w-full'>
-          <CardActionArea>
-            <Typography gutterBottom variant='h4' align='center' component='div' sx={{ marginTop: '10px' }}>
-              Thanh toán đơn hàng
+        <Card className='w-full p-8'>
+          <Typography gutterBottom variant='h5' align='center' component='div' sx={{ padding: '10px' }}>
+            Thanh toán đơn hàng
+          </Typography>
+          <Box display={'flex'} justifyContent={'center'}>
+            {iconMapping(data?.status)}
+          </Box>
+          <CardContent>
+            <Typography gutterBottom variant='h6' align='center' component='div'>
+              {statusMapping(data?.status)}
             </Typography>
-            <Box display={'flex'} justifyContent={'center'}>
-              {iconMapping(data?.status)}
+            <ul className='text-center'>
+              <li>Giá trị đơn hàng: {formatMoneyToVND(data?.total || 0)}</li>
+              <li>Thời gian tạo: {moment(data?.createdAt).format('h:mm:ss - DD/MM/YYYY')}</li>
+              <li>Mã giao dịch: {data?.id}</li>
+            </ul>
+            <Box display={'flex'} justifyContent={'center'} className='mt-5'>
+              <LoadingButton
+                sx={{ width: 180 }}
+                loadingIndicator='Đang chờ...'
+                loading={checkDisable(data?.status)}
+                variant='outlined'
+                startIcon={<Payments />}
+                onClick={handlePay}
+              >
+                Thanh toán
+              </LoadingButton>
             </Box>
-            <CardContent>
-              <Typography gutterBottom variant='h5' align='center' component='div'>
-                {statusMapping(data?.status)}
-              </Typography>
-              <ul className='text-center'>
-                <li>Giá trị đơn hàng: {formatMoneyToVND(data?.total || 0)}</li>
-                <li>Thời gian tạo: {moment(data?.createdAt).format('h:mm:ss - DD/MM/YYYY')}</li>
-                <li>Mã giao dịch: {data?.id}</li>
-              </ul>
-              <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-                <LoadingButton
-                  loadingIndicator='Đang chờ...'
-                  loading={checkDisable(data?.status)}
-                  variant='outlined'
-                  startIcon={<Payments />}
-                  onClick={handlePay}
-                >
-                  Thanh toán
-                </LoadingButton>
-              </Box>
-            </CardContent>
-          </CardActionArea>
+          </CardContent>
         </Card>
       </Box>
     </>

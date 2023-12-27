@@ -18,7 +18,6 @@ export const signupValidator = yup.object({
     .string()
     .required('Vui lòng nhập lại mật khẩu')
     .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
-  wareHouseAddress: yup.string().required('Địa chỉ nhận hàng là bắt buộc'),
 });
 
 export const updateProfileValidator = yup.object({

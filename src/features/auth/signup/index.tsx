@@ -15,7 +15,7 @@ export const SignupPage: React.FC<Props> = () => {
 
   const formMethods = useForm<TSignUpDto>({
     mode: 'onChange',
-    defaultValues: { mail: '', password: '', confirmPassword: '', wareHouseAddress: '' },
+    defaultValues: { mail: '', password: '', confirmPassword: '' },
     resolver: yupResolver(signupValidator),
   });
 
@@ -63,7 +63,7 @@ export const SignupPage: React.FC<Props> = () => {
                 <HooksFormInputTextField name='phone_number' fieldName={'phone'} label={'Số điện thoại'} />
                 <HooksFormInputTextField name='password' fieldName={'password'} label={'Mật khẩu'} type={'password'} />
                 <HooksFormInputTextField fieldName={'confirmPassword'} label={'Nhập lại mật khẩu'} type={'password'} />
-                <HooksFormInputTextField fieldName={'wareHouseAddress'} label={'Kho nhận hàng'} />
+                {/* <HooksFormInputTextField fieldName={'wareHouseAddress'} label={'Kho nhận hàng'} /> */}
                 <LoadingButton
                   variant='contained'
                   loadingIndicator='Đang chờ...'
