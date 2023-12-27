@@ -55,6 +55,7 @@ export interface IOrderDetailRes {
   updatedAt: string;
   userName: string;
   orderHistories: IOrderHistories[];
+  taobaoDeliveryIds: string[];
 }
 
 export const getOrderStatus = async (id: string): Promise<IOrderDetailRes> => {

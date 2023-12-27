@@ -22,18 +22,18 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
   const theme = useTheme();
   const history = useHistory();
   const token = storage.getAccessTokenClient();
-  const user: TokenEntity = jwtDecode(token);
   const context = React.useContext(AuthContext);
-
   const { sidebarExpandVariant } = useUI();
 
-  if (user?.role !== UserRole.Admin) {
-    history.push(RoutePathsEnum.LoginPage);
-    storage.clearTokensClient();
-    context.setAuthenticated(false);
-    context.setUser(null);
+  if (token) {
+    const user: TokenEntity = jwtDecode(token);
+    if (user?.role !== UserRole.Admin) {
+      history.push(RoutePathsEnum.AdminLoginPage);
+      storage.clearTokensClient();
+      context.setAuthenticated(false);
+      context.setUser(null);
+    }
   }
-
   const matchMD = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = React.useState(() => {
     return !(matchMD || sidebarExpandVariant === ESidebarExpandVariant.EXPAND_LESS);

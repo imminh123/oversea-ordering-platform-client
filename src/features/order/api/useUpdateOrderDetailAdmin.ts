@@ -5,7 +5,7 @@ import useAlert from 'app/hooks/useAlert';
 
 export interface UpdateOrderDetailDto {
   listItem: Array<{ id: string; quantity: number }>;
-  taobaoDeliveryId: string;
+  taobaoDeliveryIds: string[];
   meta?: any;
 }
 

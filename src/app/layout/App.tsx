@@ -54,9 +54,6 @@ function App() {
 
   return (
     <Switch>
-      {/* <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
-      <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
-      <Route exact path={RoutePathsEnum.AdminLoginPage} component={AdminLoginPage} /> */}
       <Route exact path={RoutePathsEnum.Active} component={ActivePage} />
       <Route
         key={'auth'}

@@ -11,6 +11,7 @@ interface IOrderListingParams {
   itemName?: string;
   timeFrom?: string;
   timeTo?: string;
+  taobaoDeliveryId?: string;
 }
 
 export const indexOrderAdmin = async (
@@ -22,9 +23,9 @@ export const indexOrderAdmin = async (
 type QueryFnType = typeof indexOrderAdmin;
 
 export const useIndexOrdersAdmin = (param: IOrderListingParams, config?: QueryConfig<QueryFnType>) => {
-  const { page, status, timeFrom, timeTo, itemName, userName } = param;
+  const { page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId } = param;
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useIndexOrdersAdmin', page, status, timeFrom, timeTo, itemName, userName],
+    queryKey: ['useIndexOrdersAdmin', page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId],
     queryFn: () => indexOrderAdmin(param),
     ...config,
   });

@@ -1,4 +1,4 @@
-import { LocalizationProvider, DateRangePicker } from '@mui/lab';
+import { LocalizationProvider, DateRangePicker, LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Box,
@@ -28,6 +28,8 @@ import { useHistory } from 'react-router-dom';
 import { mappingOrderStatus } from './components';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useIndexOrdersAdmin } from './api/useOrderListingAdmin';
+import { Download } from '@mui/icons-material';
+import { useDownloadOrdersAdmin } from './api/useOrderDownloadCSVAdmin';
 
 export const AdminOrders = () => {
   const [page, setPage] = useState<number>(1);
@@ -37,14 +39,32 @@ export const AdminOrders = () => {
   const [userName, setUserName] = useState<string>('');
   const [itemFilter, setItemFilter] = useState<string>('');
   const [itemName, setItemName] = useState<string>('');
+  const [taobaoDeliveryId, setTaobaoDeliveryId] = useState<string>('');
+  const [taobaoDeliveryIdFilter, setTaobaoDeliveryIdFilter] = useState<string>('');
   const { data: cartItems, isLoading } = useIndexOrdersAdmin({
     page,
     status,
     userName,
     itemName,
+    taobaoDeliveryId,
     ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
     ...(value[1] && { timeTo: new Date(value[1]).toISOString() }),
   });
+
+  const { refetch: download, isLoading: downloading } = useDownloadOrdersAdmin(
+    {
+      page,
+      status,
+      userName,
+      itemName,
+      taobaoDeliveryId,
+      ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
+      ...(value[1] && { timeTo: new Date(value[1]).toISOString() }),
+    },
+    {
+      enabled: false,
+    },
+  );
   const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -62,6 +82,9 @@ export const AdminOrders = () => {
       case 'itemName':
         setItemFilter(event.target.value);
         break;
+      case 'taobaoDeliveryId':
+        setTaobaoDeliveryIdFilter(event.target.value);
+        break;
     }
   };
   const handleKeyPress = (e: any, type: string) => {
@@ -73,6 +96,9 @@ export const AdminOrders = () => {
         case 'itemName':
           setItemName(e.target.value);
           break;
+        case 'taobaoDeliveryId':
+          setTaobaoDeliveryId(e.target.value);
+          break;
       }
     }
   };
@@ -82,11 +108,22 @@ export const AdminOrders = () => {
         <title>Đơn hàng</title>
       </Helmet>
       <Container className='mt-5 mb-10'>
-        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý đơn hàng
-        </Typography>
+        <Box className='flex justify-between items-center mb-3 px-3'>
+          <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
+            Quản lý đơn hàng
+          </Typography>
+          <LoadingButton
+            startIcon={<Download />}
+            variant='contained'
+            color='primary'
+            loading={downloading}
+            onClick={() => download()}
+          >
+            Tải CSV
+          </LoadingButton>
+        </Box>
         <Card sx={{ p: 2, marginBottom: '10px' }}>
-          <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+          <Box className='grid grid-cols-1 sm:grid-cols-3 gap-2 my-3'>
             <Box>
               <FormControl fullWidth>
                 <InputLabel size='small' id='status-select-label'>
@@ -111,7 +148,7 @@ export const AdminOrders = () => {
                 </Select>
               </FormControl>
             </Box>
-            <Box className='flex justify-end' sx={{ '& div': { width: '100%' } }}>
+            <Box className='flex justify-end col-span-2' sx={{ '& div': { width: '100%' } }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateRangePicker
                   startText='Bắt đầu'
@@ -133,7 +170,7 @@ export const AdminOrders = () => {
               </LocalizationProvider>
             </Box>
           </Box>
-          <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
+          <Box className='grid grid-cols-1 sm:grid-cols-3 gap-2 my-3'>
             <Box>
               <TextField
                 fullWidth
@@ -152,6 +189,16 @@ export const AdminOrders = () => {
                 value={itemFilter}
                 onChange={(e) => handleInputChange(e, 'itemName')}
                 onKeyDown={(e) => handleKeyPress(e, 'itemName')}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label='Mã vận đơn'
+                size='small'
+                value={taobaoDeliveryIdFilter}
+                onChange={(e) => handleInputChange(e, 'taobaoDeliveryId')}
+                onKeyDown={(e) => handleKeyPress(e, 'taobaoDeliveryId')}
               />
             </Box>
           </Box>

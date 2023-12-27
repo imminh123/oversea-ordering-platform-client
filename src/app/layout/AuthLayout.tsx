@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Grid, Link, Typography } from '@mui/material';
+import { Box, CssBaseline, Typography } from '@mui/material';
 
 interface Props {}
 export const AuthLayout: React.FC<Props> = ({ children }) => {
