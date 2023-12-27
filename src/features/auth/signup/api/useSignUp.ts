@@ -9,7 +9,7 @@ export interface SignUpDto {
   mail: string;
   phone: string;
   password: string;
-  wareHouseAddress: string;
+  // wareHouseAddress: string;
 }
 
 export type TSignUpDto = {
@@ -17,7 +17,7 @@ export type TSignUpDto = {
   phone: string;
   password: string;
   confirmPassword: string;
-  wareHouseAddress: string;
+  // wareHouseAddress: string;
 };
 
 export const signUpAPI = ({ body }: { body: SignUpDto }): Promise<any> => {
