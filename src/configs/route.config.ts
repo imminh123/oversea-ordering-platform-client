@@ -26,13 +26,14 @@ export enum RouteKeysEnum {
   AdminOrderDetail = 'admin-order-details',
   AdminUsers = 'admin-users',
   AdminUserDetail = 'admin-user-detail',
-  AdminUserTransactions = 'admin-transaction',
+  AdminTransactions = 'admin-transaction',
+  AdminTransactionsDetail = 'admin-transaction-detail',
 }
 
 export enum RoutePathsEnum {
   // auth
-  LoginPage = '/login',
-  SignupPage = '/signup',
+  LoginPage = '/auth/login',
+  SignupPage = '/auth/signup',
 
   // client
   Cart = '/cart',
@@ -47,7 +48,7 @@ export enum RoutePathsEnum {
   UserTransaction = '/transactions',
 
   // admin
-  AdminLoginPage = '/admin/login',
+  AdminLoginPage = '/auth/admin/login',
   AdminHome = '/admin',
   AdminInfo = '/admin/info',
   AdminVariables = '/admin/variables',
@@ -55,5 +56,6 @@ export enum RoutePathsEnum {
   AdminOrderDetail = '/admin/orders/:id',
   AdminUsers = '/admin/users',
   AdminUserDetail = '/admin/users/:id',
-  AdminUserTransactions = '/admin/transactions',
+  AdminTransactions = '/admin/transactions',
+  AdminTransactionsDetail = '/admin/transactions/:id',
 }

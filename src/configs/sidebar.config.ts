@@ -13,6 +13,7 @@ export enum SidebarKeysEnum {
   AdminOrders = 'admin-order',
   AdminUsers = 'admin-users',
   AdminTransactions = 'admin-transactions',
+  AdminTransactionsDetail = 'admin-transaction-detail',
 }
 
 export enum SidebarLinksEnum {
@@ -27,4 +28,5 @@ export enum SidebarLinksEnum {
   AdminOrders = '/admin/orders',
   AdminUsers = '/admin/users',
   AdminTransactions = '/admin/transactions',
+  AdminTransactionsDetail = '/admin/transactions/:id',
 }

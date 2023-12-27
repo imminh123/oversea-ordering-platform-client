@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Menu as MenuIcon, Notifications } from '@mui/icons-material';
 import { CssBaseline, IconButton, Stack, Toolbar, useMediaQuery, useTheme, Typography, Badge } from '@mui/material';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
@@ -13,6 +13,7 @@ import { useCountCart } from 'features/cart/api/useCountCart';
 import { useListVariables } from 'features/variables/api/useGetVariables';
 import { VariableType } from 'features/variables/variables.const';
 import { AppBar } from './AppBar';
+import { NotificationBox } from '../../../features/notifications/NotificationBox';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -59,7 +60,7 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
             <IconButton
               size='large'
               color='inherit'
-              aria-label='open drawer'
+              aria-label='Menu'
               onClick={handleDrawerToggle}
               edge='start'
               sx={{ mr: 2 }}
@@ -75,7 +76,7 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
             <IconButton
               size='large'
               color='inherit'
-              aria-label='open drawer'
+              aria-label='ShoppingCart'
               onClick={() => {
                 history.push('/cart');
               }}
@@ -85,7 +86,8 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
                 <ShoppingCart />
               </Badge>
             </IconButton>
-            <CurrentAccountBadge loading={false} />
+            <NotificationBox />
+            <CurrentAccountBadge />
           </Stack>
         </Toolbar>
       </AppBar>

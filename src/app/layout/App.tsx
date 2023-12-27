@@ -17,6 +17,7 @@ import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
 import { AdminLayoutPage } from './AdminLayoutPage';
 import { AdminLoginPage } from 'features/auth/login/AdminLogin';
+import { AuthLayout } from './AuthLayout';
 
 function App() {
   const { routes, publicRoutes, adminRoutes } = useNavigation();
@@ -42,7 +43,7 @@ function App() {
     };
 
     initApp().then(() => {
-      const token = storage.getToken();
+      const token = storage.getAccessTokenClient();
       sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
     });
   }, []);
@@ -53,10 +54,25 @@ function App() {
 
   return (
     <Switch>
-      <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
+      {/* <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
       <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
+      <Route exact path={RoutePathsEnum.AdminLoginPage} component={AdminLoginPage} /> */}
       <Route exact path={RoutePathsEnum.Active} component={ActivePage} />
-      <Route exact path={RoutePathsEnum.AdminLoginPage} component={AdminLoginPage} />
+      <Route
+        key={'auth'}
+        path={'/auth/:path?'}
+        render={() => {
+          return (
+            <AuthLayout>
+              <Switch>
+                <Route exact path={RoutePathsEnum.LoginPage} component={LoginPage} />
+                <Route exact path={RoutePathsEnum.SignupPage} component={SignupPage} />
+                <Route exact path={RoutePathsEnum.AdminLoginPage} component={AdminLoginPage} />
+              </Switch>
+            </AuthLayout>
+          );
+        }}
+      />
 
       <Route
         key={'admin'}

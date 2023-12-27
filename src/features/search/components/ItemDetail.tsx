@@ -1,4 +1,4 @@
-import { Box, CardMedia, Container, Grid, TextField, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Container, Grid, TextField, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useGetSearchItemDetail } from '../api/useGetSearchDetail';
 import { useParams } from 'react-router-dom';
@@ -8,7 +8,6 @@ import { SkuList } from './SkuList';
 import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
 import useAlert from 'app/hooks/useAlert';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
-
 import { LoadingButton } from '@mui/lab';
 
 export const ItemDetail = () => {
@@ -52,123 +51,211 @@ export const ItemDetail = () => {
       <Container maxWidth='lg' className='mt-5'>
         {isLoading && <LoadingCard />}
         {!isLoading && !!data?.data && (
-          <Grid container spacing={2}>
-            <Grid item sm={12} md={4} width={'100%'}>
-              {!!data?.data.ImageUrls.length && (
-                <>
-                  <CardMedia
-                    component='img'
-                    src={data?.data.ImageUrls[currentImg]}
-                    className='mb-3'
-                    sx={{
-                      border: 'solid 1px gray',
-                      borderRadius: '5px',
-                    }}
-                  />
-                  <Box className='flex justify-around'>
-                    {data?.data.ImageUrls.map((img, index) => (
+          <>
+            <Grid container spacing={2}>
+              <Grid item sm={12} md={4} width={'100%'}>
+                {!!data?.data.ImageUrls.length && (
+                  <>
+                    {currentImg === 0 && !!data?.data.MainImageVideo ? (
+                      <CardMedia
+                        component='video'
+                        src={data?.data.MainImageVideo}
+                        className='mb-3'
+                        autoPlay
+                        sx={{
+                          border: 'solid 1px gray',
+                          borderRadius: '5px',
+                          maxWidth: 300,
+                          maxHeight: 400,
+                        }}
+                      />
+                    ) : (
                       <CardMedia
                         component='img'
-                        key={index}
+                        src={data?.data.ImageUrls[currentImg - 1]}
+                        className='mb-3'
+                        id='myimage'
                         sx={{
-                          height: 60,
-                          width: 60,
-                          maxHeight: { xs: 60, md: 45 },
-                          maxWidth: { xs: 60, md: 45 },
-                          border: index === currentImg ? 'solid 1px red' : 'solid 1px gray',
-                          cursor: 'pointer',
-                          '&:hover': {
-                            border: index === currentImg ? 'solid 2px red' : 'solid 2px gray',
-                            borderRadius: '5px',
-                          },
+                          border: 'solid 1px gray',
+                          borderRadius: '5px',
+                          maxWidth: 300,
+                          maxHeight: 400,
                         }}
-                        onClick={() => {
-                          setCurrentImg(index);
-                        }}
-                        src={img}
                       />
+                    )}
+                    <Grid gap={1} container>
+                      {!!data?.data.MainImageVideo && (
+                        <Grid item>
+                          <CardMedia
+                            component='video'
+                            sx={{
+                              height: 60,
+                              width: 60,
+                              maxHeight: { xs: 60, md: 45 },
+                              maxWidth: { xs: 60, md: 45 },
+                              border: currentImg === 0 ? 'solid 1px red' : 'solid 1px gray',
+                              cursor: 'pointer',
+                              '&:hover': {
+                                border: currentImg === 0 ? 'solid 2px red' : 'solid 2px gray',
+                                borderRadius: '5px',
+                              },
+                            }}
+                            onClick={() => {
+                              setCurrentImg(0);
+                            }}
+                            src={data.data.MainImageVideo}
+                          />
+                        </Grid>
+                      )}
+                      {data?.data.ImageUrls.map((img, index) => (
+                        <Grid key={index} item>
+                          <CardMedia
+                            component='img'
+                            sx={{
+                              height: 60,
+                              width: 60,
+                              maxHeight: { xs: 60, md: 45 },
+                              maxWidth: { xs: 60, md: 45 },
+                              border: index === currentImg ? 'solid 1px red' : 'solid 1px gray',
+                              cursor: 'pointer',
+                              '&:hover': {
+                                border: index === currentImg ? 'solid 2px red' : 'solid 2px gray',
+                                borderRadius: '5px',
+                              },
+                            }}
+                            onClick={() => {
+                              setCurrentImg(index + 1);
+                            }}
+                            src={img}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+              <Grid item sm={12} md={8} width={'100%'}>
+                <Box className='flex flex-col gap-2'>
+                  <Typography variant='h6' color='primary' sx={{ mb: 4, '&:hover': { color: 'red' } }} align='left'>
+                    {data?.data.Subject}
+                  </Typography>
+                  <Grid container spacing={1} width={'100%'}>
+                    <Grid item xs={12} sm={2}>
+                      Shop:
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                      <a href={data?.data.ShopUrl} target='_blank' rel='noopener noreferrer'>
+                        {data?.data.ShopName}
+                      </a>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={1} width={'100%'}>
+                    <Grid item xs={12} sm={2}>
+                      Giá:
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                      {formatMoneyToCN(data?.data.PriceRangeInfos[0].Price)}
+                    </Grid>
+                  </Grid>
+                  {data?.data.SkuProps.map((sku, index) => (
+                    <Grid key={index} container spacing={1}>
+                      <SkuList
+                        sku_props={sku}
+                        emitValue={(value: any) => {
+                          handleMapChange(value);
+                        }}
+                      />
+                    </Grid>
+                  ))}
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={2}>
+                      Số lượng:
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                      <TextField
+                        type='number'
+                        value={quantity}
+                        onChange={(e) => {
+                          parseInt(e.target.value) > 0 && setQuantity(parseInt(e.target.value));
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={2}>
+                      Ghi chú:
+                    </Grid>
+                    <Grid item xs={12} sm={10}>
+                      <TextField
+                        fullWidth
+                        placeholder='Ghi chú'
+                        multiline={true}
+                        rows={3}
+                        autoComplete='off'
+                        variant='outlined'
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                      <LoadingButton
+                        loadingIndicator='Đang chờ...'
+                        className='!mt-4'
+                        onClick={handleSubmit}
+                        variant={'contained'}
+                        loading={adding}
+                        disabled={!quantity || mapPVid.size === 0}
+                      >
+                        Thêm vào giỏ hàng
+                      </LoadingButton>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} sx={{ mb: 5 }}>
+              <Grid item sm={12} md={4} width={'100%'}>
+                <Card sx={{ p: 3, mt: 4 }}>
+                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
+                    Thông tin sản phẩm
+                  </Typography>
+                  <ul>
+                    {Object.entries(data.data.ProductFeatures).map(([key, value]) => (
+                      <li key={key}>
+                        {key}: {value}
+                      </li>
                     ))}
-                  </Box>
-                </>
-              )}
+                  </ul>
+                </Card>
+              </Grid>
+              <Grid item sm={12} md={4} width={'100%'}>
+                <Card sx={{ p: 3, mt: 4 }}>
+                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
+                    Thông tin vận chuyển
+                  </Typography>
+                  <ul>
+                    {Object.entries(data.data.Delivery).map(([key, value]) => (
+                      <li key={key}>
+                        {key}: {value}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </Grid>
+              <Grid item sm={12} md={4} width={'100%'}>
+                <Card sx={{ p: 3, mt: 4 }}>
+                  <Typography sx={{ mb: 3 }} variant='subtitle1'>
+                    Thông tin shop
+                  </Typography>
+                  <ul>
+                    {Object.entries(data.data.ShopInfo).map(([key, value]) => (
+                      <li key={key}>
+                        {key}: {value}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </Grid>
             </Grid>
-            <Grid item sm={12} md={8} width={'100%'}>
-              <Box className='flex flex-col gap-2'>
-                <Typography variant='h6' color='primary' sx={{ mb: 4, '&:hover': { color: 'red' } }} align='left'>
-                  {data?.data.Subject}
-                </Typography>
-                <Grid container spacing={1} width={'100%'}>
-                  <Grid item xs={12} sm={2}>
-                    Shop:
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <a href={data?.data.ShopUrl} target='_blank' rel='noopener noreferrer'>
-                      {data?.data.ShopName}
-                    </a>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={1} width={'100%'}>
-                  <Grid item xs={12} sm={2}>
-                    Giá:
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    {formatMoneyToCN(data?.data.PriceRangeInfos[0].Price)}
-                  </Grid>
-                </Grid>
-                {data?.data.SkuProps.map((sku, index) => (
-                  <Grid key={index} container spacing={1}>
-                    <SkuList
-                      sku_props={sku}
-                      emitValue={(value: any) => {
-                        handleMapChange(value);
-                      }}
-                    />
-                  </Grid>
-                ))}
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={2}>
-                    Số lượng:
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <TextField
-                      type='number'
-                      value={quantity}
-                      onChange={(e) => {
-                        parseInt(e.target.value) > 0 && setQuantity(parseInt(e.target.value));
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={2}>
-                    Ghi chú:
-                  </Grid>
-                  <Grid item xs={12} sm={10}>
-                    <TextField
-                      fullWidth
-                      placeholder='Ghi chú'
-                      multiline={true}
-                      rows={3}
-                      autoComplete='off'
-                      variant='outlined'
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <LoadingButton
-                      loadingIndicator='Đang chờ...'
-                      className='!mt-4'
-                      onClick={handleSubmit}
-                      variant={'contained'}
-                      loading={adding}
-                      disabled={!quantity || mapPVid.size === 0}
-                    >
-                      Thêm vào giỏ hàng
-                    </LoadingButton>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-          </Grid>
+          </>
         )}
         {!isLoading && !data?.data && <NoItemFound text='Không thể tìm thấy hàng hóa trên taobao' />}
       </Container>

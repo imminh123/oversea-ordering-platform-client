@@ -228,7 +228,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                         title='Sửa địa chỉ'
                         size='small'
                         color='primary'
-                        aria-label='delete'
+                        aria-label='Sửa địa chỉ'
                         sx={{ fontSize: '12px' }}
                         onClick={() => handleEditAddress(add.id)}
                       >
@@ -238,7 +238,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                         title='Xóa địa chỉ'
                         size='small'
                         color='error'
-                        aria-label='delete'
+                        aria-label='Xóa địa chỉ'
                         sx={{ fontSize: '12px' }}
                         onClick={() => handleDeleteAddress(add.id)}
                       >
@@ -304,7 +304,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                                 loading={updating}
                                 title='Cập nhật'
                                 color='primary'
-                                aria-label='delete'
+                                aria-label='Cập nhật'
                                 onClick={formEditMethods.handleSubmit(onUpdateAddress, (err) => {
                                   console.log(err);
                                 })}
@@ -314,7 +314,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
                               <Button
                                 title='Hủy thay đổi'
                                 color='error'
-                                aria-label='delete'
+                                aria-label='Hủy thay đổi'
                                 onClick={() => setEditId('')}
                               >
                                 Hủy thay đổi
@@ -397,7 +397,7 @@ export const SelectAddressModal = ({ addressList, setId }: { addressList: Addres
               size='small'
               title='Sửa địa chỉ'
               color='warning'
-              aria-label='delete'
+              aria-label='Lưu'
               onClick={() => onSave()}
             >
               Lưu

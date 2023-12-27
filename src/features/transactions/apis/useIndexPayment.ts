@@ -2,28 +2,7 @@ import { apiWrapper } from 'app/api/axiosClient';
 import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { IPaginationHeader } from 'app/types/pagination';
 import { useQuery } from 'react-query';
-
-export enum PaymentStatus {
-  SUCCEEDED = 'succeeded',
-  FAILED = 'failed',
-  PENDING = 'pending',
-}
-
-export interface IPaymentTransaction {
-  userId: string;
-  userName: string;
-  referenceId: string;
-  orderInfo: string;
-  amount: number;
-  status: PaymentStatus;
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface IOrderListingParams {
-  page: number;
-}
+import { IOrderListingParams, IPaymentTransaction } from '../Transaction.interface';
 
 export const indexTransactions = async (
   param: IOrderListingParams,

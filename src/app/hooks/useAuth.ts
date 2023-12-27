@@ -31,7 +31,7 @@ function useAuth() {
     } else {
       history.push(RoutePathsEnum.LoginPage);
     }
-    storage.clearToken();
+    storage.clearTokensClient();
     context.setAuthenticated(false);
     context.setInitialized(true);
     context.setUser(null);
@@ -55,8 +55,9 @@ function useAuth() {
 
   const handleLogin = async (userName: string, password: string) => {
     try {
-      const { accessToken } = await login({ userName, password });
-      storage.setToken(accessToken);
+      const { accessToken, refreshToken } = await login({ userName, password });
+      storage.setAccessTokenClient(accessToken);
+      storage.setRefreshTokenClient(refreshToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -74,8 +75,9 @@ function useAuth() {
 
   const handleLoginAdmin = async (userName: string, password: string) => {
     try {
-      const { accessToken } = await loginAdmin({ userName, password });
-      storage.setToken(accessToken);
+      const { accessToken, refreshToken } = await loginAdmin({ userName, password });
+      storage.setAccessTokenClient(accessToken);
+      storage.setRefreshTokenClient(refreshToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -103,8 +105,9 @@ function useAuth() {
 
   const handleLoginSocial = async ({ token, base }: { token: string; base: 'google' | 'facebook' }) => {
     try {
-      const { accessToken } = await loginSocial({ token, base });
-      storage.setToken(accessToken);
+      const { accessToken, refreshToken } = await loginSocial({ token, base });
+      storage.setAccessTokenClient(accessToken);
+      storage.setRefreshTokenClient(refreshToken);
       const user = await getMe();
       context.setUser(user);
       context.setAuthenticated(true);
@@ -120,7 +123,7 @@ function useAuth() {
 
   const handleErrorResponse = (err: any) => {
     console.log({ err });
-    storage.clearToken();
+    storage.clearTokensClient();
     if (typeof err === 'string') {
       alertError(err);
     } else if (err && err?.response && typeof err?.response?.data?.message === 'string') {

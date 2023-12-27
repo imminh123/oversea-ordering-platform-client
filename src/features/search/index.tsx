@@ -1,7 +1,6 @@
 import {
   Box,
   Card,
-  CardContent,
   Container,
   FormControl,
   IconButton,
@@ -14,11 +13,10 @@ import {
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ISearchRes, SortOption, useSearchItem } from './api/useSearchItem';
-import { ImageSearch, Search as SearchIcon, SearchOff } from '@mui/icons-material';
+import { ImageSearch, Search as SearchIcon } from '@mui/icons-material';
 import { TaobaoItem } from './components/TaobaoItem';
 import queryString from 'query-string';
 import { useHistory } from 'react-router-dom';
-import Spinner from 'app/layout/async/Spinner';
 import { Language, QueryLangOptions, SortOptions, TargetLangOptions } from './search.const';
 import { useSearchItemByImg } from './api/useSearchItemByImg';
 import { base64ToFile, fileToDataUri, removeNullProperties } from 'app/utils/helper';

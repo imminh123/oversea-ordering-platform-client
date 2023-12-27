@@ -1,12 +1,12 @@
 import { Box, CardContent, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useParams } from 'react-router-dom';
-import { mappingStatus } from '..';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import Spinner from 'app/layout/async/Spinner';
 import { AdminEditOrder } from './AdminEditOrder';
 import { useGetOrderByAdmin } from '../api/useOrderDetailAdmin';
+import { mappingOrderStatus } from '.';
 
 const CustomCard = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -20,7 +20,6 @@ const CustomCard = styled(Paper)(({ theme }) => {
     margin: theme.spacing(5),
     ...theme.typography.body2,
     textAlign: 'center',
-    // backgroundColor: '#fff',
     boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     ...(matchesSM && {
       padding: theme.spacing(1),
@@ -50,7 +49,7 @@ export const OrderDetailAdmin = () => {
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Trạng thái:</span>
-              <span>{mappingStatus(data?.data.status)}</span>
+              <span>{mappingOrderStatus(data?.data.status)}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Tiền hàng:</span>

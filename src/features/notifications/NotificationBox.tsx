@@ -1,19 +1,13 @@
 import * as React from 'react';
 
-import { Logout, Person } from '@mui/icons-material';
-import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Skeleton } from '@mui/material';
-
-import useAuth from 'app/hooks/useAuth';
-import AuthContext from 'app/context/auth';
-import { useHistory } from 'react-router-dom';
+import { Notifications } from '@mui/icons-material';
+import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 
 interface Props {
   isAdmin?: boolean;
 }
 
-export const CurrentAccountBadge: React.FC<Props> = ({ isAdmin }) => {
-  const { logout } = useAuth();
-  const history = useHistory();
+export const NotificationBox: React.FC<Props> = ({ isAdmin }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,7 +16,6 @@ export const CurrentAccountBadge: React.FC<Props> = ({ isAdmin }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const context = React.useContext(AuthContext);
 
   return (
     <Box
@@ -32,14 +25,10 @@ export const CurrentAccountBadge: React.FC<Props> = ({ isAdmin }) => {
         cursor: 'pointer',
       }}
     >
-      <IconButton onClick={handleClick} size='small' sx={{ ml: 2 }}>
-        {context.user?.avatar ? (
-          <Avatar sx={{ width: 32, height: 32 }} src={context.user?.avatar}></Avatar>
-        ) : (
-          <Avatar sx={{ width: 32, height: 32 }}>
-            {context.user?.fullname ? context.user?.fullname.charAt(0) : 'A'}
-          </Avatar>
-        )}
+      <IconButton onClick={handleClick} size='large' color='inherit' aria-label='Notifications' edge='start'>
+        {/* <Badge invisible={!number} badgeContent={number} color='error'> */}
+        <Notifications />
+        {/* </Badge> */}
       </IconButton>
 
       <Menu
@@ -76,18 +65,12 @@ export const CurrentAccountBadge: React.FC<Props> = ({ isAdmin }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => history.push(isAdmin ? `/admin/info` : `/info`)}>
-          <ListItemIcon>
-            <Person fontSize='small' />
-          </ListItemIcon>
-          Thông tin cá nhân
-        </MenuItem>
-        <MenuItem onClick={logout}>
-          <ListItemIcon>
-            <Logout fontSize='small' />
-          </ListItemIcon>
-          Đăng xuất
-        </MenuItem>
+        <Box sx={{ width: 500, p: 2 }}>
+          <Typography variant='h6' className=' text-slate-900'>
+            Thông báo
+          </Typography>
+          <MenuItem>Khách hàng A vừa thanh toán thành công 1.000.000 vnđ</MenuItem>
+        </Box>
       </Menu>
     </Box>
   );

@@ -129,43 +129,33 @@ export const UserDetail = () => {
                   <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>
                     Thông tin tài khoản
                   </Typography>
-                  <HooksFormInputTextField disabled size={'small'} fieldName={'fullname'} label={'Họ và tên'} />
+                  <HooksFormInputTextField disabled fieldName={'fullname'} label={'Họ và tên'} />
                   <HooksFormInputSingleDatePicker disabled fieldName={'birthday'} label={'Ngày sinh'} />
-                  <HooksFormInputTextField disabled size={'small'} fieldName={'phone'} label={'Sđt'} />
+                  <HooksFormInputTextField disabled fieldName={'phone'} label={'Sđt'} />
                   <HooksFormInputSingleSelect
                     disabled
-                    size={'small'}
                     fieldName={'gender'}
                     options={genderOptions}
                     label={'Giới tính'}
                   />
-                  <HooksFormInputTextField disabled size={'small'} fieldName={'mail'} label={'Mail'} />
-                  <HooksFormInputTextField disabled size={'small'} fieldName={'role'} label={'Vai trò'} />
+                  <HooksFormInputTextField disabled fieldName={'mail'} label={'Mail'} />
+                  <HooksFormInputTextField disabled fieldName={'role'} label={'Vai trò'} />
                   <HooksFormInputSingleSelect
                     disabled
-                    size={'small'}
                     fieldName={'isActive'}
                     options={statusOptions}
                     label={'Trạng thái tài khoản'}
                   />
-                  <HooksFormInputSingleSelect
-                    disabled
-                    size={'small'}
-                    fieldName={'isBlock'}
-                    options={blockOptions}
-                    label={'Block'}
-                  />
+                  <HooksFormInputSingleSelect disabled fieldName={'isBlock'} options={blockOptions} label={'Block'} />
                   <HooksFormInputTextField
                     sx={{ gridColumn: 'span 2' }}
                     disabled
-                    size={'small'}
                     fieldName={'address'}
                     label={'Địa chỉ'}
                   />
                   <HooksFormInputAddress
                     disabled
                     fieldName={'addressObjectData'}
-                    size={'small'}
                     sx={{ gridColumn: 'span 2' }}
                     spacing={'10px'}
                   />

@@ -1,5 +1,6 @@
 import {
   Box,
+  Card,
   Checkbox,
   CssBaseline,
   Divider,
@@ -31,7 +32,7 @@ import { Global } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 
-const SumaryInfo = styled(Paper)(({ theme }) => ({
+const SumaryInfo = styled(Card)(({ theme }) => ({
   minHeight: '100%',
   display: 'flex',
   gap: '10px',
@@ -39,14 +40,9 @@ const SumaryInfo = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   ...theme.typography.body2,
   textAlign: 'center',
-  // backgroundColor: '#fff',
 }));
 
 const drawerBleeding = 100;
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'light' ? '#fff' : 'grey',
-}));
 
 export const Step1 = () => {
   const theme = useTheme();
@@ -268,11 +264,12 @@ export const Step1 = () => {
             swipeAreaWidth={drawerBleeding}
             disableSwipeToOpen={true}
           >
-            <StyledBox
+            <Box
               sx={{
-                p: 2,
+                p: 1,
                 height: '100%',
                 overflow: 'auto',
+                backgroundColor: '#fefefe',
               }}
             >
               <SumaryInfo variant='elevation'>
@@ -310,7 +307,7 @@ export const Step1 = () => {
                   </Typography>
                 </Box>
               </SumaryInfo>
-            </StyledBox>
+            </Box>
           </SwipeableDrawer>
         </>
       )}

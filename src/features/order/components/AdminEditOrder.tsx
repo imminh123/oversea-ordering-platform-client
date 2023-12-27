@@ -73,6 +73,9 @@ export const AdminEditOrder = ({
         break;
     }
   };
+  const handleChangeTags = (event: any, value: any) => {
+    setTags(value);
+  };
   const handleQuantityChange = (key: string, value: number) => {
     const newMap = new Map(itemProps);
     newMap.set(key, value);
@@ -109,13 +112,10 @@ export const AdminEditOrder = ({
             <Box display={'flex'} className='gap-2 justify-between'>
               <span className='flex-1'>
                 <FormControl fullWidth>
-                  <InputLabel size='small' id='status-select-label'>
-                    Trạng thái đơn hàng
-                  </InputLabel>
+                  <InputLabel id='status-select-label'>Trạng thái đơn hàng</InputLabel>
                   <Select
                     labelId='status-select-label'
                     id='status-select'
-                    size='small'
                     variant='outlined'
                     value={status || ''}
                     label='Trạng thái đơn hàng'
@@ -134,7 +134,6 @@ export const AdminEditOrder = ({
               <span className='flex-1'>
                 <TextField
                   label='Mô tả'
-                  size='small'
                   fullWidth
                   value={statusMeta}
                   onChange={(e) => {
@@ -155,14 +154,14 @@ export const AdminEditOrder = ({
             </Box>
             <Divider />
             <Typography variant='h6' component='h2'>
-              Cập nhật số lượng/Mã vận đơn
+              Cập nhật số lượng/ Mã vận đơn
             </Typography>
             <Autocomplete
               style={{ margin: '10px 0' }}
               multiple
               options={tags}
               freeSolo
-              onChange={(e: any) => setTags([...tags, e.target.value])}
+              onChange={handleChangeTags}
               renderInput={(params) => (
                 <TextField {...params} label='Mã vận đơn' placeholder='Gõ và Enter để nhập' value={tags} />
               )}

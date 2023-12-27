@@ -31,9 +31,20 @@ const { Search } = lazyImport(() => import('features/search'), 'Search');
 const { ItemDetail } = lazyImport(() => import('features/search/components/ItemDetail'), 'ItemDetail');
 const { AdminVariables } = lazyImport(() => import('features/variables/AdminVariables'), 'AdminVariables');
 const { AdminOrders } = lazyImport(() => import('features/order/AdminOrders'), 'AdminOrders');
-const { UsersListing } = lazyImport(() => import('features/users'), 'UsersListing');
+const { UsersListing } = lazyImport(() => import('features/users/UsersListing'), 'UsersListing');
 const { UserDetail } = lazyImport(() => import('features/users/components/UserDetail'), 'UserDetail');
-const { TransactionListing } = lazyImport(() => import('features/transactions'), 'TransactionListing');
+const { TransactionListing } = lazyImport(
+  () => import('features/transactions/TransactionListing'),
+  'TransactionListing',
+);
+const { TransactionListingAdmin } = lazyImport(
+  () => import('features/transactions/TransactionListingAdmin'),
+  'TransactionListingAdmin',
+);
+const { TransactionDetailAdmin } = lazyImport(
+  () => import('features/transactions/components/TransactionDetailAdmin'),
+  'TransactionDetailAdmin',
+);
 
 function useNavigation() {
   const history = useHistory();
@@ -145,6 +156,18 @@ function useNavigation() {
         path: RoutePathsEnum.AdminUserDetail,
         component: <UserDetail />,
       },
+      {
+        key: RouteKeysEnum.AdminTransactions,
+        exact: true,
+        path: RoutePathsEnum.AdminTransactions,
+        component: <TransactionListingAdmin />,
+      },
+      {
+        key: RouteKeysEnum.AdminTransactionsDetail,
+        exact: true,
+        path: RoutePathsEnum.AdminTransactionsDetail,
+        component: <TransactionDetailAdmin />,
+      },
     ];
 
     return result;
@@ -222,6 +245,13 @@ function useNavigation() {
             link: SidebarLinksEnum.AdminUsers,
             icon: <ManageAccounts />,
             label: 'Quản lý người dùng',
+          },
+          {
+            key: SidebarKeysEnum.AdminTransactions,
+            parentKey: null,
+            link: SidebarLinksEnum.AdminTransactions,
+            icon: <AccountBalance />,
+            label: 'Quản lý thanh toán',
           },
         ],
       },

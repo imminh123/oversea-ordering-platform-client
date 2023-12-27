@@ -9,8 +9,8 @@ const queryConfig: DefaultOptions = {
     retry: false,
     onError: (err: any) => {
       if (err?.response?.status === 401) {
-        storage.clearToken();
-        window.location.reload();
+        // storage.clearTokensClient();
+        // window.location.reload();
       }
     },
   },

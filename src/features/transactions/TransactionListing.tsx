@@ -8,29 +8,17 @@ import {
   Paper,
   Pagination,
   TableCell,
-  Chip,
   Typography,
   Card,
 } from '@mui/material';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { IPaymentTransaction, PaymentStatus, useIndexTransactions } from './apis/useIndexPayment';
+import { useIndexTransactions } from './apis/useIndexPayment';
 import { formatMoneyToVND } from 'app/utils/helper';
 import moment from 'moment';
-
-export const mappingPaymentStatus = (status?: PaymentStatus) => {
-  switch (status) {
-    case PaymentStatus.SUCCEEDED:
-      return <Chip label='Thành công' color='success' variant='outlined' />;
-    case PaymentStatus.PENDING:
-      return <Chip label='Đang chờ' color='warning' variant='outlined' />;
-    case PaymentStatus.FAILED:
-      return <Chip label='Lỗi' color='error' variant='outlined' />;
-    default:
-      return <Chip label={status} color='error' variant='outlined' />;
-  }
-};
+import { mappingPaymentStatus } from './components';
+import { IPaymentTransaction } from './Transaction.interface';
 
 const TransactionRow = ({ item }: { item: IPaymentTransaction }) => {
   return (

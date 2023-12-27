@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
@@ -8,7 +8,6 @@ import { TLoginArgs } from 'app/api/authAPI';
 import { adminLoginValidator } from 'app/utils/validators';
 import useAuth from 'app/hooks/useAuth';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
-import { useHistory } from 'react-router-dom';
 import { envConfig } from 'configs/env.config';
 import { sendTokenToChromeExtension } from 'app/utils/helper';
 import storage from 'app/utils/storage';
@@ -17,9 +16,6 @@ interface Props {}
 
 export const AdminLoginPage: React.FC<Props> = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
-  const history = useHistory();
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const formMethods = useForm<TLoginArgs>({
     mode: 'onChange',
     defaultValues: { userName: '', password: '' },
@@ -36,8 +32,7 @@ export const AdminLoginPage: React.FC<Props> = () => {
       console.log({ err });
     }
     setLoading(false);
-
-    const token = storage.getToken();
+    const token = storage.getAccessTokenClient();
     sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
   };
 
@@ -53,19 +48,16 @@ export const AdminLoginPage: React.FC<Props> = () => {
       >
         <Box
           sx={{
-            maxWidth: 500,
             m: 'auto',
-            px: 2,
-            py: 4,
-            mt: 10,
-            ...(matches && {
-              boxShadow: (theme) => theme.shadows[3],
-            }),
+            maxWidth: 550,
+            px: 3,
+            py: '150px',
+            width: '100%',
           }}
         >
-          <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-            ĐĂNG NHẬP ADMIN
-          </Typography>
+          <Stack spacing={1} sx={{ mb: 3 }}>
+            <Typography variant='h4'>Đăng nhập Admin</Typography>
+          </Stack>
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
@@ -75,7 +67,7 @@ export const AdminLoginPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='primary'
+                  color='success'
                   size='large'
                   type='submit'
                   loading={loading}

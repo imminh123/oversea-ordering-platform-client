@@ -26,8 +26,9 @@ export interface ISearchDetail {
   MainImageVideo: string;
   PriceRangeInfos: PriceRangeInfos[];
   OriginalPriceRangeInfos: OriginalPriceRangeInfos[];
-  ProductFeatures: any;
-  Delivery: any;
+  ProductFeatures: Record<string, string>;
+  Delivery: Record<string, string>;
+  ShopInfo: Record<string, string>;
   ShopId: string;
   SkuProps: SkuProps[];
   SkuMaps: any[];

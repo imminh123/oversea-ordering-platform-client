@@ -27,11 +27,12 @@ import { IUserServerResponse, UserRole } from 'app/types/user';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { useAdminIndexUsers } from './apis/useAdminIndexUsers';
 import { Search } from '@mui/icons-material';
+import { mappingBlock, mappingRole } from './components';
 
 export const UsersListing = () => {
   const [page, setPage] = useState<number>(1);
   const [role, setRole] = useState<UserRole>();
-  const [status, setStatus] = useState<boolean>(false);
+  const [status, setStatus] = useState('');
   const [search, setSearch] = useState<string>('');
   const [q, setQ] = useState<string>('');
 
@@ -44,14 +45,14 @@ export const UsersListing = () => {
         setQ(event.target.value);
         break;
       case 'status':
-        setStatus(event.target.value === 'true');
+        setStatus(event.target.value);
         break;
     }
   };
   const { data: ListUser, isLoading } = useAdminIndexUsers({
     page,
     role,
-    isBlock: status,
+    ...(status && { isBlock: status === 'true' }),
     search,
   });
   const count = parseInt(ListUser?.data.headers['x-pages-count'].toString() || '0');
@@ -101,7 +102,15 @@ export const UsersListing = () => {
               </FormControl>
             </Box>
             <Box>
-              <FormControl fullWidth>
+              <FormControl
+                fullWidth
+                sx={{
+                  height: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    height: '100%',
+                  },
+                }}
+              >
                 <InputLabel size='small' id='role-select-label'>
                   Vai trò
                 </InputLabel>
@@ -125,7 +134,15 @@ export const UsersListing = () => {
               </FormControl>
             </Box>
             <Box>
-              <FormControl fullWidth>
+              <FormControl
+                fullWidth
+                sx={{
+                  height: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    height: '100%',
+                  },
+                }}
+              >
                 <InputLabel size='small' id='status-select-label'>
                   Trạng thái
                 </InputLabel>
@@ -200,24 +217,4 @@ const UserItem = ({ item }: { item: IUserServerResponse }) => {
       <TableCell align='right'>{mappingBlock(item.isBlock)}</TableCell>
     </TableRow>
   );
-};
-
-export const mappingBlock = (isBlock: boolean) => {
-  switch (isBlock) {
-    case false:
-      return <Chip label='Hoạt động' color='primary' variant='outlined' />;
-    case true:
-      return <Chip label='Đã chặn ' color='error' variant='outlined' />;
-  }
-};
-
-export const mappingRole = (role: UserRole) => {
-  switch (role) {
-    case UserRole.Root:
-      return <Chip label='Root' color='primary' variant='outlined' />;
-    case UserRole.Admin:
-      return <Chip label='Admin' color='warning' variant='outlined' />;
-    case UserRole.Client:
-      return <Chip label='Client' color='success' variant='outlined' />;
-  }
 };

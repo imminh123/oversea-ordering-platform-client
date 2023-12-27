@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { ExtractFnReturnType } from 'app/api/react-query';
+import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { apiWrapper } from 'app/api/axiosClient';
 import { ApiGetMeRes } from 'app/api/authAPI';
 
@@ -12,9 +12,10 @@ export const getUserDetail = async (id: string): Promise<ApiGetMeRes> => {
 
 type QueryFnType = typeof getUserDetail;
 
-export const useAdminGetUserDetail = (id: string) => {
+export const useAdminGetUserDetail = (id: string, config?: QueryConfig<QueryFnType>) => {
   return useQuery<ExtractFnReturnType<QueryFnType>>({
     queryKey: ['useAdminGetUserDetail', id],
     queryFn: () => getUserDetail(id),
+    ...config,
   });
 };

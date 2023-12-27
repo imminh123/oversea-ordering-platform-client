@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Link, Stack, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
@@ -10,7 +10,6 @@ import useAuth from 'app/hooks/useAuth';
 import { HooksFormInputTextField } from 'app/components/libs/react-hooks-form';
 import Google from '../../../assets/images/google.svg';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
 import { FacebookLoginButton } from './FacebookLoginButton';
 import { envConfig } from 'configs/env.config';
@@ -21,9 +20,6 @@ interface Props {}
 
 export const LoginPage: React.FC<Props> = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
-  const history = useHistory();
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('sm'));
   const formMethods = useForm<TLoginArgs>({
     mode: 'onChange',
     defaultValues: { userName: '', password: '' },
@@ -51,7 +47,7 @@ export const LoginPage: React.FC<Props> = () => {
     }
     setLoading(false);
 
-    const token = storage.getToken();
+    const token = storage.getAccessTokenClient();
     sendTokenToChromeExtension({ extensionId: envConfig.VITE_EXTENSION_KEY, jwt: token });
   };
 
@@ -67,19 +63,22 @@ export const LoginPage: React.FC<Props> = () => {
       >
         <Box
           sx={{
-            maxWidth: 500,
             m: 'auto',
-            px: 2,
-            py: 4,
-            mt: 10,
-            ...(matches && {
-              boxShadow: (theme) => theme.shadows[3],
-            }),
+            maxWidth: 550,
+            px: 3,
+            py: '150px',
+            width: '100%',
           }}
         >
-          <Typography variant='h5' color='primary' sx={{ mb: 4 }} align='center'>
-            ĐĂNG NHẬP
-          </Typography>
+          <Stack spacing={1} sx={{ mb: 3 }}>
+            <Typography variant='h4'>Đăng nhập</Typography>
+            <Typography color='text.secondary' variant='body2'>
+              Bạn chưa có tài khoản? &nbsp;
+              <Link href={RoutePathsEnum.SignupPage} color={'success'} underline='hover' variant='subtitle2'>
+                Đăng ký
+              </Link>
+            </Typography>
+          </Stack>
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmit)}>
               <Stack spacing={2}>
@@ -89,40 +88,34 @@ export const LoginPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='primary'
+                  color='success'
                   size='large'
                   type='submit'
                   loading={loading}
                 >
                   ĐĂNG NHẬP
                 </LoadingButton>
+                <Typography variant='subtitle2' align='center' className=' text-slate-500'>
+                  Hoặc
+                </Typography>
+
                 <Box className='flex justify-between gap-2'>
                   <LoadingButton
                     variant='outlined'
                     startIcon={<img src={Google} alt='Google' />}
                     loadingIndicator='Đang chờ...'
-                    color='primary'
+                    color='success'
                     size='large'
                     fullWidth
                     onClick={loginWithGoogle}
                   >
-                    {'GOOGLE'}
+                    <span className='text-slate-600'>Google</span>
                   </LoadingButton>
                   <FacebookLoginButton onLogin={handleFacebookLogin} />
                 </Box>
               </Stack>
             </form>
           </FormProvider>
-          <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-            <LoadingButton
-              variant='text'
-              onClick={() => {
-                history.push(RoutePathsEnum.SignupPage);
-              }}
-            >
-              Đăng ký
-            </LoadingButton>
-          </Box>
         </Box>
       </Box>
     </>
