@@ -6,6 +6,14 @@ export interface CalculatedPriceRes {
   data: {
     totalInCNY: string;
     totalInVND: string;
+    countItem: number;
+    countOrder: number;
+    countingFee: string;
+    exchangeRate: string;
+    feePerOrder: string;
+    finalTotal: string;
+    totalCountingFee: string;
+    totalFeeOrder: string;
   };
 }
 

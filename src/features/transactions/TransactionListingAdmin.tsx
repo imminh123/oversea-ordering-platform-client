@@ -25,11 +25,13 @@ import moment from 'moment';
 import { mappingPaymentStatus } from './components';
 import { IPaymentTransaction } from './Transaction.interface';
 import { useIndexTransactionsAdmin } from './apis/useIndexPaymentAdmin';
-import { DateRangePicker, LocalizationProvider } from '@mui/lab';
+import { DateRangePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import React from 'react';
 import { PaymentStatus, PaymentsStatusOptions } from './Transactions.const';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { useHistory } from 'react-router-dom';
+import { Download } from '@mui/icons-material';
+import { useDownloadPaymentTransactionsAdmin } from './apis/usePaymentDownloadCSV';
 
 const TransactionRow = ({ item }: { item: IPaymentTransaction }) => {
   const history = useHistory();
@@ -76,6 +78,20 @@ export const TransactionListingAdmin = () => {
   });
   const count = parseInt(listTransactions?.headers['x-pages-count'].toString() || '0');
 
+  const { refetch: download, isLoading: downloading } = useDownloadPaymentTransactionsAdmin(
+    {
+      page,
+      status,
+      userName,
+      userId,
+      ...(timeRange[0] && { timeFrom: new Date(timeRange[0]).toISOString() }),
+      ...(timeRange[1] && { timeTo: new Date(timeRange[1]).toISOString() }),
+    },
+    {
+      enabled: false,
+    },
+  );
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -110,9 +126,20 @@ export const TransactionListingAdmin = () => {
         <title>Thanh toán</title>
       </Helmet>
       <Container className='mt-5'>
-        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý thanh toán
-        </Typography>
+        <Box className='flex justify-between items-center mb-3 px-3'>
+          <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
+            Quản lý thanh toán
+          </Typography>
+          <LoadingButton
+            startIcon={<Download />}
+            variant='contained'
+            color='primary'
+            loading={downloading}
+            onClick={() => download()}
+          >
+            Tải CSV
+          </LoadingButton>
+        </Box>
         <Card sx={{ p: 2, marginBottom: '10px' }}>
           <Box className='grid grid-cols-1 sm:grid-cols-2 gap-2 my-3'>
             <Box>

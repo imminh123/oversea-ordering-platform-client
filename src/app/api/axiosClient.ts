@@ -63,8 +63,15 @@ export class ApiWrapper {
     );
   }
 
-  async get<T>(url: string, params?: any): Promise<T> {
-    const data: any = await this.axiosInstance.get(url, { params, timeout: REQUEST_TIMEOUT });
+  async get<T>(url: string, params?: any, headers?: any): Promise<T> {
+    const data: any = await this.axiosInstance.get(url, {
+      params,
+      timeout: REQUEST_TIMEOUT,
+      headers: {
+        ...this.axiosInstance.defaults.headers,
+        ...headers,
+      },
+    });
 
     return data;
   }

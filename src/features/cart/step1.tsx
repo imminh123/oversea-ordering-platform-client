@@ -164,23 +164,11 @@ export const Step1 = () => {
               </Box>
               <Box display={'flex'} className=' justify-between'>
                 <span>Phí mua hàng:</span>
-                <span>_</span>
+                <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalFeeOrder || '0'))}</span>
               </Box>
               <Box display={'flex'} className=' justify-between'>
                 <span>Phí kiểm đếm:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển nội địa TQ:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển TQ - VN:</span>
-                <span>_</span>
-              </Box>
-              <Box display={'flex'} className=' justify-between'>
-                <span>Phí vận chuyển nội địa VN:</span>
-                <span>_</span>
+                <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalCountingFee || '0'))}</span>
               </Box>
               <Divider />
               <Box display={'flex'} className=' justify-between'>
@@ -188,7 +176,7 @@ export const Step1 = () => {
                   Tổng tiền:
                 </Typography>
                 <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-                  {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
+                  {formatMoneyToVND(parseFloat(totalPrice?.data?.finalTotal || '0'))}
                 </Typography>
               </Box>
               <Box display={'flex'} gap={'10px'} className='justify-end'>
@@ -279,31 +267,20 @@ export const Step1 = () => {
                 </Box>
                 <Box display={'flex'} className=' justify-between'>
                   <span>Phí mua hàng:</span>
-                  <span>_</span>
+                  <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalFeeOrder || '0'))}</span>
                 </Box>
                 <Box display={'flex'} className=' justify-between'>
                   <span>Phí kiểm đếm:</span>
-                  <span>_</span>
+                  <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalCountingFee || '0'))}</span>
                 </Box>
-                <Box display={'flex'} className=' justify-between'>
-                  <span>Phí vận chuyển nội địa TQ:</span>
-                  <span>_</span>
-                </Box>
-                <Box display={'flex'} className=' justify-between'>
-                  <span>Phí vận chuyển TQ - VN:</span>
-                  <span>_</span>
-                </Box>
-                <Box display={'flex'} className=' justify-between'>
-                  <span>Phí vận chuyển nội địa VN:</span>
-                  <span>_</span>
-                </Box>
+                <Divider />
                 <Divider />
                 <Box display={'flex'} className=' justify-between'>
                   <Typography variant='h6' sx={{ mb: 4 }}>
                     Tổng tiền:
                   </Typography>
                   <Typography variant='h5' color='error' sx={{ mb: 4 }}>
-                    {formatMoneyToVND(parseFloat(totalPrice?.data?.totalInVND || '0'))}
+                    {formatMoneyToVND(parseFloat(totalPrice?.data?.finalTotal || '0'))}
                   </Typography>
                 </Box>
               </SumaryInfo>

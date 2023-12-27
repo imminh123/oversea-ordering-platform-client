@@ -27,10 +27,12 @@ export const AdminEditOrder = ({
   status: oldStatus,
   id,
   listItem,
+  taobaoDeliveryIds,
 }: {
   status: OrderStatus;
   id: string;
   listItem: ItemDetail[];
+  taobaoDeliveryIds: string[];
 }) => {
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -58,7 +60,7 @@ export const AdminEditOrder = ({
   const [status, setStatus] = useState<OrderStatus>(oldStatus);
   const [itemProps, setItemProps] = useState(defaultMap);
   const [statusMeta, setStatusMeta] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(taobaoDeliveryIds || []);
   const { mutateAsync: updateOrderStatus, isLoading: updatingStatus } = useUpdateOrderStatusAdmin();
   const { mutateAsync: updateOrderDetail, isLoading: updatingDetail } = useUpdateOrderDetailAdmin();
   const handleOpen = () => setOpen(true);
@@ -89,8 +91,7 @@ export const AdminEditOrder = ({
     const updatedItems = Array.from(itemProps, ([key, value]) => {
       return { id: key, quantity: value };
     });
-    const taobaoDeliveryId = tags.join(',');
-    updateOrderDetail({ id, body: { listItem: updatedItems, taobaoDeliveryId } });
+    updateOrderDetail({ id, body: { listItem: updatedItems, taobaoDeliveryIds: tags } });
   };
   return (
     <React.Fragment>
@@ -160,6 +161,7 @@ export const AdminEditOrder = ({
               style={{ margin: '10px 0' }}
               multiple
               options={tags}
+              defaultValue={taobaoDeliveryIds}
               freeSolo
               onChange={handleChangeTags}
               renderInput={(params) => (

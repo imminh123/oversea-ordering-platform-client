@@ -1,4 +1,4 @@
-import { Box, CardContent, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
+import { Box, CardContent, Chip, Container, Divider, Paper, Typography, styled, useMediaQuery } from '@mui/material';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
@@ -45,11 +45,25 @@ export const OrderDetailAdmin = () => {
               <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
                 Chi tiết đơn hàng
               </Typography>
-              <AdminEditOrder id={param.id} status={data.data.status} listItem={data.data.listItem} />
+              <AdminEditOrder
+                id={param.id}
+                status={data.data.status}
+                listItem={data.data.listItem}
+                taobaoDeliveryIds={data.data.taobaoDeliveryIds}
+              />
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Trạng thái:</span>
               <span>{mappingOrderStatus(data?.data.status)}</span>
+            </Box>
+            <Box display={'flex'} className=' justify-between'>
+              <span>Mã vận đơn:</span>
+              <span>
+                {!!data?.data?.taobaoDeliveryIds?.length &&
+                  data?.data.taobaoDeliveryIds.map((id) => {
+                    return <Chip variant='outlined' sx={{ ml: 1 }} key={id} label={`#${id}`} />;
+                  })}
+              </span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Tiền hàng:</span>
@@ -58,7 +72,7 @@ export const OrderDetailAdmin = () => {
 
             <Box display={'flex'} className=' justify-between'>
               <span>Mã đơn hàng:</span>
-              <span>{data?.data.id}</span>
+              <span>#{data?.data.id}</span>
             </Box>
             <Box display={'flex'} className=' justify-between'>
               <span>Ngày thanh toán:</span>
