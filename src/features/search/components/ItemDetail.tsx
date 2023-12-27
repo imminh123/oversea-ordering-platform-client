@@ -8,7 +8,6 @@ import { SkuList } from './SkuList';
 import { IAddCartParams, useAddToCart } from '../api/useAddToCart';
 import useAlert from 'app/hooks/useAlert';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
-
 import { LoadingButton } from '@mui/lab';
 
 export const ItemDetail = () => {
@@ -57,7 +56,7 @@ export const ItemDetail = () => {
               <Grid item sm={12} md={4} width={'100%'}>
                 {!!data?.data.ImageUrls.length && (
                   <>
-                    {currentImg === 0 ? (
+                    {currentImg === 0 && !!data?.data.MainImageVideo ? (
                       <CardMedia
                         component='video'
                         src={data?.data.MainImageVideo}
@@ -75,6 +74,7 @@ export const ItemDetail = () => {
                         component='img'
                         src={data?.data.ImageUrls[currentImg - 1]}
                         className='mb-3'
+                        id='myimage'
                         sx={{
                           border: 'solid 1px gray',
                           borderRadius: '5px',
@@ -83,29 +83,30 @@ export const ItemDetail = () => {
                         }}
                       />
                     )}
-
                     <Grid gap={1} container>
-                      <Grid item>
-                        <CardMedia
-                          component='video'
-                          sx={{
-                            height: 60,
-                            width: 60,
-                            maxHeight: { xs: 60, md: 45 },
-                            maxWidth: { xs: 60, md: 45 },
-                            border: currentImg === 0 ? 'solid 1px red' : 'solid 1px gray',
-                            cursor: 'pointer',
-                            '&:hover': {
-                              border: currentImg === 0 ? 'solid 2px red' : 'solid 2px gray',
-                              borderRadius: '5px',
-                            },
-                          }}
-                          onClick={() => {
-                            setCurrentImg(0);
-                          }}
-                          src={data.data.MainImageVideo}
-                        />
-                      </Grid>
+                      {!!data?.data.MainImageVideo && (
+                        <Grid item>
+                          <CardMedia
+                            component='video'
+                            sx={{
+                              height: 60,
+                              width: 60,
+                              maxHeight: { xs: 60, md: 45 },
+                              maxWidth: { xs: 60, md: 45 },
+                              border: currentImg === 0 ? 'solid 1px red' : 'solid 1px gray',
+                              cursor: 'pointer',
+                              '&:hover': {
+                                border: currentImg === 0 ? 'solid 2px red' : 'solid 2px gray',
+                                borderRadius: '5px',
+                              },
+                            }}
+                            onClick={() => {
+                              setCurrentImg(0);
+                            }}
+                            src={data.data.MainImageVideo}
+                          />
+                        </Grid>
+                      )}
                       {data?.data.ImageUrls.map((img, index) => (
                         <Grid key={index} item>
                           <CardMedia

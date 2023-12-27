@@ -24,7 +24,6 @@ const CustomCard = styled(Paper)(({ theme }) => {
     margin: theme.spacing(5),
     ...theme.typography.body2,
     textAlign: 'center',
-    // backgroundColor: '#fff',
     boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
     ...(matchesSM && {
       padding: theme.spacing(1),

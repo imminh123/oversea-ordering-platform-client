@@ -24,3 +24,15 @@ export interface IAdminOrderListingPararms {
   timeFrom?: string;
   timeTo?: string;
 }
+
+export interface IPaymentDetail {
+  userId: string;
+  userName: string;
+  referenceId: string;
+  orderInfo: string;
+  amount: number;
+  status: PaymentStatus;
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}
