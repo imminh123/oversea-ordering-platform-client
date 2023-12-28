@@ -33,7 +33,6 @@ export const ItemDetail = () => {
       alertError('Không thể tìm thấy hàng hóa trên taobao');
     },
   });
-  console.log('🚀 ~ file: ItemDetail.tsx:36 ~ ItemDetail ~ data:', data);
   const { mutateAsync: addToCart, isLoading: adding } = useAddToCart();
   const [currentImg, setCurrentImg] = useState(0);
   const handleSubmit = () => {
