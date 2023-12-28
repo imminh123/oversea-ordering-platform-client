@@ -46,6 +46,9 @@ export class ApiWrapper {
           originalConfig.url !== '/session/adminCreateSession'
         ) {
           const refreshToken = storage.getRefreshTokenClient();
+          if (!refreshToken) {
+            window.location.href = RoutePathsEnum.LoginPage;
+          }
           if (error.response.data.statusCode === 401 && refreshToken) {
             try {
               const res = await this.axiosInstance.post('/session/refreshSession', {

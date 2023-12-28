@@ -223,7 +223,7 @@ export const TransactionListingAdmin = () => {
                       Trạng thái
                     </TableCell>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className=' min-w-[150px]'>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className='min-w-[150px]'>
                       Ngày thanh toán
                     </TableCell>
                   </TableRow>

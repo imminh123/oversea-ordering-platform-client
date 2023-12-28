@@ -57,7 +57,7 @@ interface IFormInput {
 const Label = ({ add }: { add: AddressRes }) => {
   return (
     <Box>
-      <p className=' font-bold text-xs sm:text-sm'>{`${add.name || 'Chưa có thông tin'} - ${
+      <p className='font-bold text-xs sm:text-sm'>{`${add.name || 'Chưa có thông tin'} - ${
         add.phone || 'Chưa có thông tin'
       }`}</p>
       <p className='text-xs sm:text-sm'>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
