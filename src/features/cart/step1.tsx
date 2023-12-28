@@ -158,20 +158,20 @@ export const Step1 = () => {
         {!matchesSM && (
           <Grid item md={12} lg={4} width={'100%'} className='pb-3'>
             <SumaryInfo variant='elevation'>
-              <Box display={'flex'} className=' justify-between'>
+              <Box display={'flex'} className='justify-between'>
                 <span>Tiền hàng:</span>
                 <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
               </Box>
-              <Box display={'flex'} className=' justify-between'>
+              <Box display={'flex'} className='justify-between'>
                 <span>Phí mua hàng:</span>
                 <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalFeeOrder || '0'))}</span>
               </Box>
-              <Box display={'flex'} className=' justify-between'>
+              <Box display={'flex'} className='justify-between'>
                 <span>Phí kiểm đếm:</span>
                 <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalCountingFee || '0'))}</span>
               </Box>
               <Divider />
-              <Box display={'flex'} className=' justify-between'>
+              <Box display={'flex'} className='justify-between'>
                 <Typography variant='h6' sx={{ mb: 4 }}>
                   Tổng tiền:
                 </Typography>
@@ -261,21 +261,21 @@ export const Step1 = () => {
               }}
             >
               <SumaryInfo variant='elevation'>
-                <Box display={'flex'} className=' justify-between'>
+                <Box display={'flex'} className='justify-between'>
                   <span>Tiền hàng:</span>
                   <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalInVND || '0'))}</span>
                 </Box>
-                <Box display={'flex'} className=' justify-between'>
+                <Box display={'flex'} className='justify-between'>
                   <span>Phí mua hàng:</span>
                   <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalFeeOrder || '0'))}</span>
                 </Box>
-                <Box display={'flex'} className=' justify-between'>
+                <Box display={'flex'} className='justify-between'>
                   <span>Phí kiểm đếm:</span>
                   <span>{formatMoneyToVND(parseFloat(totalPrice?.data.totalCountingFee || '0'))}</span>
                 </Box>
                 <Divider />
                 <Divider />
-                <Box display={'flex'} className=' justify-between'>
+                <Box display={'flex'} className='justify-between'>
                   <Typography variant='h6' sx={{ mb: 4 }}>
                     Tổng tiền:
                   </Typography>

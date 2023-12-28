@@ -45,6 +45,10 @@ const { TransactionDetailAdmin } = lazyImport(
   () => import('features/transactions/components/TransactionDetailAdmin'),
   'TransactionDetailAdmin',
 );
+const { TransactionDetail } = lazyImport(
+  () => import('features/transactions/components/TransactionDetail'),
+  'TransactionDetail',
+);
 
 function useNavigation() {
   const history = useHistory();
@@ -106,6 +110,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.UserTransaction,
         component: <TransactionListing />,
+      },
+      {
+        key: RouteKeysEnum.UserTransactionDetail,
+        exact: true,
+        path: RoutePathsEnum.UserTransactionDetail,
+        component: <TransactionDetail />,
       },
     ];
 

@@ -177,7 +177,7 @@ export const UsersListing = () => {
                     <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
                       Vai trò
                     </TableCell>
-                    <TableCell className=' min-w-[150px]'>Email</TableCell>
+                    <TableCell className='min-w-[150px]'>Email</TableCell>
                     <TableCell align='right'>Chặn</TableCell>
                   </TableRow>
                 </TableHead>
@@ -206,7 +206,7 @@ const UserItem = ({ item }: { item: IUserServerResponse }) => {
       onClick={() => {
         history.push(`/admin/users/${item.id}`);
       }}
-      className=' cursor-pointer'
+      className='cursor-pointer'
       title='Xem chi tiết'
     >
       <TableCell>{item.fullname || '_'}</TableCell>

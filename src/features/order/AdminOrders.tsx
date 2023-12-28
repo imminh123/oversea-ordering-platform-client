@@ -213,7 +213,7 @@ export const AdminOrders = () => {
                     <TableCell sx={{ fontWeight: 'bold' }} align='right'>
                       Trạng thái
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} className=' min-w-[150px]'>
+                    <TableCell sx={{ fontWeight: 'bold' }} className='min-w-[150px]'>
                       Người nhận
                     </TableCell>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
@@ -243,7 +243,7 @@ const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
       onClick={() => {
         history.push(`/admin/orders/${item.id}`);
       }}
-      className=' cursor-pointer'
+      className='cursor-pointer'
       hover
     >
       <TableCell component='th' scope='row' className='sm:text-xs'>

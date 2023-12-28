@@ -10,6 +10,7 @@ import {
   TableCell,
   Typography,
   Card,
+  Box,
 } from '@mui/material';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { useState } from 'react';
@@ -19,10 +20,19 @@ import { formatMoneyToVND } from 'app/utils/helper';
 import moment from 'moment';
 import { mappingPaymentStatus } from './components';
 import { IPaymentTransaction } from './Transaction.interface';
+import { useHistory } from 'react-router-dom';
 
 const TransactionRow = ({ item }: { item: IPaymentTransaction }) => {
+  const history = useHistory();
+
   return (
-    <TableRow hover className='cursor-pointer'>
+    <TableRow
+      hover
+      className='cursor-pointer'
+      onClick={() => {
+        history.push(`/transactions/${item.id}`);
+      }}
+    >
       <TableCell component='th' scope='row' className='sm:text-xs'>
         {item.orderInfo}
       </TableCell>
@@ -52,9 +62,11 @@ export const TransactionListing = () => {
         <title>Thanh toán</title>
       </Helmet>
       <Container className='mt-5'>
-        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý thanh toán
-        </Typography>
+        <Box className='flex justify-between items-center mb-3 px-3'>
+          <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
+            Quản lý thanh toán
+          </Typography>
+        </Box>
         {!!listTransactions && !!listTransactions?.data.length && !isLoading && (
           <Card>
             <TableContainer component={Paper} elevation={3}>
@@ -66,7 +78,7 @@ export const TransactionListing = () => {
                       Trạng thái
                     </TableCell>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className=' min-w-[150px]'>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }} className='min-w-[150px]'>
                       Ngày thanh toán
                     </TableCell>
                   </TableRow>

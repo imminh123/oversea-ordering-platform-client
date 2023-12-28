@@ -38,10 +38,14 @@ export interface ItemDetail {
   shopUrl: string;
   vnCost: number;
 }
-interface IOrderHistories {
+export interface IOrderHistories {
   id: string;
-  status: string;
+  status: OrderStatus;
   updatedBy: string;
+  createdAt: string;
+  listItem: any;
+  meta: any;
+  taobaoDeliveryIds: string;
 }
 export interface IOrderDetailRes {
   id: string;

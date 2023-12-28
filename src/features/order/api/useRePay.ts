@@ -31,7 +31,7 @@ export const useRePay = (config?: MutationConfig<QueryFnType>) => {
       }
     },
     onError(error) {
-      alertError(error.message);
+      alertError(error?.response?.data?.message || error.message);
     },
     ...config,
   });

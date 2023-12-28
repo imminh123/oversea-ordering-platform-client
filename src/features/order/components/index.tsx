@@ -36,6 +36,6 @@ export const mappingOrderStatus = (status?: OrderStatus) => {
     case OrderStatus.BACK_ORDERED:
       return <Chip label='Đặt lại đơn' color='warning' variant='outlined' />;
     default:
-      return <Chip label={status} color='error' variant='outlined' />;
+      return <Chip label={status || 'Không rõ'} color='error' variant='outlined' />;
   }
 };
