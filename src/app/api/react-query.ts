@@ -8,10 +8,7 @@ const queryConfig: DefaultOptions = {
     refetchOnWindowFocus: false,
     retry: false,
     onError: (err: any) => {
-      if (err?.response?.status === 401) {
-        // storage.clearTokensClient();
-        // window.location.reload();
-      }
+      console.log(`🚀🚀🚀 ~ file: react-query.ts:15 ~ `, err);
     },
   },
 };

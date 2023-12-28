@@ -3,7 +3,7 @@ import { OrderStatus } from 'features/cart/api/useGetOrderDetail';
 export const OrderStatusOptions: { value: OrderStatus; label: string }[] = [
   {
     value: OrderStatus.CREATED,
-    label: 'Đã tạo',
+    label: 'Đã tạo đơn hàng',
   },
   {
     value: OrderStatus.DELIVERED,
@@ -35,7 +35,7 @@ export const OrderStatusOptions: { value: OrderStatus; label: string }[] = [
   },
   {
     value: OrderStatus.PLACED,
-    label: 'Đã đặt',
+    label: 'Đã đặt hàng',
   },
   {
     value: OrderStatus.IN_TRANSIT,
@@ -59,7 +59,7 @@ export const OrderStatusOptions: { value: OrderStatus; label: string }[] = [
   },
   {
     value: OrderStatus.PARTIALLY_SHIPPED,
-    label: 'Giao một phần',
+    label: 'Giao hàng một phần',
   },
   {
     value: OrderStatus.BACK_ORDERED,
