@@ -1,12 +1,16 @@
 import axios, { AxiosInstance } from 'axios';
 import queryString from 'query-string';
-
 import { envConfig } from 'configs/env.config';
 import storage from 'app/utils/storage';
 import { RoutePathsEnum } from 'configs/route.config';
+import { jwtDecode } from 'jwt-decode';
+import { UserRole } from 'app/types/user';
 
 const REQUEST_TIMEOUT = 2 * 60 * 1000;
-
+interface TokenEntity {
+  userId: string;
+  role: UserRole;
+}
 export class ApiWrapper {
   private readonly axiosInstance: AxiosInstance;
 
@@ -36,25 +40,39 @@ export class ApiWrapper {
         return response;
       },
       async (error) => {
-        const refreshToken = storage.getRefreshTokenClient();
         const originalConfig = error.config;
         if (
           originalConfig.url !== '/session/createClientSession' &&
           originalConfig.url !== '/session/adminCreateSession'
         ) {
-          if (error.response.data.statusCode === 401) {
+          const refreshToken = storage.getRefreshTokenClient();
+          if (!refreshToken) {
+            window.location.href = RoutePathsEnum.LoginPage;
+          }
+          if (error.response.data.statusCode === 401 && refreshToken) {
             try {
-              const rs = await this.axiosInstance.post('/session/refreshSession', {
+              const res = await this.axiosInstance.post('/session/refreshSession', {
                 token: refreshToken,
               });
-              const { accessToken } = rs.data;
+              const { accessToken } = res.data;
               storage.setAccessTokenClient(accessToken);
               originalConfig.headers['access-token'] = `${accessToken}`;
               return this.axiosInstance(originalConfig);
             } catch (error) {
-              console.log(`🚀🚀🚀 ~ file: axiosClient.ts:54 ~ ApiWrapper ~ error:`, error);
               window.location.href = RoutePathsEnum.LoginPage;
             }
+          }
+          if (error.response.data.statusCode === 403) {
+            const token = storage.getAccessTokenClient();
+            if (token) {
+              const user: TokenEntity = jwtDecode(token);
+              if (user?.role !== UserRole.Admin) {
+                window.location.href = RoutePathsEnum.LoginPage;
+              } else {
+                window.location.href = RoutePathsEnum.AdminLoginPage;
+              }
+            }
+            storage.clearTokensClient();
           }
         }
 

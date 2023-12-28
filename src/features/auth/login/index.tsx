@@ -95,7 +95,7 @@ export const LoginPage: React.FC<Props> = () => {
                 >
                   ĐĂNG NHẬP
                 </LoadingButton>
-                <Typography variant='subtitle2' align='center' className=' text-slate-500'>
+                <Typography variant='subtitle2' align='center' className='text-slate-500'>
                   Hoặc
                 </Typography>
 

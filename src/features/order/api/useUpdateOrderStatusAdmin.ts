@@ -33,7 +33,7 @@ export const useUpdateOrderStatusAdmin = (config?: MutationConfig<QueryFnType>) 
       alertSuccess('Chỉnh sửa thành công');
     },
     onError(error) {
-      alertError(error.message);
+      alertError(error?.response?.data?.message || error.message);
     },
     ...config,
   });

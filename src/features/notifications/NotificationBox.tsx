@@ -66,7 +66,7 @@ export const NotificationBox: React.FC<Props> = ({ isAdmin }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Box sx={{ width: 500, p: 2 }}>
-          <Typography variant='h6' className=' text-slate-900'>
+          <Typography variant='h6' className='text-slate-900'>
             Thông báo
           </Typography>
           {/* <MenuItem>Khách hàng A vừa thanh toán thành công 1.000.000 vnđ</MenuItem> */}

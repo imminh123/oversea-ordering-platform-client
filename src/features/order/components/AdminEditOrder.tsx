@@ -60,6 +60,7 @@ export const AdminEditOrder = ({
   const [status, setStatus] = useState<OrderStatus>(oldStatus);
   const [itemProps, setItemProps] = useState(defaultMap);
   const [statusMeta, setStatusMeta] = useState('');
+  const [detailMeta, setDetailMeta] = useState('');
   const [tags, setTags] = useState<string[]>(taobaoDeliveryIds || []);
   const { mutateAsync: updateOrderStatus, isLoading: updatingStatus } = useUpdateOrderStatusAdmin();
   const { mutateAsync: updateOrderDetail, isLoading: updatingDetail } = useUpdateOrderDetailAdmin();
@@ -91,7 +92,10 @@ export const AdminEditOrder = ({
     const updatedItems = Array.from(itemProps, ([key, value]) => {
       return { id: key, quantity: value };
     });
-    updateOrderDetail({ id, body: { listItem: updatedItems, taobaoDeliveryIds: tags } });
+    updateOrderDetail({
+      id,
+      body: { listItem: updatedItems, taobaoDeliveryIds: tags, meta: { description: detailMeta } },
+    });
   };
   return (
     <React.Fragment>
@@ -167,6 +171,14 @@ export const AdminEditOrder = ({
               renderInput={(params) => (
                 <TextField {...params} label='Mã vận đơn' placeholder='Gõ và Enter để nhập' value={tags} />
               )}
+            />
+            <TextField
+              label='Mô tả'
+              fullWidth
+              value={detailMeta}
+              onChange={(e) => {
+                setDetailMeta(e.target.value);
+              }}
             />
             {listItem.map((e) => {
               return (

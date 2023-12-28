@@ -123,7 +123,7 @@ export const UserDetail = () => {
       {!!data && !isLoading && (
         <FormProvider {...formMethods}>
           <Container maxWidth='md'>
-            <Card sx={{ minWidth: 275 }} className=' mt-10'>
+            <Card sx={{ minWidth: 275 }} className='mt-10'>
               <CardContent>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <Typography variant={'h4'} sx={{ gridColumn: 'span 2' }}>

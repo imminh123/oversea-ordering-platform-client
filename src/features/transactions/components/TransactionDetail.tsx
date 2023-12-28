@@ -17,18 +17,15 @@ import { useGetPaymentDetail } from '../apis/usePaymentDetail';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { formatMoneyToVND } from 'app/utils/helper';
 import { mappingPaymentStatus } from '.';
-import { useGetOrderByAdmin } from 'features/order/api/useOrderDetailAdmin';
 import { mappingOrderStatus } from 'features/order/components';
-import { useAdminGetUserDetail } from 'features/users/apis/useAdminGetInfo';
-import { mappingBlock, mappingRole } from 'features/users/components';
+import { useGetOrder } from 'features/order/api/useOrderDetail';
 
-export const TransactionDetailAdmin = () => {
+export const TransactionDetail = () => {
   const param: { id: string } = useParams();
   const history = useHistory();
 
   const { data, isLoading } = useGetPaymentDetail(param.id);
-  const { data: OrderDetail } = useGetOrderByAdmin(data?.data.referenceId || '', { enabled: !!data?.data.referenceId });
-  const { data: UserDetail } = useAdminGetUserDetail(data?.data.userId || '', { enabled: !!data?.data.userId });
+  const { data: OrderDetail } = useGetOrder(data?.data.referenceId || '', { enabled: !!data?.data.referenceId });
 
   return (
     <>
@@ -97,7 +94,7 @@ export const TransactionDetailAdmin = () => {
                 <TableBody>
                   <TableRow
                     onClick={() => {
-                      history.push(`/admin/orders/${OrderDetail?.data.id}`);
+                      history.push(`/orders/${OrderDetail?.data.id}`);
                     }}
                     className='cursor-pointer'
                     hover
@@ -108,44 +105,6 @@ export const TransactionDetailAdmin = () => {
                     <TableCell align='right'>{mappingOrderStatus(OrderDetail?.data.status)}</TableCell>
                     <TableCell className='break-words text-ellipsis'>{`${OrderDetail?.data.address.name} - ${OrderDetail?.data.address.phone}`}</TableCell>
                     <TableCell align='right'>{formatMoneyToVND(OrderDetail?.data?.total || 0)}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
-        {!!UserDetail && (
-          <>
-            <Typography variant={'h6'} sx={{ my: 3 }}>
-              Chi tiết người dùng
-            </Typography>
-            <TableContainer component={Paper} elevation={3}>
-              <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Họ tên</TableCell>
-                    <TableCell sx={{ maxWidth: '150px' }} size='small' align='right'>
-                      Vai trò
-                    </TableCell>
-                    <TableCell className='min-w-[150px]'>Email</TableCell>
-                    <TableCell align='right'>Chặn</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow
-                    hover
-                    onClick={() => {
-                      history.push(`/admin/users/${UserDetail?.id}`);
-                    }}
-                    className='cursor-pointer'
-                    title='Xem chi tiết'
-                  >
-                    <TableCell>{UserDetail?.fullname || '_'}</TableCell>
-                    <TableCell width={'100px'} size='small' align='right'>
-                      {mappingRole(UserDetail?.role)}
-                    </TableCell>
-                    <TableCell className='break-words text-ellipsis'>{UserDetail?.mail}</TableCell>
-                    <TableCell align='right'>{mappingBlock(UserDetail?.isBlock)}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

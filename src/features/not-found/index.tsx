@@ -87,7 +87,7 @@ export const NotFoundPage: React.FC<Props> = () => {
           />
           <circle cx='113' cy='113' fill='none' r='109' stroke='#6E6E96' strokeWidth='8' />
         </svg>
-        <div className=' mt-4 tracking-widest'>
+        <div className='mt-4 tracking-widest'>
           <span className='text-gray-500 block text-6xl text-center mt-5'>
             <span>4 0 4</span>
           </span>

@@ -14,7 +14,7 @@ const Label = ({ add }: { add: AddressRes }) => {
     <>
       {add && (
         <Box>
-          <p className=' font-bold text-sm sm:text-xs'>{`${add.name || 'Chưa có thông tin'} - ${
+          <p className='font-bold text-sm sm:text-xs'>{`${add.name || 'Chưa có thông tin'} - ${
             add.phone || 'Chưa có thông tin'
           } (Mặc định)`}</p>
           <p className='text-sm sm:text-xs'>{`${add.address}, ${add.ward}, ${add.city}, ${add.province}`}</p>
