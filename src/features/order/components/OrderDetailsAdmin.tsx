@@ -147,12 +147,14 @@ export const OrderDetailAdmin = () => {
               </Box>
             </CustomCard>
 
-            <CustomCard variant='elevation'>
-              <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
-                Lịch sử chỉnh sửa
-              </Typography>
-              <LeftAlignedTimeline data={data.data.orderHistories} />
-            </CustomCard>
+            {data?.data?.orderHistories && (
+              <CustomCard variant='elevation'>
+                <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
+                  Lịch sử chỉnh sửa
+                </Typography>
+                <LeftAlignedTimeline data={data.data.orderHistories} />
+              </CustomCard>
+            )}
           </>
         )}
         {isLoading && (
