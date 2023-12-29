@@ -9,6 +9,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent';
 import { IOrderHistories } from 'features/cart/api/useGetOrderDetail';
+import { mappingOrderStatus } from 'features/order/components';
 
 export const LeftAlignedTimeline = ({ data }: { data: IOrderHistories[] }) => {
   return (
@@ -28,19 +29,9 @@ export const LeftAlignedTimeline = ({ data }: { data: IOrderHistories[] }) => {
             <TimelineDot />
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent sx={{ p: 3 }}>
-            <ReactJson
-              src={item}
-              name={false}
-              iconStyle='circle'
-              enableClipboard={false}
-              displayObjectSize={false}
-              displayDataTypes={false}
-              onEdit={false}
-              onDelete={false}
-              onSelect={false}
-              quotesOnKeys={false}
-            />
+          <TimelineContent>
+            <Box>{mappingOrderStatus(item.status)}</Box>
+            {item?.meta?.description && <Box>Mô tả: {item.meta.description}</Box>}
           </TimelineContent>
         </TimelineItem>
       ))}
