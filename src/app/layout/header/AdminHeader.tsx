@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { CssBaseline, IconButton, Stack, Toolbar, useMediaQuery, useTheme, Typography } from '@mui/material';
+import { PopoverNotificationCenter, NotificationBell } from '@novu/notification-center';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
@@ -64,6 +65,9 @@ export const AdminHeader: React.FC<Props> = ({ open, setOpen }) => {
           </Stack>
 
           <Stack direction={'row'} alignItems={'center'} spacing={1} sx={{ ml: 'auto' }}>
+            <PopoverNotificationCenter colorScheme='light'>
+              {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
+            </PopoverNotificationCenter>
             <CurrentAccountBadge isAdmin={true} />
           </Stack>
         </Toolbar>

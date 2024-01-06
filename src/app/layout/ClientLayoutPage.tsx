@@ -31,21 +31,15 @@ export const ClientLayoutPage: React.FC<Props> = ({ children }) => {
   }, [matchMD]);
 
   return (
-    <>
-      <NovuProvider
-        styles={novuBellStyle}
-        subscriberId={user?.id || ''}
-        applicationIdentifier={envConfig.VITE_NOVU_KEY}
-      >
-        <Box sx={{ display: 'flex' }}>
-          <ClientHeader open={open} setOpen={setOpen} />
-          <Sidebar loading={false} open={open} />
-          <Main open={open}>
-            <HeaderPlaceHolder />
-            {children}
-          </Main>
-        </Box>
-      </NovuProvider>
-    </>
+    <NovuProvider styles={novuBellStyle} subscriberId={user?.id || ''} applicationIdentifier={envConfig.VITE_NOVU_KEY}>
+      <Box sx={{ display: 'flex' }}>
+        <ClientHeader open={open} setOpen={setOpen} />
+        <Sidebar loading={false} open={open} />
+        <Main open={open}>
+          <HeaderPlaceHolder />
+          {children}
+        </Main>
+      </Box>
+    </NovuProvider>
   );
 };
