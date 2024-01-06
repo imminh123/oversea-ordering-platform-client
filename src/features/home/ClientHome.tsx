@@ -51,9 +51,6 @@ export const HomePage: React.FC<Props> = () => {
             ))}
         </Grid>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} lg={4}>
-            <ListNotifications />
-          </Grid>
           <Grid item xs={12} sm={6} lg={8}>
             {!!orderItems && !!orderItems?.data.length && !isLoading && (
               <Card sx={{ marginTop: '20px' }}>
@@ -81,6 +78,9 @@ export const HomePage: React.FC<Props> = () => {
                 </TableContainer>
               </Card>
             )}
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <ListNotifications />
           </Grid>
         </Grid>
 

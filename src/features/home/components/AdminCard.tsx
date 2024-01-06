@@ -1,5 +1,5 @@
 import { AttachMoney, FormatListBulleted } from '@mui/icons-material';
-import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 interface Props {
   type: string;
   sx?: object;
@@ -68,7 +68,7 @@ export const AdminCard: React.FC<Props> = (props: Props) => {
 
   return (
     <Card sx={sx}>
-      <CardContent>
+      <Box sx={{ paddingX: 3, paddingY: 2 }}>
         <Stack alignItems='flex-start' direction='row' justifyContent='space-between' spacing={3}>
           <Stack spacing={1}>
             <Typography color='text.secondary' variant='overline'>
@@ -79,19 +79,19 @@ export const AdminCard: React.FC<Props> = (props: Props) => {
           <Avatar
             sx={{
               backgroundColor: mappingColor(type),
-              height: 56,
-              width: 56,
+              height: 40,
+              width: 40,
             }}
           >
             <SvgIcon>{mappingIcon(type)}</SvgIcon>
           </Avatar>
         </Stack>
-        <Stack alignItems='center' direction='row' spacing={2} sx={{ mt: 2 }}>
+        <Stack alignItems='center' direction='row' spacing={1} sx={{ mt: 2 }}>
           <Typography color='text.secondary' variant='caption'>
             {mappingSince(type)}
           </Typography>
         </Stack>
-      </CardContent>
+      </Box>
     </Card>
   );
 };

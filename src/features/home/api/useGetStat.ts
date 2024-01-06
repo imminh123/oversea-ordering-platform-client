@@ -3,15 +3,18 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { useQuery } from 'react-query';
 
 interface IStat {
-  lenCart: number;
+  lenCart?: number;
   lenOrder: number;
   countCreated: number;
   countPendingPayment: number;
-  countDelivered: number;
+  countDelivered?: number;
 }
 
 export const getStat = async (): Promise<{ data: IStat }> => {
-  return apiWrapper.get(`/dashboard`, {});
+  const result: { data: IStat } = await apiWrapper.get(`/dashboard`, {});
+  // delete result.data['countDelivered']
+  // delete result.data['lenCart']
+  return result;
 };
 
 type QueryFnType = typeof getStat;
