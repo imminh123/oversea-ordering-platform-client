@@ -3,6 +3,17 @@ import { createPalette } from './create-palette';
 import { typography } from './create-typography';
 import { components } from './create-components';
 import { shadows } from './create-shadows';
+
+export const novuBellStyle = {
+  bellButton: {
+    root: {
+      svg: {
+        color: 'rgba(0, 0, 0, 0.87)',
+        fill: 'white',
+      },
+    },
+  },
+};
 const palette = createPalette();
 
 const theme = createTheme({

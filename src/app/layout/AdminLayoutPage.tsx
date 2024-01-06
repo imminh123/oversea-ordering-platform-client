@@ -12,6 +12,10 @@ import { UserRole } from 'app/types/user';
 import storage from 'app/utils/storage';
 import { useHistory } from 'react-router-dom';
 import { RoutePathsEnum } from 'configs/route.config';
+import { NovuProvider } from '@novu/notification-center';
+import useAuth from 'app/hooks/useAuth';
+import { novuBellStyle } from 'app/theme/theme';
+import { envConfig } from 'configs/env.config';
 
 interface Props {}
 interface TokenEntity {
@@ -34,6 +38,8 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
       context.setUser(null);
     }
   }
+  const { user } = useAuth();
+
   const matchMD = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = React.useState(() => {
     return !(matchMD || sidebarExpandVariant === ESidebarExpandVariant.EXPAND_LESS);
@@ -48,13 +54,15 @@ export const AdminLayoutPage: React.FC<Props> = ({ children }) => {
   }, [matchMD]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AdminHeader open={open} setOpen={setOpen} />
-      <Sidebar loading={false} open={open} type='admin' />
-      <Main open={open}>
-        <HeaderPlaceHolder />
-        {children}
-      </Main>
-    </Box>
+    <NovuProvider styles={novuBellStyle} subscriberId={user?.id || ''} applicationIdentifier={envConfig.VITE_NOVU_KEY}>
+      <Box sx={{ display: 'flex' }}>
+        <AdminHeader open={open} setOpen={setOpen} />
+        <Sidebar loading={false} open={open} type='admin' />
+        <Main open={open}>
+          <HeaderPlaceHolder />
+          {children}
+        </Main>
+      </Box>
+    </NovuProvider>
   );
 };

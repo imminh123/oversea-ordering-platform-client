@@ -6,6 +6,10 @@ import { HeaderPlaceHolder } from './header-placeholder';
 import { Main } from './main';
 import { Sidebar } from './sidebar';
 import { useUI } from 'app/hooks';
+import { NovuProvider } from '@novu/notification-center';
+import { novuBellStyle } from 'app/theme/theme';
+import { envConfig } from 'configs/env.config';
+import useAuth from 'app/hooks/useAuth';
 
 interface Props {}
 
@@ -16,6 +20,7 @@ export const ClientLayoutPage: React.FC<Props> = ({ children }) => {
   const [open, setOpen] = React.useState(() => {
     return !(matchMD || sidebarExpandVariant === ESidebarExpandVariant.EXPAND_LESS);
   });
+  const { user } = useAuth();
 
   React.useEffect(() => {
     if (matchMD) {
@@ -26,13 +31,15 @@ export const ClientLayoutPage: React.FC<Props> = ({ children }) => {
   }, [matchMD]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <ClientHeader open={open} setOpen={setOpen} />
-      <Sidebar loading={false} open={open} />
-      <Main open={open}>
-        <HeaderPlaceHolder />
-        {children}
-      </Main>
-    </Box>
+    <NovuProvider styles={novuBellStyle} subscriberId={user?.id || ''} applicationIdentifier={envConfig.VITE_NOVU_KEY}>
+      <Box sx={{ display: 'flex' }}>
+        <ClientHeader open={open} setOpen={setOpen} />
+        <Sidebar loading={false} open={open} />
+        <Main open={open}>
+          <HeaderPlaceHolder />
+          {children}
+        </Main>
+      </Box>
+    </NovuProvider>
   );
 };
