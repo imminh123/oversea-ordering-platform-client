@@ -29,7 +29,7 @@ import { OrderStatusOptions } from './order.const';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { mappingOrderStatus } from './components';
 
-const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
+export const ClientOrderRow = ({ item }: { item: IOrderDetailRes }) => {
   const history = useHistory();
   return (
     <TableRow
@@ -55,13 +55,13 @@ export const OrderListing = () => {
   const [page, setPage] = useState<number>(1);
   const [status, setStatus] = useState<OrderStatus>();
   const [value, setValue] = useState<any>([null, null]);
-  const { data: cartItems, isLoading } = useIndexOrders({
+  const { data: orderItems, isLoading } = useIndexOrders({
     page,
     status,
     ...(value[0] && { timeFrom: new Date(value[0]).toISOString() }),
     ...(value[1] && { timeTo: new Date(value[1]).toISOString() }),
   });
-  const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
+  const count = parseInt(orderItems?.headers['x-pages-count'].toString() || '0');
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -147,7 +147,7 @@ export const OrderListing = () => {
             </Box>
           </Box>
         </Card>
-        {!!cartItems && !!cartItems?.data.length && !isLoading && (
+        {!!orderItems && !!orderItems?.data.length && !isLoading && (
           <Card>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
@@ -164,8 +164,8 @@ export const OrderListing = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderDetailRes) => (
-                    <OrderRow key={row.id} item={row} />
+                  {orderItems?.data.map((row: IOrderDetailRes) => (
+                    <ClientOrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
@@ -173,7 +173,7 @@ export const OrderListing = () => {
             <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChangePage} />
           </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
+        {(!orderItems || !orderItems?.data.length) && !isLoading && <NoItemFound />}
         {isLoading && <LoadingCard />}
       </Container>
     </>

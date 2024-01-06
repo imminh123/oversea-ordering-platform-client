@@ -21,32 +21,17 @@ import { Helmet } from 'react-helmet-async';
 import Spinner from 'app/layout/async/Spinner';
 import { useAdminGetStat } from './api/useAdminGetStat';
 import { AdminCard } from './components/AdminCard';
-import { IStoreQuery, useFetchNotifications } from '@novu/notification-center';
 import { NoItemFound, LoadingCard } from 'app/components/Item';
 import { IOrderDetailRes } from 'features/cart/api/useGetOrderDetail';
-import { OrderRow } from 'features/order/AdminOrders';
+import { AdminOrderRow } from 'features/order/AdminOrders';
 import { useIndexOrdersAdmin } from 'features/order/api/useOrderListingAdmin';
 
 interface Props {}
-// const query: IStoreQuery = {
-//   limit: 10,
-//   payload: {
-//     key: 'value',
-//   },
-// };
 
 export const AdminHome: React.FC<Props> = () => {
   const { data, isLoading } = useAdminGetStat();
 
-  // const onSuccess = (data: any) => {};
-  // const onError = (error: Error) => {};
-  // const {
-  //   data: notificationsPages,
-  //   isLoading: loadingNotifications,
-  //   refetch,
-  // } = useFetchNotifications({ query }, { onSuccess, onError });
-  // console.log('🚀 ~ file: AdminHome.tsx:32 ~ notificationsPages:', notificationsPages);
-  const { data: cartItems, isLoading: loadingCart } = useIndexOrdersAdmin({
+  const { data: orderItems, isLoading: loadingCart } = useIndexOrdersAdmin({
     page: 1,
     perPage: 5,
   });
@@ -67,7 +52,7 @@ export const AdminHome: React.FC<Props> = () => {
               </Grid>
             ))}
         </Grid>
-        {!!cartItems && !!cartItems?.data.length && !isLoading && (
+        {!!orderItems && !!orderItems?.data.length && !isLoading && (
           <Card sx={{ marginTop: '20px' }}>
             <CardHeader title={<Typography variant={'h6'}>Quản lý đơn hàng</Typography>} />
             <TableContainer component={Paper} elevation={3}>
@@ -85,16 +70,16 @@ export const AdminHome: React.FC<Props> = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderDetailRes) => (
-                    <OrderRow key={row.id} item={row} />
+                  {orderItems?.data.map((row: IOrderDetailRes) => (
+                    <AdminOrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
-        {isLoading && <LoadingCard />}
+        {(!orderItems || !orderItems?.data.length) && !isLoading && <NoItemFound />}
+        {(isLoading || loadingCart) && <LoadingCard />}
         {isLoading && (
           <Card variant='elevation'>
             <CardContent>
