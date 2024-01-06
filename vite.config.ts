@@ -25,9 +25,6 @@ export default defineConfig({
           if (id.includes('@mui')) {
             return 'mui';
           }
-          if (id.includes('src')) {
-            return 'src';
-          }
           if (id.includes('lodash')) {
             return 'lodash';
           }

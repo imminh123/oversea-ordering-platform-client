@@ -221,7 +221,7 @@ export const AdminOrders = () => {
                 </TableHead>
                 <TableBody>
                   {orderItems?.data.map((row: IOrderDetailRes) => (
-                    <OrderRow key={row.id} item={row} />
+                    <AdminOrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
@@ -236,7 +236,7 @@ export const AdminOrders = () => {
   );
 };
 
-export const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
+export const AdminOrderRow = ({ item }: { item: IOrderDetailRes }) => {
   const history = useHistory();
   return (
     <TableRow

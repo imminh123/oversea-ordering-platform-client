@@ -1,88 +1,90 @@
-import { CssBaseline, Container, Box, Card, CardContent, Button, CardActions, Grid, Typography } from '@mui/material';
-import { ApexOptions } from 'apexcharts';
-import React, { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import {
+  CssBaseline,
+  Container,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  CardHeader,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useGetStat } from './api/useGetStat';
 import Spinner from 'app/layout/async/Spinner';
-import { useHistory } from 'react-router-dom';
+import { IOrderDetailRes } from 'features/cart/api/useGetOrderDetail';
+import { ClientOrderRow } from 'features/order';
+import { useIndexOrders } from 'features/order/api/useOrderListing';
+import { ClientCard } from './components/ClientCard';
+import { ListNotifications } from './components/ListNotifications';
 
 interface Props {}
-interface DashboardStat {
-  series: { data: number[] }[];
-}
 
 export const HomePage: React.FC<Props> = () => {
-  const history = useHistory();
   const { data, isLoading } = useGetStat();
+  const { data: orderItems, isLoading: loadingOrders } = useIndexOrders({
+    page: 1,
+    perPage: 5,
+  });
+
   return (
     <React.Fragment>
       <Helmet>
         <title>Trang chủ</title>
       </Helmet>
       <CssBaseline />
-      <Container className='mt-5'>
-        {data?.data && !isLoading && (
-          <Grid container spacing={2} marginTop={'20px'}>
-            <Grid item xs={6}>
-              <Card sx={{ color: '#ffffff', backgroundColor: '#00c0ef' }}>
-                <CardContent>
-                  <Typography gutterBottom variant='h5' component='div'>
-                    Giỏ hàng
-                  </Typography>
-                  <Typography variant='body2' color='#fff'>
-                    Số sản phẩm trong giỏ: <span className='font-semibold text-xl'>{data.data.lenCart}</span>
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    sx={{ color: '#fff' }}
-                    size='small'
-                    onClick={() => {
-                      history.push('/cart');
-                    }}
-                  >
-                    Chi tiết
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item xs={6}>
-              <Card sx={{ color: '#ffffff', backgroundColor: '#f39c12' }}>
-                <CardContent>
-                  <Typography gutterBottom variant='h5' component='div'>
-                    Đơn hàng
-                  </Typography>
-                  <Typography variant='body2' color='#fff'>
-                    Tổng số đơn hàng: <span className='font-semibold text-xl'>{data.data.lenOrder}</span>
-                  </Typography>
-                  <Typography variant='body2' color='#fff'>
-                    Đơn mới:
-                    <span className='font-semibold text-xl'>{data.data.countCreated}</span>
-                  </Typography>
-                  <Typography variant='body2' color='#fff'>
-                    Đơn chờ thanh toán: <span className='font-semibold text-xl'>{data.data.countPendingPayment}</span>
-                  </Typography>
-                  <Typography variant='body2' color='#fff'>
-                    Đơn đã thanh toán: <span className='font-semibold text-xl'>{data.data.countDelivered}</span>
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    sx={{ color: '#fff' }}
-                    size='small'
-                    onClick={() => {
-                      history.push('/orders');
-                    }}
-                  >
-                    Chi tiết
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
+      <Container className='my-5'>
+        <Grid container spacing={3}>
+          {data?.data &&
+            !isLoading &&
+            Object.entries(data?.data).map((value, index) => (
+              <Grid key={index} item xs={12} sm={6} lg={4}>
+                <ClientCard type={value[0]} value={value[1]} />
+              </Grid>
+            ))}
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} lg={4}>
+            <ListNotifications />
           </Grid>
-        )}
-        {isLoading && (
+          <Grid item xs={12} sm={6} lg={8}>
+            {!!orderItems && !!orderItems?.data.length && !isLoading && (
+              <Card sx={{ marginTop: '20px' }}>
+                <CardHeader title={<Typography variant={'h6'}>Quản lý đơn hàng</Typography>} />
+                <TableContainer component={Paper} elevation={3}>
+                  <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: 'bold' }}>Sản phẩm</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }} align='right'>
+                          Trạng thái
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 'bold' }} className='min-w-[150px]'>
+                          Người nhận
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'right' }}>Tiền hàng</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {orderItems?.data.map((row: IOrderDetailRes) => (
+                        <ClientOrderRow key={row.id} item={row} />
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Card>
+            )}
+          </Grid>
+        </Grid>
+
+        {(isLoading || loadingOrders) && (
           <Card variant='elevation'>
             <CardContent>
               <Box>
