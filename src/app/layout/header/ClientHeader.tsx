@@ -86,7 +86,13 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>
-            <PopoverNotificationCenter colorScheme='light'>
+            <PopoverNotificationCenter
+              onNotificationClick={(noti) => {
+                window.open(noti.cta?.data.url, '_blank');
+              }}
+              allowedNotificationActions
+              colorScheme='light'
+            >
               {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
             </PopoverNotificationCenter>
             <CurrentAccountBadge />

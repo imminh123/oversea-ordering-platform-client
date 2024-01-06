@@ -51,8 +51,8 @@ export const HomePage: React.FC<Props> = () => {
             ))}
         </Grid>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} lg={8}>
-            {!!orderItems && !!orderItems?.data.length && !isLoading && (
+          {!!orderItems && !!orderItems?.data.length && !isLoading && (
+            <Grid item xs={12} lg={8}>
               <Card sx={{ marginTop: '20px' }}>
                 <CardHeader title={<Typography variant={'h6'}>Quản lý đơn hàng</Typography>} />
                 <TableContainer component={Paper} elevation={3}>
@@ -77,11 +77,9 @@ export const HomePage: React.FC<Props> = () => {
                   </Table>
                 </TableContainer>
               </Card>
-            )}
-          </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <ListNotifications />
-          </Grid>
+            </Grid>
+          )}
+          <ListNotifications />
         </Grid>
 
         {(isLoading || loadingOrders) && (
