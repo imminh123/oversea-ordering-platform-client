@@ -31,7 +31,12 @@ export const ClientLayoutPage: React.FC<Props> = ({ children }) => {
   }, [matchMD]);
 
   return (
-    <NovuProvider styles={novuBellStyle} subscriberId={user?.id || ''} applicationIdentifier={envConfig.VITE_NOVU_KEY}>
+    <NovuProvider
+      styles={novuBellStyle}
+      subscriberId={user?.id || ''}
+      applicationIdentifier={envConfig.VITE_NOVU_KEY}
+      i18n={'vi'}
+    >
       <Box sx={{ display: 'flex' }}>
         <ClientHeader open={open} setOpen={setOpen} />
         <Sidebar loading={false} open={open} />

@@ -13,6 +13,13 @@ export const novuBellStyle = {
       },
     },
   },
+  notifications: {
+    listItem: {
+      title: {
+        fontSize: '12px',
+      },
+    },
+  },
 };
 const palette = createPalette();
 

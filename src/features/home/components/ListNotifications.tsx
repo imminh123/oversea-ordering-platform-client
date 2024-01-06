@@ -1,6 +1,8 @@
 import {
+  Box,
   Card,
   CardHeader,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -10,18 +12,15 @@ import {
   Typography,
 } from '@mui/material';
 import { IStoreQuery, useFetchNotifications } from '@novu/notification-center';
+import { LoadingCard, NoItemFound } from 'app/components/Item';
 import { useEffect } from 'react';
 const query: IStoreQuery = {
   limit: 5,
 };
 export const ListNotifications = () => {
-  const onSuccess = (data: any) => {
-    console.log(data);
-  };
-  const onError = (error: Error) => {
-    console.log(error);
-  };
-  const { data: notificationsPages, refetch } = useFetchNotifications({ query }, { onSuccess, onError });
+  const onSuccess = (data: any) => {};
+  const onError = (error: Error) => {};
+  const { data: notificationsPages, refetch, isLoading } = useFetchNotifications({ query }, { onSuccess, onError });
 
   useEffect(() => {
     if (!notificationsPages) {
@@ -29,18 +28,32 @@ export const ListNotifications = () => {
     }
   });
   return (
-    <Card sx={{ marginTop: '20px' }}>
-      <CardHeader title={<Typography variant={'h6'}>Thông báo</Typography>} />
-      <TableContainer component={Paper} elevation={3}>
-        <Table aria-label='thong bao'>
-          <TableBody>
-            {notificationsPages?.pages[0].data.map((row: any) => (
-              <NotiRow key={row.id} data={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Card>
+    <Grid item xs={12} sm={6} lg={4}>
+      {!!notificationsPages?.pages[0].data.length && (
+        <Card sx={{ marginTop: '20px' }}>
+          <CardHeader title={<Typography variant={'h6'}>Thông báo</Typography>} />
+          <TableContainer component={Paper} elevation={3}>
+            <Table aria-label='thong bao'>
+              <TableBody>
+                {notificationsPages?.pages[0].data.map((row: any, index) => (
+                  <NotiRow key={index} data={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      )}
+      {!notificationsPages?.pages[0].data.length && !isLoading && (
+        <Box sx={{ marginTop: '20px' }}>
+          <NoItemFound text='Không có thông báo mới' />
+        </Box>
+      )}
+      {isLoading && (
+        <Box sx={{ marginTop: '20px' }}>
+          <LoadingCard />
+        </Box>
+      )}
+    </Grid>
   );
 };
 
