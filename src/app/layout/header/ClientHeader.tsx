@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Menu as MenuIcon, Notifications } from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import { CssBaseline, IconButton, Stack, Toolbar, useMediaQuery, useTheme, Typography, Badge } from '@mui/material';
+import { PopoverNotificationCenter, NotificationBell } from '@novu/notification-center';
 import { EDrawerType, ESidebarExpandVariant } from 'app/context/ui/enum';
 import { useUI } from 'app/hooks';
 import { CurrentAccountBadge } from 'app/layout/header/CurrentAccountBadge';
-import { ShoppingCart } from '@mui/icons-material';
+import { ShoppingCartOutlined } from '@mui/icons-material';
 import { useToggleSidebar } from 'app/hooks/toggleSidebar';
 import { useHistory } from 'react-router-dom';
 import { REFETCH_INTERVAL } from 'app/utils/constants';
@@ -13,7 +14,6 @@ import { useCountCart } from 'features/cart/api/useCountCart';
 import { useListVariables } from 'features/variables/api/useGetVariables';
 import { VariableType } from 'features/variables/variables.const';
 import { AppBar } from './AppBar';
-import { NotificationBox } from '../../../features/notifications/NotificationBox';
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -83,10 +83,12 @@ export const ClientHeader: React.FC<Props> = ({ open, setOpen }) => {
               edge='start'
             >
               <Badge invisible={!number} badgeContent={number} color='error'>
-                <ShoppingCart />
+                <ShoppingCartOutlined />
               </Badge>
             </IconButton>
-            <NotificationBox />
+            <PopoverNotificationCenter colorScheme='light'>
+              {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
+            </PopoverNotificationCenter>
             <CurrentAccountBadge />
           </Stack>
         </Toolbar>
