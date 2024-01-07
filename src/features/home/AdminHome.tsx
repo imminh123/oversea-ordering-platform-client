@@ -42,7 +42,7 @@ export const AdminHome: React.FC<Props> = () => {
         <title>Trang chủ</title>
       </Helmet>
       <CssBaseline />
-      <Container className='mt-5'>
+      <Container className='mt-5 mb-10'>
         <Grid container spacing={3}>
           {data?.data &&
             !isLoading &&
