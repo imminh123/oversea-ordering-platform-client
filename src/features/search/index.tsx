@@ -143,7 +143,7 @@ export const Search = () => {
       <Helmet>
         <title>Tìm kiếm</title>
       </Helmet>
-      <Container className='mt-5'>
+      <Container className='mt-5 mb-10'>
         <Card sx={{ p: 2, marginBottom: '10px' }}>
           <Box>
             <FormControl fullWidth>

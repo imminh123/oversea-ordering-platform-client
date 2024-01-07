@@ -103,7 +103,7 @@ export const PersonalInfo = () => {
         <FormProvider {...formMethods}>
           <CssBaseline />
           <Container maxWidth='md'>
-            <Card sx={{ minWidth: 275 }} className='mt-10'>
+            <Card sx={{ minWidth: 275 }} className='my-10'>
               <CardContent>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
