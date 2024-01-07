@@ -11,6 +11,7 @@ import { useRePay } from '../api/useRePay';
 import { usePayOrder } from 'features/cart/api/usePay';
 import { LoadingButton } from '@mui/lab';
 import { mappingOrderStatus } from '.';
+import { LeftAlignedTimeline } from 'app/components/Timeline';
 
 const CustomCard = styled(Paper)(({ theme }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -158,6 +159,14 @@ export const OrderDetail = () => {
                 <span className='text-right'>{data?.data.address.note}</span>
               </Box>
             </CustomCard>
+            {data?.data?.orderHistories && (
+              <CustomCard variant='elevation'>
+                <Typography variant='h5' textAlign={'left'} sx={{ mb: 2 }}>
+                  Lịch sử chỉnh sửa
+                </Typography>
+                <LeftAlignedTimeline data={data.data.orderHistories} />
+              </CustomCard>
+            )}
           </>
         )}
         {isLoading && (

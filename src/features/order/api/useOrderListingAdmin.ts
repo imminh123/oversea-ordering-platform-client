@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 
 interface IOrderListingParams {
   page: number;
+  perPage?: number;
   status?: OrderStatus;
   userName?: string;
   itemName?: string;
@@ -17,15 +18,15 @@ interface IOrderListingParams {
 export const indexOrderAdmin = async (
   param: IOrderListingParams,
 ): Promise<{ data: IOrderDetailRes[]; headers: IPaginationHeader }> => {
-  return apiWrapper.get(`/order/admin`, { ...param, perPage: 10 });
+  return apiWrapper.get(`/order/admin`, { ...param, perPage: param.perPage || 10 });
 };
 
 type QueryFnType = typeof indexOrderAdmin;
 
 export const useIndexOrdersAdmin = (param: IOrderListingParams, config?: QueryConfig<QueryFnType>) => {
-  const { page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId } = param;
+  const { page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId, perPage } = param;
   return useQuery<ExtractFnReturnType<QueryFnType>>({
-    queryKey: ['useIndexOrdersAdmin', page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId],
+    queryKey: ['useIndexOrdersAdmin', page, status, timeFrom, timeTo, itemName, userName, taobaoDeliveryId, perPage],
     queryFn: () => indexOrderAdmin(param),
     ...config,
   });

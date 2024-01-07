@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   Chip,
   Container,
@@ -52,9 +53,11 @@ export const AdminVariables = () => {
         <title>Tỉ giá</title>
       </Helmet>
       <Container className='mt-5'>
-        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý tỉ giá
-        </Typography>
+        <Box className='flex justify-between items-center mb-3 px-3'>
+          <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
+            Quản lý tỉ giá
+          </Typography>
+        </Box>
         {!!cartItems && !!cartItems?.data.length && !isLoading && (
           <Card>
             <TableContainer className='mt-2' component={Paper} elevation={3}>

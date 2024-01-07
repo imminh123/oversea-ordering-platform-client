@@ -41,7 +41,7 @@ export const AdminOrders = () => {
   const [itemName, setItemName] = useState<string>('');
   const [taobaoDeliveryId, setTaobaoDeliveryId] = useState<string>('');
   const [taobaoDeliveryIdFilter, setTaobaoDeliveryIdFilter] = useState<string>('');
-  const { data: cartItems, isLoading } = useIndexOrdersAdmin({
+  const { data: orderItems, isLoading } = useIndexOrdersAdmin({
     page,
     status,
     userName,
@@ -65,7 +65,7 @@ export const AdminOrders = () => {
       enabled: false,
     },
   );
-  const count = parseInt(cartItems?.headers['x-pages-count'].toString() || '0');
+  const count = parseInt(orderItems?.headers['x-pages-count'].toString() || '0');
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -203,7 +203,7 @@ export const AdminOrders = () => {
             </Box>
           </Box>
         </Card>
-        {!!cartItems && !!cartItems?.data.length && !isLoading && (
+        {!!orderItems && !!orderItems?.data.length && !isLoading && (
           <Card>
             <TableContainer component={Paper} elevation={3}>
               <Table sx={{ minWidth: 650 }} aria-label='đơn hàng'>
@@ -220,8 +220,8 @@ export const AdminOrders = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.data.map((row: IOrderDetailRes) => (
-                    <OrderRow key={row.id} item={row} />
+                  {orderItems?.data.map((row: IOrderDetailRes) => (
+                    <AdminOrderRow key={row.id} item={row} />
                   ))}
                 </TableBody>
               </Table>
@@ -229,14 +229,14 @@ export const AdminOrders = () => {
             <Pagination className='flex justify-center my-4' count={count} page={page} onChange={handleChange} />
           </Card>
         )}
-        {(!cartItems || !cartItems?.data.length) && !isLoading && <NoItemFound />}
+        {(!orderItems || !orderItems?.data.length) && !isLoading && <NoItemFound />}
         {isLoading && <LoadingCard />}
       </Container>
     </>
   );
 };
 
-const OrderRow = ({ item }: { item: IOrderDetailRes }) => {
+export const AdminOrderRow = ({ item }: { item: IOrderDetailRes }) => {
   const history = useHistory();
   return (
     <TableRow

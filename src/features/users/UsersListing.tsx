@@ -75,9 +75,9 @@ export const UsersListing = () => {
         <title>Quản lý người dùng</title>
       </Helmet>
       <Container className='mt-5 mb-10'>
-        <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
-          Quản lý người dùng
-        </Typography>
+        <Box className='flex justify-between items-center mb-3 px-3'>
+          <Typography variant={'h6'}>Quản lý người dùng</Typography>
+        </Box>
         <Card sx={{ p: 2, marginBottom: '10px' }}>
           <Box className='grid grid-cols-2 sm:grid-cols-3 gap-2 my-3'>
             <Box className='col-span-2 sm:col-span-1'>

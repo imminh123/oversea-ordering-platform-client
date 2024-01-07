@@ -3,16 +3,17 @@ import { ExtractFnReturnType, QueryConfig } from 'app/api/react-query';
 import { useQuery } from 'react-query';
 
 interface IStat {
-  lenCart: number;
-  lenOrder: number;
-  countCreated: number;
-  countPendingPayment: number;
-  countDelivered: number;
-  countPendingOrder: number;
+  countOrderFromBeginOfDay: number;
+  countOrderFromBeginOfMonth: number;
+  totalMoneyEarnedFromBeginOfDay: string;
+  totalMoneyEarnedFromBeginOfMonth: string;
 }
 
 export const adminGetStat = async (): Promise<{ data: IStat }> => {
-  return apiWrapper.get(`/dashboard/admin`, {});
+  const result: { data: IStat } = await apiWrapper.get(`/dashboard/admin`, {});
+  result.data.totalMoneyEarnedFromBeginOfDay = Number(result.data.totalMoneyEarnedFromBeginOfDay).toLocaleString();
+  result.data.totalMoneyEarnedFromBeginOfMonth = Number(result.data.totalMoneyEarnedFromBeginOfMonth).toLocaleString();
+  return result;
 };
 
 type QueryFnType = typeof adminGetStat;

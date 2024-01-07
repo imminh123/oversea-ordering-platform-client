@@ -61,7 +61,7 @@ export const TransactionListing = () => {
       <Helmet>
         <title>Thanh toán</title>
       </Helmet>
-      <Container className='mt-5'>
+      <Container className='mt-5 mb-10'>
         <Box className='flex justify-between items-center mb-3 px-3'>
           <Typography variant={'h6'} sx={{ gridColumn: 'span 2' }}>
             Quản lý thanh toán
