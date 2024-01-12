@@ -6,6 +6,7 @@ export enum SidebarKeysEnum {
   Orders = 'orders',
   Search = 'search',
   UserTransactions = 'user-transactions',
+  UserInstallExtension = 'install-extension',
 
   // admin
   AdminHomepage = 'admin-home-page',
@@ -21,6 +22,7 @@ export enum SidebarLinksEnum {
   Orders = '/orders',
   Search = '/search',
   UserTransactions = '/transactions',
+  UserInstallExtension = '/install-extension',
 
   // admin
   AdminHomepage = '/admin',

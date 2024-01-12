@@ -64,7 +64,7 @@ export const AuthLayout: React.FC<Props> = ({ children }) => {
               variant='h1'
             >
               Chào mừng đến với{' '}
-              <Box component='a' sx={{ color: '#15B79E' }} target='_blank'>
+              <Box component='a' sx={{ color: '#ff5000' }} target='_blank'>
                 MBY Logistics
               </Box>
             </Typography>

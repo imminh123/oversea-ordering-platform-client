@@ -7,6 +7,7 @@ import {
   AttachMoney,
   ManageAccounts,
   AccountBalance,
+  Build,
 } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { IRoute } from 'app/types/routes';
@@ -49,6 +50,7 @@ const { TransactionDetail } = lazyImport(
   () => import('features/transactions/components/TransactionDetail'),
   'TransactionDetail',
 );
+const { InstallExtension } = lazyImport(() => import('features/tool/InstallExtension'), 'InstallExtension');
 
 function useNavigation() {
   const history = useHistory();
@@ -116,6 +118,12 @@ function useNavigation() {
         exact: true,
         path: RoutePathsEnum.UserTransactionDetail,
         component: <TransactionDetail />,
+      },
+      {
+        key: RouteKeysEnum.UserInstallExtension,
+        exact: true,
+        path: RoutePathsEnum.UserInstallExtension,
+        component: <InstallExtension />,
       },
     ];
 
@@ -215,6 +223,13 @@ function useNavigation() {
             link: SidebarLinksEnum.UserTransactions,
             icon: <AccountBalance />,
             label: 'Quản lý thanh toán',
+          },
+          {
+            key: SidebarKeysEnum.UserInstallExtension,
+            parentKey: null,
+            link: SidebarLinksEnum.UserInstallExtension,
+            icon: <Build />,
+            label: 'Công cụ đặt hàng',
           },
         ],
       },

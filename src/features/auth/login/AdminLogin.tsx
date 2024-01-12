@@ -67,7 +67,6 @@ export const AdminLoginPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='success'
                   size='large'
                   type='submit'
                   loading={loading}

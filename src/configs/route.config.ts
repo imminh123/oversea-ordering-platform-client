@@ -10,6 +10,7 @@ export enum RouteKeysEnum {
   HomePage = 'home-page',
   UserTransaction = 'user-transaction',
   UserTransactionDetail = 'user-transaction-detail',
+  UserInstallExtension = 'install-extension',
 
   // auth
   LoginPage = 'login-page',
@@ -48,6 +49,7 @@ export enum RoutePathsEnum {
   HomePage = '/',
   UserTransaction = '/transactions',
   UserTransactionDetail = '/transactions/:id',
+  UserInstallExtension = '/install-extension',
 
   // admin
   AdminLoginPage = '/auth/admin/login',

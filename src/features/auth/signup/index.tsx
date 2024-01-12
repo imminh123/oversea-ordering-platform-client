@@ -51,7 +51,7 @@ export const SignupPage: React.FC<Props> = () => {
             <Typography variant='h4'>Đăng ký</Typography>
             <Typography color='text.secondary' variant='body2'>
               Bạn đã có tài khoản? &nbsp;
-              <Link href={RoutePathsEnum.LoginPage} color={'success'} underline='hover' variant='subtitle2'>
+              <Link href={RoutePathsEnum.LoginPage} underline='hover' variant='subtitle2'>
                 Đăng nhập
               </Link>
             </Typography>
@@ -68,7 +68,6 @@ export const SignupPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='success'
                   size='large'
                   type='submit'
                   loading={isLoading}

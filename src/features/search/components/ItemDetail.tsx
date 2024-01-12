@@ -83,7 +83,7 @@ export const ItemDetail = () => {
                     ) : (
                       <CardMedia
                         component='img'
-                        src={data?.data.ImageUrls[currentImg - 1]}
+                        src={data?.data.ImageUrls[currentImg - 1 > 0 ? currentImg - 1 : 0]}
                         className='mb-3'
                         id='myimage'
                         sx={{
