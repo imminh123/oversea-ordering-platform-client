@@ -46,7 +46,7 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
           <a
             className={`${
               row.isActive ? 'text-amber-700 hover:text-amber-500' : 'text-slate-500'
-            } w-[300px] break-words  text-ellipsis text-xs sm:text-sm`}
+            } w-[200px] break-words  text-ellipsis text-xs sm:text-sm`}
             href={row.itemUrl}
             target='_blank'
             rel='noopener noreferrer'
@@ -70,7 +70,7 @@ export const Step1CartRow = ({ row }: { row: CartItemV2 }) => {
         />
       </TableCell>
       <TableCell>
-        <Box className='flex flex-col w-[250px]'>
+        <Box className='flex flex-col w-[200px]'>
           {row.propName.split(';').map((e) => (
             <span key={e}>{e}</span>
           ))}

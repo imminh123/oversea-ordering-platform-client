@@ -17,14 +17,14 @@ export interface CartItemV2 {
   propName: string;
   skuId: string;
 }
-interface CartResponse {
+export interface CartResponseV2 {
   _id: string;
   shopName: string;
   shopUrl: string;
   listItem: CartItemV2[];
 }
 
-export const listCartCategories = async (): Promise<{ data: CartResponse[]; headers: IPaginationHeader }> => {
+export const listCartCategories = async (): Promise<{ data: CartResponseV2[]; headers: IPaginationHeader }> => {
   return apiWrapper.get(`/cart/v2`, {});
 };
 

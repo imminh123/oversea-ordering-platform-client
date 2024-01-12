@@ -23,7 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { useCalculatePrice } from './api/useCalculatePrice';
 import { useRefreshCart } from './api/useRefreshCart';
 import { formatMoneyToVND } from 'app/utils/helper';
-import { CartItemV2, useListCartCategoriesV2 } from './api/useCartCategoriesListingV2';
+import { CartItemV2, CartResponseV2, useListCartCategoriesV2 } from './api/useCartCategoriesListingV2';
 import { Step1CartRow } from './components/Step1CartRow';
 import queryString from 'query-string';
 import { useMemo, useState } from 'react';
@@ -31,6 +31,9 @@ import { Helmet } from 'react-helmet-async';
 import { Global } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
+import { useDeleteCartItem } from './api/useDeleteCategory';
+import { CartResponse } from './api/useCartCategoriesListing';
+import useConfirmAlert from 'app/hooks/useConfirmAlert';
 
 const SumaryInfo = styled(Card)(({ theme }) => ({
   minHeight: '100%',
@@ -48,11 +51,11 @@ export const Step1 = () => {
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
-
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
   const history = useHistory();
+  const { confirm } = useConfirmAlert();
   const { data: cartItems, isLoading } = useListCartCategoriesV2();
   const [cartIds, setCartIds] = useState<string[]>([]);
   const { mutateAsync: refreshCart, isLoading: refreshing } = useRefreshCart();
@@ -67,7 +70,7 @@ export const Step1 = () => {
         .join(',') || ''
     );
   }, [cartIds, cartItems?.data]);
-
+  const { mutateAsync: deleteItem, isLoading: deleting } = useDeleteCartItem();
   const { data: totalPrice } = useCalculatePrice(calculatePriceParam);
   const handleCheckCart = (value: boolean, id: string) => {
     if (value) {
@@ -85,6 +88,21 @@ export const Step1 = () => {
   const onSubmit = () => {
     const queryObject = { ids: calculatePriceParam };
     history.push({ pathname: 'cart/order', search: queryString.stringify(queryObject) });
+  };
+
+  const onDeleteShop = (cart: CartResponseV2) => {
+    const listIds = cart.listItem.map((e) => e.id).join(',');
+    confirm({
+      onConfirm: () => {
+        deleteItem(listIds);
+      },
+      options: {
+        title: 'Bạn có chắc muốn xóa shop này?',
+        confirmationText: 'Có',
+        cancellationText: 'Không',
+        description: 'Khi xác nhận sẽ không thể hoàn tác',
+      },
+    });
   };
   return (
     <>
@@ -111,38 +129,33 @@ export const Step1 = () => {
             cartItems?.data.map((item) => {
               return (
                 <TableContainer key={item._id} component={Paper} elevation={3} className='mb-3'>
+                  <Box className='w-full flex justify-between' sx={{ background: '#F3F4F6' }}>
+                    <Box>
+                      <Checkbox
+                        size='small'
+                        disabled={item.listItem.some((e) => !e.isActive)}
+                        value={cartIds.includes(item._id)}
+                        onChange={(e) => handleCheckCart(e.target.checked, item._id)}
+                      />
+                      <Link href={item.shopUrl}> Shop: {item.shopName}</Link>
+                      {item.listItem.some((e) => !e.isActive) && (
+                        <Typography variant='subtitle2' sx={{ marginLeft: '10px' }} color={theme.palette.error.main}>
+                          (Vui lòng loại bỏ những sản phẩm không tồn tại)
+                        </Typography>
+                      )}
+                    </Box>
+                    <LoadingButton
+                      loadingIndicator='Đang chờ...'
+                      variant='text'
+                      loading={deleting}
+                      onClick={() => {
+                        onDeleteShop(item);
+                      }}
+                    >
+                      Xoá shop
+                    </LoadingButton>
+                  </Box>
                   <Table aria-label='giỏ hàng'>
-                    <TableHead>
-                      <tr className='text-left'>
-                        <th>
-                          <Checkbox
-                            size='small'
-                            disabled={item.listItem.some((e) => !e.isActive)}
-                            value={cartIds.includes(item._id)}
-                            onChange={(e) => handleCheckCart(e.target.checked, item._id)}
-                          />
-                          <Link href={item.shopUrl}> Shop: {item.shopName}</Link>
-                          {item.listItem.some((e) => !e.isActive) && (
-                            <Typography
-                              variant='subtitle2'
-                              sx={{ marginLeft: '10px' }}
-                              color={theme.palette.error.main}
-                            >
-                              (Vui lòng loại bỏ những sản phẩm không tồn tại)
-                            </Typography>
-                          )}
-                        </th>
-                      </tr>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '8px' }}>Sản phẩm</TableCell>
-                        <TableCell sx={{ minWidth: '100px', fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>
-                          Số lượng
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', padding: '8px' }}>Thuộc tính</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'right', padding: '8px' }}>Đơn giá</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', padding: '8px' }}>Thao tác</TableCell>
-                      </TableRow>
-                    </TableHead>
                     <TableBody sx={{ marginBottom: '20px' }}>
                       {item.listItem.map((row: CartItemV2) => (
                         <Step1CartRow key={row.id} row={row} />

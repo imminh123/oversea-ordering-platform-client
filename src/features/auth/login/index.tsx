@@ -88,7 +88,6 @@ export const LoginPage: React.FC<Props> = () => {
                   variant='contained'
                   loadingIndicator='Đang chờ...'
                   fullWidth
-                  color='success'
                   size='large'
                   type='submit'
                   loading={loading}
@@ -104,7 +103,6 @@ export const LoginPage: React.FC<Props> = () => {
                     variant='outlined'
                     startIcon={<img src={Google} alt='Google' />}
                     loadingIndicator='Đang chờ...'
-                    color='success'
                     size='large'
                     fullWidth
                     onClick={loginWithGoogle}

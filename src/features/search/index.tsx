@@ -28,10 +28,10 @@ export const Search = () => {
   const queryObject: any = queryString.parse(locationSearch);
   const [page, setPage] = useState<number>(parseInt(queryObject.page) || 1);
   const [count, setCount] = useState<number>(0);
-  const [q, setQ] = useState(queryObject.q || '');
+  const [q, setQ] = useState(queryObject.q || 'Quần áo nữ');
   const [minPrice, setMinPrice] = useState<number | undefined>(queryObject.minPrice || '');
   const [maxPrice, setMaxPrice] = useState<number | undefined>(queryObject.maxPrice || '');
-  const [search, setSearch] = useState(queryObject.q || '');
+  const [search, setSearch] = useState(queryObject.q || 'Quần áo nữ');
   const [sort, setSort] = useState(queryObject.sort || SortOption.default);
   const [min, setMin] = useState<number | undefined>(queryObject.minPrice || '');
   const [max, setMax] = useState<number | undefined>(queryObject.maxPrice || '');
