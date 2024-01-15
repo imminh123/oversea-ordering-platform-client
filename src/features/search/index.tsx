@@ -9,8 +9,9 @@ import {
   Pagination,
   Select,
   TextField,
+  useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ISearchRes, SortOption, useSearchItem } from './api/useSearchItem';
 import { ImageSearch, Search as SearchIcon } from '@mui/icons-material';
@@ -26,6 +27,7 @@ export const Search = () => {
   const history = useHistory();
   const locationSearch = history.location.search;
   const queryObject: any = queryString.parse(locationSearch);
+  const searchBoxRef = useRef<HTMLInputElement>(null);
   const [page, setPage] = useState<number>(parseInt(queryObject.page) || 1);
   const [count, setCount] = useState<number>(0);
   const [q, setQ] = useState(queryObject.q || 'Quần áo nữ');
@@ -44,6 +46,7 @@ export const Search = () => {
     { enabled: !!q || !!minPrice || !!maxPrice, refetchOnWindowFocus: false },
   );
   const { mutateAsync: searchByImg, data: dataImg, isLoading: loadingDataImg } = useSearchItemByImg();
+  const theme = useTheme();
 
   const handleInputChange = (event: any, type: string) => {
     switch (type) {
@@ -138,6 +141,10 @@ export const Search = () => {
     }
   }, [dataImg, dataText]);
 
+  useEffect(() => {
+    if (searchBoxRef?.current) searchBoxRef.current.focus();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -150,7 +157,7 @@ export const Search = () => {
               <TextField
                 value={search}
                 fullWidth
-                size='small'
+                inputRef={searchBoxRef}
                 onKeyDown={(e) => handleKeyPress(e, 'q')}
                 label='Tìm kiếm sản phẩm Taobao'
                 onChange={(e) => handleInputChange(e, 'q')}

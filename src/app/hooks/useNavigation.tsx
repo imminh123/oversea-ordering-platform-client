@@ -228,6 +228,7 @@ function useNavigation() {
             key: SidebarKeysEnum.UserInstallExtension,
             parentKey: null,
             link: SidebarLinksEnum.UserInstallExtension,
+            href: 'https://chromewebstore.google.com/detail/mby-logistics-%C4%91%E1%BA%B7t-h%C3%A0ng-tr/ighanfgjjmhhgmjadlokpaadhfnfpngo',
             icon: <Build />,
             label: 'Công cụ đặt hàng',
           },

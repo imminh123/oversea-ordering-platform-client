@@ -72,6 +72,9 @@ const SidebarItem: React.FC<Props> = ({ item, borderBottom }) => {
   }, [item.child]);
 
   const handleItemClick = (item: ISidebarItem) => {
+    // doing nothing if item is a link
+    if (item.href) return;
+
     const hasChild = item.child && item.child.length > 0;
     if (hasChild) {
       setSidebarExpandKey((prev) => {
@@ -120,7 +123,17 @@ const SidebarItem: React.FC<Props> = ({ item, borderBottom }) => {
       >
         <ListItemButton>
           {item.icon && <ListItemIcon active={isItemActive}>{item.icon}</ListItemIcon>}
-          <ListItemText primary={renderLabelItem(item)} />
+          {item.href ? (
+            <ListItemText
+              primary={
+                <a target='_blank' href={item.href}>
+                  {renderLabelItem(item)}
+                </a>
+              }
+            />
+          ) : (
+            <ListItemText primary={renderLabelItem(item)} />
+          )}
         </ListItemButton>
         {hasChild && <>{expand ? <ExpandLess /> : <ExpandMore />}</>}
       </ListItem>
