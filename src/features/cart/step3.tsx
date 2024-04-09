@@ -1,98 +1,94 @@
-import { Assignment, CheckCircleOutline, LocalShipping, Payments, Pending } from '@mui/icons-material';
-import { Card, CardActionArea, CardContent, Typography, Box, Button } from '@mui/material';
+import { Card, CardActionArea, CardContent, Typography, Box, Button, CardMedia, Grid, Divider } from '@mui/material';
 import queryString from 'query-string';
-import { useLocation } from 'react-router-dom';
-import { OrderStatus, useGetOrderStatus } from './api/useGetOrderDetail';
-import moment from 'moment';
+import { useHistory, useLocation } from 'react-router-dom';
 import { formatMoneyToVND } from 'app/utils/helper';
-import { usePayOrder } from './api/usePay';
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
-import { LoadingButton } from '@mui/lab';
+import { useGetQR } from './api/useGetQR';
+import { HeaderPlaceHolder } from 'app/layout/header-placeholder';
+import { CountdownTimer } from './components/Timer';
 
 export const Step3 = () => {
   const { search } = useLocation();
+  const history = useHistory();
+
   const values = queryString.parse(search);
   const id: string = values.id && typeof values.id === 'string' ? values.id : '';
-  const { data, isLoading } = useGetOrderStatus(id);
-  const { mutateAsync: pay } = usePayOrder();
-  const handlePay = () => {
-    pay({ referenceId: id });
-  };
+  const amount: number = parseFloat((values.amount as any) || 0);
+  const { data: QRData } = useGetQR({ amount, addInfo: `Thanh toan cho don hang ${id}` });
+  // const { data, isLoading } = useGetOrderStatus(id);
 
-  const statusMapping = (status: OrderStatus | undefined) => {
-    switch (status) {
-      case OrderStatus.DELIVERED:
-        return 'Đã vận chuyển';
-      case OrderStatus.PENDING_PAYMENT:
-        return 'Đang chờ thanh toán...';
-      case OrderStatus.SUCCEEDED:
-        return 'Thanh toán thành công';
-      default:
-        return 'Đã tạo đơn hàng';
-    }
-  };
-
-  const checkDisable = (status: OrderStatus | undefined) => {
-    if (!status) {
-      return false;
-    }
-    return !![OrderStatus.DELIVERED, OrderStatus.PENDING_PAYMENT, OrderStatus.SUCCEEDED].includes(status);
-  };
-
-  const iconMapping = (status: OrderStatus | undefined) => {
-    switch (status) {
-      case OrderStatus.DELIVERED:
-        return <LocalShipping color='success' sx={{ height: '80px', width: '80px' }} />;
-      case OrderStatus.PENDING_PAYMENT:
-        return <Pending color='warning' sx={{ height: '80px', width: '80px' }} />;
-      case OrderStatus.SUCCEEDED:
-        return <CheckCircleOutline color='success' sx={{ height: '80px', width: '80px' }} />;
-      default:
-        return <Assignment color='primary' sx={{ height: '80px', width: '80px' }} />;
-    }
-  };
-  useEffect(() => {
-    if (!isLoading && !!data && id) {
-      pay({ referenceId: id });
-    }
-  }, [isLoading]);
   return (
     <>
       <Helmet>
         <title>Thanh toán</title>
       </Helmet>
       <Box display={'flex'} justifyContent={'center'}>
-        <Card className='w-full p-8'>
-          <Typography gutterBottom variant='h5' align='center' component='div' sx={{ padding: '10px' }}>
-            Thanh toán đơn hàng
-          </Typography>
-          <Box display={'flex'} justifyContent={'center'}>
-            {iconMapping(data?.status)}
-          </Box>
-          <CardContent>
-            <Typography gutterBottom variant='h6' align='center' component='div'>
-              {statusMapping(data?.status)}
-            </Typography>
-            <ul className='text-center'>
-              <li>Giá trị đơn hàng: {formatMoneyToVND(data?.total || 0)}</li>
-              <li>Thời gian tạo: {moment(data?.createdAt).format('h:mm:ss - DD/MM/YYYY')}</li>
-              <li>Mã giao dịch: {data?.id}</li>
-            </ul>
-            <Box display={'flex'} justifyContent={'center'} className='mt-5'>
-              <LoadingButton
-                sx={{ width: 180 }}
-                loadingIndicator='Đang chờ...'
-                loading={checkDisable(data?.status)}
-                variant='outlined'
-                startIcon={<Payments />}
-                onClick={handlePay}
-              >
-                Thanh toán
-              </LoadingButton>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Box className='flex flex-col items-center justify-center'>
+              <Typography sx={{ mb: 1 }}>Quét mã bằng ứng dụng ngân hàng/ Zalo/ ZaloPay</Typography>
+
+              <Card sx={{ maxWidth: '500px' }}>
+                <CardActionArea>
+                  <CardMedia component='img' height={140} image={QRData?.data.qrDataURL} alt='QR' />
+                </CardActionArea>
+              </Card>
             </Box>
-          </CardContent>
-        </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Box className='flex flex-col items-center justify-center'>
+              <Typography sx={{ mb: 1 }}>Thông tin đơn hàng</Typography>
+
+              <Card sx={{ width: '500px' }}>
+                <HeaderPlaceHolder bg='/mby-transparent.svg' />
+                <CardContent>
+                  <Box className='flex justify-between'>
+                    <Typography>Số tiền thanh toán</Typography>
+                    <Typography>{formatMoneyToVND(amount)}</Typography>
+                  </Box>
+                </CardContent>
+                <Divider></Divider>
+                <CardContent>
+                  <Typography variant='body1'>Mã giao dịch:</Typography>
+                  <Typography sx={{ mb: 1 }}>{id}</Typography>
+
+                  <Typography variant='body1'>Nội dung:</Typography>
+                  <Typography>Thanh toan cho don hang {id}</Typography>
+                </CardContent>
+              </Card>
+              <Card sx={{ width: '500px', backgroundColor: '#FEEC99', mt: 3 }}>
+                <CardContent>
+                  <Typography variant='body1'>Lưu ý:</Typography>
+                  <Typography>
+                    Trong vòng 1 tiếng kể từ khi chuyển tiền, MBY Logistic sẽ gửi email xác nhận trạng thái đơn hàng.
+                    Mọi thông tin về đơn hàng có thể liên hệ qua hotline: 035 6511877 hoặc Zalo MBY Logistic
+                  </Typography>
+                </CardContent>
+              </Card>
+              <Card sx={{ width: '500px', mt: 3, backgroundColor: '#FBF1DC' }}>
+                <CardContent>
+                  <Typography variant='body1' sx={{ textAlign: 'center' }}>
+                    Giao dịch hết hạn sau
+                  </Typography>
+                  <Box className='flex justify-center'>
+                    <CountdownTimer />
+                  </Box>
+                  <Box className='flex justify-center mt-3'>
+                    <Button
+                      color='warning'
+                      variant='contained'
+                      onClick={() => {
+                        history.push(`/orders/${id}`);
+                      }}
+                    >
+                      Trở về đơn hàng
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );

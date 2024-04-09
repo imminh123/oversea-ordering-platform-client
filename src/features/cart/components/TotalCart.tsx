@@ -22,7 +22,12 @@ import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import { LoadingCard, NoItemFound } from 'app/components/Item';
 
-export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
+export enum PaymentType {
+  vietqr = 'vietqr',
+  vnpay = 'vnpay',
+}
+
+export const TotalCart = ({ order }: { order: (ids: string[], payMethod: PaymentType) => void }) => {
   const history = useHistory();
   const locationSearch = history.location.search;
   const queryObject: any = queryString.parse(locationSearch);
@@ -35,7 +40,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
 
   const [selectAll, setSelectAll] = useState(true);
   const [listSelected, setListSelected] = useState<Array<string>>(defaultListSelectedIds);
-  const [selectedPayMethod, setSelectedPayMethod] = useState('vnpay');
+  const [selectedPayMethod, setSelectedPayMethod] = useState(PaymentType.vietqr);
   const handleInputChange = (event: any) => {
     setSelectedPayMethod(event.target.value);
   };
@@ -73,9 +78,7 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
   }, [cartItems?.data, listSelected]);
 
   const handleSelectMethod = () => {
-    if (selectedPayMethod === 'vnpay') {
-      order(listSelected);
-    }
+    order(listSelected, selectedPayMethod);
   };
 
   useEffect(() => {
@@ -139,18 +142,24 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                     type='radio'
                     id='vn-pay'
                     name='payment-method'
-                    value='vnpay'
-                    checked={selectedPayMethod === 'vnpay'}
+                    value={PaymentType.vnpay}
+                    disabled
+                    checked={selectedPayMethod === PaymentType.vnpay}
                     onChange={handleInputChange}
                     className='hidden peer/vnpay'
                   />
                   <label
                     htmlFor='vn-pay'
-                    className='cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/vnpay:border-sky-500 hover:bg-slate-200 hover:shadow-lg'
+                    className='   cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/vnpay:border-sky-500 peer-disabled/vnpay:border-slate-200 peer-disabled/vnpay:bg-slate-200 peer-disabled/vnpay:cursor-not-allowed hover:bg-slate-200 hover:shadow-lg'
                   >
                     <div className='flex justify-between items-center'>
                       <div className='flex gap-1 items-center'>
-                        <Radio value='vnpay' checked={selectedPayMethod === 'vnpay'} onChange={handleInputChange} />
+                        <Radio
+                          disabled
+                          value={PaymentType.vnpay}
+                          checked={selectedPayMethod === PaymentType.vnpay}
+                          onChange={handleInputChange}
+                        />
                         <img
                           src='https://www.ppro.com/wp-content/uploads/2021/06/VNPAYQR-logo.png'
                           alt='vn-pay'
@@ -158,6 +167,41 @@ export const TotalCart = ({ order }: { order: (ids: string[]) => void }) => {
                         />
                       </div>
                       <span className='text-right'>Ví điện tử VNPAY</span>
+                    </div>
+                  </label>
+
+                  <input
+                    type='radio'
+                    id='vietqr'
+                    name='payment-method'
+                    value={PaymentType.vietqr}
+                    checked={selectedPayMethod === PaymentType.vietqr}
+                    onChange={handleInputChange}
+                    className='hidden peer/vietqr'
+                  />
+                  <label
+                    htmlFor='vietqr'
+                    className='cursor-pointer w-full rounded-lg p-2 border border-slate-500 peer-checked/vietqr:border-sky-500 peer-disabled/vietqr:border-slate-200 peer-disabled/vietqr:bg-slate-200 peer-disabled/vietqr:cursor-not-allowed hover:bg-slate-200 hover:shadow-lg'
+                  >
+                    <div className='flex justify-between items-center'>
+                      <div className='flex gap-1 items-center'>
+                        <Radio
+                          value={PaymentType.vietqr}
+                          checked={selectedPayMethod === PaymentType.vietqr}
+                          onChange={handleInputChange}
+                        />
+                        <img
+                          src='/vietqr-icon-site.png'
+                          alt='VietQR'
+                          className='w-auto h-8 sm:h-10 bg-cover object-cover'
+                        />
+                      </div>
+                      <div>
+                        <div className='text-sm sm:text-base text-right'>
+                          Quét QR & Thanh toán bằng ứng dụng ngân hàng
+                        </div>
+                        <div className='text-sm sm:text-base text-right'>Mở ứng dụng ngân hàng để thanh toán</div>
+                      </div>
                     </div>
                   </label>
 

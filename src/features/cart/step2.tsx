@@ -1,13 +1,14 @@
 import { Box, Card, CardContent, Paper, Typography, styled } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { AddressRes, useListAddress } from './api/useGetAddressListing';
-import { TotalCart } from './components/TotalCart';
+import { PaymentType, TotalCart } from './components/TotalCart';
 import { ICreateOrderParams } from './api/useCreateOrderAndPay';
 import useAlert from 'app/hooks/useAlert';
 import { useCreateOrder } from './api/useCreateOrder';
 import { Helmet } from 'react-helmet-async';
 import { SelectAddressModal } from './components/SelectAddressModal';
 import { LocationOn } from '@mui/icons-material';
+import { useHistory } from 'react-router-dom';
 
 const Label = ({ add }: { add: AddressRes }) => {
   return (
@@ -27,6 +28,7 @@ const Label = ({ add }: { add: AddressRes }) => {
 export const Step2 = () => {
   const { data: listAddress, isLoading: loadingAddress } = useListAddress();
   const { alertError } = useAlert();
+  const history = useHistory();
 
   const [addressId, setAddressId] = useState('');
   const { mutateAsync: createOrder } = useCreateOrder();
@@ -35,7 +37,7 @@ export const Step2 = () => {
     setAddressId(e);
   };
 
-  const handleOrder = (ids: string[]) => {
+  const handleOrder = (ids: string[], payMethod: PaymentType) => {
     const body: ICreateOrderParams = {
       listItemId: ids,
       addressId,
@@ -46,7 +48,20 @@ export const Step2 = () => {
     } else if (!ids.length) {
       alertError('Vui lòng chọn ít nhất một sản phẩm');
     } else {
-      createOrder(body);
+      createOrder(body).then((data) => {
+        if (payMethod === PaymentType.vnpay && data.id) {
+          history.push({
+            pathname: '/cart/pay',
+            search: `?id=${data.id}`,
+          });
+        }
+        if (payMethod === PaymentType.vietqr) {
+          history.push({
+            pathname: '/cart/pay',
+            search: `?id=${data.id}&amount=${data.total}`,
+          });
+        }
+      });
     }
   };
 
