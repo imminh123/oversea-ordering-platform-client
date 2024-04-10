@@ -3,67 +3,64 @@ import axios from 'axios';
 import { FetchQueryOptions, useQuery } from 'react-query';
 
 type ApiProvince = {
-  name: string;
-  code: number;
-  division_type: string;
-  codename: string;
-  phone_code: number;
-  districts: [];
+  ProvinceID: string;
+  ProvinceName: string;
 };
 
 type ApiDistrict = {
-  name: string;
-  code: number;
-  division_type: string;
-  codename: string;
-  province_code: number;
-  wards: [];
+  DistrictName: string;
+  DistrictID: string;
 };
 
 type ApiWard = {
-  name: string;
-  code: number;
-  division_type: string;
-  codename: string;
-  district_code: number;
+  WardName: string;
+  WardCode: string;
 };
 
-const PROVINCE_OPENAI_URL = 'https://provinces.open-api.vn/api';
+const PROVINCE_OPENAI_URL = 'https://online-gateway.ghn.vn/shiip/public-api/master-data';
 
+const ADDRESS_AXIOS = axios.create({
+  headers: {
+    Token: '9136808f-f76e-11ee-983e-5a49fc0dd8ec',
+  },
+  baseURL: PROVINCE_OPENAI_URL,
+});
 class AddressAPI {
   async fetchProvinces(): Promise<ProvinceItem[]> {
     try {
-      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/p/`);
-
-      return apiResult.data.map((it: ApiProvince) => this.mappingProvinceItemServerToClient(it));
+      const { data } = await ADDRESS_AXIOS.get(`/province`, {
+        headers: {
+          Token: '9136808f-f76e-11ee-983e-5a49fc0dd8ec',
+        },
+      });
+      return data?.data.map((it: ApiProvince) => this.mappingProvinceItemServerToClient(it));
     } catch (e) {
       return [];
     }
   }
 
-  async fetchDistricts(provinceCode?: number): Promise<DistrictItem[]> {
+  async fetchDistricts(provinceCode?: string): Promise<DistrictItem[]> {
     if (!provinceCode) {
       return [];
     }
 
     try {
-      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/p/${provinceCode}`, { params: { depth: 2 } });
-
-      return apiResult.data.districts.map((it: ApiDistrict) => this.mappingDistrictItemServerToClient(it));
+      const { data } = await ADDRESS_AXIOS.get(`/district`, { params: { province_id: provinceCode } });
+      return data?.data.map((it: ApiDistrict) => this.mappingDistrictItemServerToClient(it));
     } catch (e) {
       return [];
     }
   }
 
-  async fetchWards(districtCode?: number): Promise<WardItem[]> {
+  async fetchWards(districtCode?: string): Promise<WardItem[]> {
     if (!districtCode) {
       return [];
     }
 
     try {
-      const apiResult = await axios.get(`${PROVINCE_OPENAI_URL}/d/${districtCode}`, { params: { depth: 2 } });
+      const { data } = await ADDRESS_AXIOS.get(`/ward`, { params: { district_id: districtCode } });
 
-      return apiResult.data.wards.map((it: ApiWard) => this.mappingWardItemServerToClient(it));
+      return data?.data.map((it: ApiWard) => this.mappingWardItemServerToClient(it));
     } catch (e) {
       return [];
     }
@@ -71,33 +68,33 @@ class AddressAPI {
 
   private mappingProvinceItemServerToClient(provinceServerResponse: ApiProvince): ProvinceItem {
     return {
-      name: provinceServerResponse.name,
-      code: provinceServerResponse.code,
-      divisionType: provinceServerResponse.division_type,
-      codename: provinceServerResponse.codename,
-      phoneCode: provinceServerResponse.phone_code,
-      districts: provinceServerResponse.districts,
+      name: provinceServerResponse.ProvinceName,
+      code: provinceServerResponse.ProvinceID,
+      // divisionType: provinceServerResponse.division_type,
+      // codename: provinceServerResponse.codename,
+      // phoneCode: provinceServerResponse.phone_code,
+      // districts: provinceServerResponse.districts,
     };
   }
 
   private mappingDistrictItemServerToClient(districtServerResponse: ApiDistrict): DistrictItem {
     return {
-      name: districtServerResponse.name,
-      code: districtServerResponse.code,
-      divisionType: districtServerResponse.division_type,
-      codename: districtServerResponse.codename,
-      provinceCode: districtServerResponse.province_code,
-      wards: districtServerResponse.wards,
+      name: districtServerResponse.DistrictName,
+      code: districtServerResponse.DistrictID,
+      // divisionType: districtServerResponse.division_type,
+      // codename: districtServerResponse.codename,
+      // provinceCode: districtServerResponse.province_code,
+      // wards: districtServerResponse.wards,
     };
   }
 
   private mappingWardItemServerToClient(wardServerResponse: ApiWard): WardItem {
     return {
-      name: wardServerResponse.name,
-      code: wardServerResponse.code,
-      divisionType: wardServerResponse.division_type,
-      codename: wardServerResponse.codename,
-      districtCode: wardServerResponse.district_code,
+      name: wardServerResponse.WardName,
+      code: wardServerResponse.WardCode,
+      // divisionType: wardServerResponse.division_type,
+      // codename: wardServerResponse.codename,
+      // districtCode: wardServerResponse.district_code,
     };
   }
 }
@@ -109,19 +106,18 @@ const provincesQuery: () => FetchQueryOptions<ProvinceItem[]> = () => ({
   queryFn: () => addressAPI.fetchProvinces(),
 });
 
-const districtsQuery: (provincesCode?: number) => FetchQueryOptions<DistrictItem[]> = (provincesCode) => ({
+const districtsQuery: (provincesCode?: string) => FetchQueryOptions<DistrictItem[]> = (provincesCode) => ({
   queryKey: ['province', provincesCode, 'districts'],
   queryFn: () => addressAPI.fetchDistricts(provincesCode),
 });
 
-const wardsQuery: (districtCode?: number) => FetchQueryOptions<WardItem[]> = (districtCode) => ({
+const wardsQuery: (districtCode?: string) => FetchQueryOptions<WardItem[]> = (districtCode) => ({
   queryKey: ['districts', districtCode, 'wards'],
   queryFn: () => addressAPI.fetchWards(districtCode),
 });
 
 export function useAddressDataQuery(params?: { province?: string; district?: string; ward?: string }) {
   const { data: provinces, isLoading: fetchProvincesLoading } = useQuery(provincesQuery());
-
   const { data: districts, isLoading: fetchDistrictsLoading } = useQuery<any, any, DistrictItem[], any>(
     districtsQuery(provinces?.find((p) => p.name === params?.province)?.code),
   );
