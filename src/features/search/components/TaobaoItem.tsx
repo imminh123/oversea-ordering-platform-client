@@ -52,9 +52,9 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
       /> */}
       <Box
         component='img'
-        src={`${item.pic_url}`}
+        src={`https://images.weserv.nl/?url=${item.pic_url}`}
         alt='product_image'
-        srcSet={`${item.pic_url}`}
+        srcSet={`https://images.weserv.nl/?url=${item.pic_url}`}
         sx={{
           height: 140,
           position: 'relative',
