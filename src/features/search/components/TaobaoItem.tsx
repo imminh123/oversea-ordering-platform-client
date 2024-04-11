@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { ISearchRes } from '../api/useSearchItem';
 import { formatMoneyToCN } from 'app/utils/helper';
 import { useHistory } from 'react-router-dom';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
   const theme = useTheme();
@@ -23,7 +23,38 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         },
       }}
     >
-      <CardMedia
+      {/* <CardMedia
+        sx={{
+          height: 140,
+          position: 'relative',
+          // overflow: 'hidden',
+          // transition: 'transform 0.3s',
+          // '&:hover': {
+          //   transform: 'scale(1.1)', // Apply scale transform on hover
+          // },
+          // '&:hover::before': {
+          //   content: '""',
+          //   position: 'absolute',
+          //   top: 0,
+          //   left: 0,
+          //   width: '100%',
+          //   height: '100%',
+          //   backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change background color on hover
+          //   transition: 'background-color 0.3s',
+          // },
+        }}
+        // image={`${item.pic_url}`}
+        src={`${item.pic_url}`}
+        title={item.title}
+        onClick={() => {
+          history.push(`/search/${item.num_iid}`);
+        }}
+      /> */}
+      <Box
+        component='img'
+        src={`${item.pic_url}`}
+        alt='product_image'
+        srcSet={`${item.pic_url}`}
         sx={{
           height: 140,
           position: 'relative',
@@ -43,11 +74,6 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
             transition: 'background-color 0.3s',
           },
         }}
-        image={`${item.pic_url}`}
-        title={item.title}
-        onClick={() => {
-          history.push(`/search/${item.num_iid}`);
-        }}
       />
       <CardContent
         onClick={() => {
@@ -57,12 +83,21 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         <Typography variant='body2' color='text.secondary'>
           {item.title}
         </Typography>
-        <Typography gutterBottom variant='body2' component='div' className='mt-2 line-through'>
-          Giá cũ: {formatMoneyToCN(item.original_price)}
-        </Typography>
-        <Typography gutterBottom variant='body2' component='div' className='text-red-500'>
-          Giá mới: {formatMoneyToCN(item.price)}
-        </Typography>
+        {item.original_price === item.price ? (
+          <Typography gutterBottom variant='body2' component='div' className='text-red-500'>
+            Giá: {formatMoneyToCN(item.price)}
+          </Typography>
+        ) : (
+          <>
+            <Typography gutterBottom variant='body2' component='div' className='mt-2 line-through'>
+              Giá cũ: {formatMoneyToCN(item.original_price)}
+            </Typography>
+            <Typography gutterBottom variant='body2' component='div' className='text-red-500'>
+              Giá mới: {formatMoneyToCN(item.price)}
+            </Typography>
+          </>
+        )}
+
         <Typography gutterBottom variant='caption' component='div'>
           Số lượng: {item.quantity}
         </Typography>
