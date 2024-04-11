@@ -16,7 +16,7 @@ export const Step3 = () => {
   const id: string = values.id && typeof values.id === 'string' ? values.id : '';
   const amount: number = parseFloat((values.amount as any) || 0);
   const { user } = useAuth();
-  const { data: QRData } = useGetQR({ amount, addInfo: `${user?.phone} ${id}` });
+  const { data: QRData } = useGetQR({ amount, addInfo: `${user?.phone} - ${id}` });
   // const { data, isLoading } = useGetOrderStatus(id);
 
   return (
@@ -55,7 +55,9 @@ export const Step3 = () => {
                   <Typography sx={{ mb: 1 }}>{id}</Typography>
 
                   <Typography variant='body1'>Nội dung:</Typography>
-                  <Typography>Thanh toan cho don hang {id}</Typography>
+                  <Typography>
+                    {user?.phone} - {id}
+                  </Typography>
                 </CardContent>
               </Card>
               <Card sx={{ width: '500px', backgroundColor: '#FEEC99', mt: 3 }}>
