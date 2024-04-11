@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { useGetQR } from './api/useGetQR';
 import { HeaderPlaceHolder } from 'app/layout/header-placeholder';
 import { CountdownTimer } from './components/Timer';
+import useAuth from 'app/hooks/useAuth';
 
 export const Step3 = () => {
   const { search } = useLocation();
@@ -14,7 +15,8 @@ export const Step3 = () => {
   const values = queryString.parse(search);
   const id: string = values.id && typeof values.id === 'string' ? values.id : '';
   const amount: number = parseFloat((values.amount as any) || 0);
-  const { data: QRData } = useGetQR({ amount, addInfo: `Thanh toan cho don hang ${id}` });
+  const { user } = useAuth();
+  const { data: QRData } = useGetQR({ amount, addInfo: `${user?.phone} ${id}` });
   // const { data, isLoading } = useGetOrderStatus(id);
 
   return (

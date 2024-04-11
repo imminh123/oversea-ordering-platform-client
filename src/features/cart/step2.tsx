@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { SelectAddressModal } from './components/SelectAddressModal';
 import { LocationOn } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
+import useAuth from 'app/hooks/useAuth';
 
 const Label = ({ add }: { add: AddressRes }) => {
   return (
@@ -29,7 +30,6 @@ export const Step2 = () => {
   const { data: listAddress, isLoading: loadingAddress } = useListAddress();
   const { alertError } = useAlert();
   const history = useHistory();
-
   const [addressId, setAddressId] = useState('');
   const { mutateAsync: createOrder } = useCreateOrder();
   const chooseAdress = useRef<any>();

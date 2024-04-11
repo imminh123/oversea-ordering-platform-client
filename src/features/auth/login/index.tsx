@@ -99,7 +99,7 @@ export const LoginPage: React.FC<Props> = () => {
                 </Typography>
 
                 <Box className='flex justify-between gap-2'>
-                  <LoadingButton
+                  {/* <LoadingButton
                     variant='outlined'
                     startIcon={<img src={Google} alt='Google' />}
                     loadingIndicator='Đang chờ...'
@@ -108,7 +108,7 @@ export const LoginPage: React.FC<Props> = () => {
                     onClick={loginWithGoogle}
                   >
                     <span className='text-slate-600'>Google</span>
-                  </LoadingButton>
+                  </LoadingButton> */}
                   <FacebookLoginButton onLogin={handleFacebookLogin} />
                 </Box>
               </Stack>
