@@ -23,38 +23,7 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
         },
       }}
     >
-      {/* <CardMedia
-        sx={{
-          height: 140,
-          position: 'relative',
-          // overflow: 'hidden',
-          // transition: 'transform 0.3s',
-          // '&:hover': {
-          //   transform: 'scale(1.1)', // Apply scale transform on hover
-          // },
-          // '&:hover::before': {
-          //   content: '""',
-          //   position: 'absolute',
-          //   top: 0,
-          //   left: 0,
-          //   width: '100%',
-          //   height: '100%',
-          //   backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change background color on hover
-          //   transition: 'background-color 0.3s',
-          // },
-        }}
-        // image={`${item.pic_url}`}
-        src={`${item.pic_url}`}
-        title={item.title}
-        onClick={() => {
-          history.push(`/search/${item.num_iid}`);
-        }}
-      /> */}
-      <Box
-        component='img'
-        src={`https://images.weserv.nl/?url=${item.pic_url}`}
-        alt='product_image'
-        srcSet={`https://images.weserv.nl/?url=${item.pic_url}`}
+      <CardMedia
         sx={{
           height: 140,
           position: 'relative',
@@ -74,7 +43,14 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
             transition: 'background-color 0.3s',
           },
         }}
+        image={`https://images.weserv.nl/?url=${item.pic_url}`}
+        src={`${item.pic_url}`}
+        title={item.title}
+        onClick={() => {
+          history.push(`/search/${item.num_iid}`);
+        }}
       />
+
       <CardContent
         onClick={() => {
           history.push(`/search/${item.num_iid}?url=${item.detail_url}`);
