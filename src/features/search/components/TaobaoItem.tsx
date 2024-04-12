@@ -74,9 +74,9 @@ export const TaobaoItem = ({ item }: { item: ISearchRes }) => {
           </>
         )}
 
-        <Typography gutterBottom variant='caption' component='div'>
+        {/* <Typography gutterBottom variant='caption' component='div'>
           Số lượng: {item.quantity}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions className='flex justify-center'>
         <a href={`${item.detail_url}`} target='_blank' rel='noopener noreferrer'>
